@@ -1,55 +1,201 @@
-# RGPV Connect
+<a id="top"></a>
+<!-- PROJECT HERO -->
+<div align="center">
 
-> A **free, open-source** verified student network and utility platform for
-> **RGPV University, Bhopal** — built by students, for students.
+<img src="docs/screenshots/banner.png" alt="RGPV Connect — the verified network for RGPV students" width="100%" />
 
-RGPV Connect started as a utility site (exam results, notes, previous-year papers,
-syllabus). This monorepo is the **community rewrite**: the utilities are the hook,
-and a verified, college-grouped student network sits on top — with an opportunities
-and campus layer (jobs/internships, buy-sell) for the community.
+<br/>
+<br/>
 
-There is no paid tier, no premium gate, and no ads. Everything is free, and
-**anyone can contribute** — see [Contributing](#contributing).
+**The free, open-source, verified student network & utility platform for [RGPV University, Bhopal](https://www.rgpv.ac.in/).**
 
-## Monorepo layout
+_Exam results, notes & papers, and a real, college-grouped campus network — built by students, for students._
+
+<br/>
+
+<!-- STATUS BADGES -->
+[![License: MIT](https://img.shields.io/github/license/vishalmeena2211/rgpv-connect-platform?color=6366f1&label=license)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-6366f1.svg)](CONTRIBUTING.md)
+[![Good first issues](https://img.shields.io/github/issues/vishalmeena2211/rgpv-connect-platform/good%20first%20issue?color=7c3aed&label=good%20first%20issues)](https://github.com/vishalmeena2211/rgpv-connect-platform/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![Last commit](https://img.shields.io/github/last-commit/vishalmeena2211/rgpv-connect-platform?color=6366f1)](https://github.com/vishalmeena2211/rgpv-connect-platform/commits/main)
+[![Stars](https://img.shields.io/github/stars/vishalmeena2211/rgpv-connect-platform?style=flat&color=eab308)](https://github.com/vishalmeena2211/rgpv-connect-platform/stargazers)
+
+<!-- BUILT WITH -->
+![Next.js](https://img.shields.io/badge/Next.js_15-000000?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React_19-20232a?logo=react&logoColor=61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2d3748?logo=prisma&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-0ea5e9?logo=tailwindcss&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+![Postgres](https://img.shields.io/badge/Postgres-4169e1?logo=postgresql&logoColor=white)
+
+<br/>
+
+[**✨ Features**](#-features) · [**🖼️ Screenshots**](#️-screenshots) · [**🚀 Quick start**](#-quick-start) · [**🗺️ Architecture**](#️-architecture) · [**🧭 Roadmap**](#-roadmap) · [**🤝 Contributing**](#-contributing)
+
+</div>
+
+---
+
+## 💡 Why RGPV Connect?
+
+A WhatsApp group has 200 unverified people. RGPV Connect has 200 people **cryptographically bound to a real RGPV enrollment number** — and that single property is what a chat app can never reproduce.
+
+It started as a plain results-lookup site. This monorepo is the community rewrite: the utilities everyone already needs (results, notes, papers) become the front door, and a **verified, auto-grouped student network** sits on top.
+
+- 🎓 **Check results faster than the official portal** — with SGPA/CGPA trends and "what-if" projections.
+- 🔐 **Every profile is verified** by enrollment number, then auto-grouped into your college, branch & batch. No self-reported fakes.
+- 📚 **Crowd-sourced notes & papers**, organised by branch and semester.
+- 🤝 **Find your batchmates, seniors and juniors** — a real campus directory, not a 900-person group chat.
+- 🆓 **Free forever, MIT-licensed.** No paywalls, no premium tier, no ads. Anyone can run it, audit it, or improve it.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+## 🖼️ Screenshots
+
+<div align="center">
+<table>
+  <tr>
+    <td width="66%"><img src="docs/screenshots/landing.png" alt="Landing page" /></td>
+    <td width="34%"><img src="docs/screenshots/landing-mobile.png" alt="Mobile landing" /></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Landing — desktop</em></td>
+    <td align="center"><em>Mobile (PWA-ready)</em></td>
+  </tr>
+</table>
+
+<img src="docs/screenshots/login.png" alt="Sign in — verify your enrollment" width="66%" />
+
+<em>Sign in, then verify your enrollment to unlock your college network</em>
+</div>
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+## ✨ Features
+
+RGPV Connect is built in **three layers** — utilities pull students in, the network keeps them, and the campus layer makes it useful.
+
+### 🎓 Layer 1 — Utility
+
+| Feature | What it does |
+| --- | --- |
+| **Result lookup** | Punch in any enrollment number, get the semester result instantly — no signup needed to view. |
+| **My Results** | Auto-synced result history across semesters, tied to your verified account. |
+| **SGPA / CGPA calculator** | Compute grades and run "what-if" projections for next semester. |
+| **Notes & papers** | Crowd-sourced, rated, and organised by branch → semester → subject. |
+
+### 🤝 Layer 2 — Network
+
+| Feature | What it does |
+| --- | --- |
+| **Verified profiles** | Auto-grouped by college, branch & batch from your enrollment number. |
+| **Directory & follows** | Find and follow batchmates, seniors and juniors. |
+| **Feed & groups** | College-scoped posts; auto-created branch + semester cohorts. |
+| **Direct messages** | 1:1 conversations with read receipts. |
+
+### 🧭 Layer 3 — Opportunities & Campus
+
+| Feature | What it does |
+| --- | --- |
+| **Jobs & internships** | Verified-only postings, filterable by branch & year. |
+| **Campus marketplace** | Buy-sell used books, prep material & more — trusted because everyone's verified. |
+
+> **All of it is free.** There is no premium gate, take-rate, or paid tier anywhere in the codebase.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+## 🔐 How verification works
+
+Most RGPV-affiliated colleges don't issue institutional email, so we can't rely on `@college.edu` logins. Instead, identity is **hybrid** — and grouping is _derived_, never self-reported:
 
 ```
-rgpv-connect-platform/
-├── apps/
-│   └── web/                 Next.js 15 web app (App Router, RSC, Server Actions)
-├── packages/
-│   ├── config/              Shared ESLint / TypeScript / Tailwind presets
-│   ├── shared/              Framework-agnostic domain logic (enrollment parser, types, zod schemas)
-│   └── db/                  Prisma schema + client + seed
-├── services/
-│   └── result-worker/       FastAPI service that fetches RGPV results (merges 3 legacy workers)
-├── infra/                   docker-compose, Dockerfiles
-└── docs/                    Architecture and product docs
+Sign in (Google / phone-OTP)
+        │
+        ▼
+Enter enrollment number  ──►  Result worker fetches a real result  ──►  ✅ Verified
+        │                     (proves the number is really yours)
+        ▼
+Decode  CCCCBBYYNNN
+        │
+        ├─ CCCC → College   (0151 → UIT-RGPV …)
+        ├─ BB   → Branch     (CS, IT, EC …)
+        └─ YY   → Admission year → graduating batch
+        │
+        ▼
+Auto-joined to your college • branch • batch cohorts
 ```
 
-## Architecture
+The enrollment parser lives in [`packages/shared`](packages/shared) and is **mirrored in Python** ([`services/result-worker`](services/result-worker)) so both sides decode identically. An optional college-email badge can be added on top.
 
-Three product layers, built in phases:
+<div align="right"><a href="#top">↑ back to top</a></div>
 
-1. **Utility** — result lookup, "My Results" auto-sync, SGPA calculator, notes, papers.
-2. **Network** — verified profiles auto-grouped by college/branch/batch, feed, directory, follows, groups. _(DMs + notifications planned.)_
-3. **Opportunities & Campus** — jobs/internships board, campus buy-sell marketplace — all free. _(Events planned.)_
+## 🧱 Tech stack
 
-Identity is **hybrid**: Google / phone-OTP login + mandatory enrollment-number
-verification (which auto-groups the student), with an optional college-email badge.
+| Area | Tech |
+| --- | --- |
+| **Web app** | Next.js 15 (App Router, RSC, Server Actions), React 19, TypeScript (strict) |
+| **UI** | Tailwind CSS, shadcn/ui, Radix, Lucide, `next-themes` |
+| **Auth** | Auth.js v5 (JWT sessions, edge-safe middleware guard) |
+| **Data** | Prisma ORM + PostgreSQL |
+| **Result worker** | Python 3.11, FastAPI, Redis session pool, Tesseract OCR (captcha) |
+| **Monorepo** | pnpm workspaces + Turborepo |
+| **Quality** | ESLint, Prettier, Vitest (TS) · Ruff, mypy, Pytest (Py) · GitHub Actions CI |
 
-See [docs/architecture.md](docs/architecture.md) for the full design.
+<div align="right"><a href="#top">↑ back to top</a></div>
 
-## Getting started
+## 🗺️ Architecture
+
+```mermaid
+flowchart LR
+    U([👩‍🎓 Student]) --> W
+
+    subgraph Vercel["▲ Vercel"]
+        W["Next.js 15 web app<br/>RSC · Server Actions"]
+    end
+
+    subgraph Data["🗄️ Data"]
+        PG[("PostgreSQL<br/>via Prisma")]
+    end
+
+    subgraph Worker["🐍 Fly.io"]
+        RW["FastAPI result-worker<br/>captcha OCR · session pool"]
+        RD[("Redis<br/>warm sessions")]
+    end
+
+    RGPV[["🏛️ RGPV result portal"]]
+
+    W <-->|"queries + mutations"| PG
+    W -->|"typed client<br/>(zod-validated)"| RW
+    RW <--> RD
+    RW -->|"scrape + parse"| RGPV
+
+    classDef box fill:#eef2ff,stroke:#6366f1,color:#1e1b4b;
+    class W,PG,RW,RD box;
+```
+
+- **Server Components** read Prisma directly — no API layer in between.
+- **Server Actions** own every mutation: authenticate → validate with Zod → `revalidatePath`.
+- The web app talks to the worker through **one typed client** that validates worker output against a shared schema before it ever reaches the UI.
+
+Full write-up in [`docs/architecture.md`](docs/architecture.md).
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+## 🚀 Quick start
+
+**Prerequisites:** Node ≥ 20 · pnpm 9 · Docker (for Postgres + Redis)
 
 ```bash
-# 1. Install JS dependencies
+# 1. Clone & install
+git clone https://github.com/vishalmeena2211/rgpv-connect-platform.git
+cd rgpv-connect-platform
 pnpm install
 
-# 2. Start Postgres + Redis (and optionally the worker)
+# 2. Start Postgres + Redis
 docker compose -f infra/docker-compose.yml up -d postgres redis
 
-# 3. Set up the database
+# 3. Set up the database (seed creates a demo user — no real credentials needed)
 cp packages/db/.env.example packages/db/.env
 pnpm db:generate && pnpm db:migrate && pnpm db:seed
 
@@ -58,35 +204,85 @@ cp apps/web/.env.example apps/web/.env.local
 pnpm dev
 ```
 
-The seed script gives you a working database with a demo user, so you can run the
-whole app locally without any real credentials or external services.
+Open **http://localhost:3000** — you're in. The seed gives you a working database and a demo user (`0151CS21001`), so the whole app runs locally **without any external accounts** (Google OAuth, email, etc. are optional in dev).
 
-The Python worker has its own setup — see
-[services/result-worker/README.md](services/result-worker/README.md).
+> The Python result-worker has its own setup — see [`services/result-worker/README.md`](services/result-worker/README.md).
 
-## Contributing
+<div align="right"><a href="#top">↑ back to top</a></div>
 
-RGPV Connect is community-built and welcomes contributions of every size —
-code, docs, bug reports, design, and data (notes, papers, syllabus).
+## 📁 Project structure
 
-- **Good first issues:** anything labelled `good first issue` in the tracker.
-- **Local setup:** follow [Getting started](#getting-started) above — no external
-  accounts needed to run the app.
-- **Roadmap & priorities:** see [docs/strategy.md](docs/strategy.md).
-- **How it fits together:** see [docs/architecture.md](docs/architecture.md).
+```
+rgpv-connect-platform/
+├── apps/
+│   └── web/                 Next.js 15 web app (App Router, RSC, Server Actions)
+├── packages/
+│   ├── config/              Shared ESLint / TypeScript / Tailwind presets
+│   ├── shared/              Framework-agnostic domain logic (enrollment parser, zod, types)
+│   └── db/                  Prisma schema + client singleton + seed
+├── services/
+│   └── result-worker/       FastAPI service that fetches RGPV results
+├── infra/                   docker-compose + Dockerfiles
+└── docs/                    Architecture, strategy & launch docs
+```
 
-Open an issue to discuss anything non-trivial before you start, then send a PR.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, workflow, and coding standards,
-and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community expectations.
+Code is **feature-first**: domain logic under `apps/web/src/features/*`, UI primitives under `apps/web/src/components/ui`.
 
-## License
+<div align="right"><a href="#top">↑ back to top</a></div>
 
-RGPV Connect is released under the [MIT License](LICENSE) — free to use, modify,
-and redistribute with attribution.
+## 🧭 Roadmap
 
-## Tooling
+Measured in verified students and contributors — never revenue.
 
-- **Package manager:** pnpm workspaces + Turborepo
-- **Web:** Next.js 15, React 19, TypeScript (strict), Tailwind, shadcn/ui, Auth.js v5, Prisma
-- **Worker:** Python 3.11, FastAPI, Redis, Tesseract OCR
-- **Quality:** strict TS everywhere, ESLint, Prettier, Vitest / Pytest
+- [x] Monorepo, schema, and the three feature layers scaffolded
+- [x] Enrollment verification + auto-grouping
+- [x] Free & open-source repositioning (premium code paths removed)
+- [ ] **PWA** — installable app shell + offline results
+- [ ] **Web Push** — results-day notification blast
+- [ ] **Share cards** — GPA card → WhatsApp deep-link (the viral loop)
+- [ ] Phone-OTP / email magic-link login
+- [ ] Self-hosted, privacy-safe analytics
+- [ ] Moderation queue (flag + soft-delete)
+- [ ] Placement outcome graph (a public good)
+
+See [`docs/strategy.md`](docs/strategy.md) for the full phased plan and [`docs/launch-free.md`](docs/launch-free.md) for the ₹0-infra launch guide.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+## 🤝 Contributing
+
+Contributions of **every size** are welcome — code, docs, design, bug reports, and data (notes / papers / syllabus). Repos with real communities are how student tools survive past one person.
+
+1. Read [**CONTRIBUTING.md**](CONTRIBUTING.md) for setup, workflow & coding standards.
+2. Pick a [**`good first issue`**](https://github.com/vishalmeena2211/rgpv-connect-platform/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22), or open an issue to discuss anything non-trivial.
+3. Fork → branch → run `pnpm lint && pnpm typecheck && pnpm test` → open a PR.
+
+By participating you agree to our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+### 🌟 Contributors
+
+<a href="https://github.com/vishalmeena2211/rgpv-connect-platform/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=vishalmeena2211/rgpv-connect-platform" alt="Contributors" />
+</a>
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+## 🛡️ Security & privacy
+
+RGPV Connect handles student PII, so please report vulnerabilities **privately** — see [SECURITY.md](SECURITY.md). India's DPDP Act applies; data-deletion and privacy work are tracked on the roadmap.
+
+## 📜 License
+
+Released under the [**MIT License**](LICENSE) — free to use, modify, and redistribute with attribution.
+
+## 💜 Acknowledgements
+
+Built with [Next.js](https://nextjs.org/), [Prisma](https://www.prisma.io/), [shadcn/ui](https://ui.shadcn.com/), [FastAPI](https://fastapi.tiangolo.com/), and [Turborepo](https://turbo.build/). Made for the students of **RGPV University, Bhopal** 🎓
+
+<div align="center">
+
+**If this could help RGPV students, drop a ⭐ — it genuinely helps the project reach them.**
+
+<sub>Not affiliated with or endorsed by Rajiv Gandhi Proudyogiki Vishwavidyalaya. Result data belongs to RGPV.</sub>
+
+</div>
