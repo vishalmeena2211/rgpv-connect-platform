@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Emit a self-contained server bundle for the Docker image.
-  output: 'standalone',
+  // Emit a self-contained server bundle for the Docker image (infra/).
+  // Skipped on Vercel, which has its own build output pipeline — standalone
+  // output in a monorepo can otherwise break Vercel's output detection.
+  output: process.env.VERCEL ? undefined : 'standalone',
   // Transpile workspace packages that ship raw TS.
   transpilePackages: ['@rgpv/shared', '@rgpv/db'],
   experimental: {
