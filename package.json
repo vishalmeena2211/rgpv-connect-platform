@@ -1,0 +1,28 @@
+{
+  "name": "rgpv-connect-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "RGPV Connect — verified student network and utility platform for RGPV University, Bhopal.",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "db:generate": "pnpm --filter @rgpv/db generate",
+    "db:migrate": "pnpm --filter @rgpv/db migrate",
+    "db:seed": "pnpm --filter @rgpv/db seed",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "turbo": "^2.1.2",
+    "typescript": "^5.6.2"
+  }
+}

@@ -1,0 +1,13 @@
+# Pinned runtime dependencies (mirror of pyproject [project.dependencies]).
+# Kept for environments that install via `pip install -r requirements.txt`.
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.6
+pydantic>=2.9.0
+pydantic-settings>=2.5.0
+requests>=2.32.0
+requests-html>=0.10.0
+lxml_html_clean>=0.2.0
+pytesseract>=0.3.13
+Pillow>=10.4.0
+redis>=5.0.8
+slowapi>=0.1.9

@@ -1,0 +1,76 @@
+# Local development stack for RGPV Connect.
+#
+#   docker compose -f infra/docker-compose.yml up -d postgres redis   # data only
+#   docker compose -f infra/docker-compose.yml up                     # full stack
+#
+# Postgres and Redis are enough to run the web app + worker from your host.
+# The `web` and `worker` services are provided for an all-in-one run.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rgpv
+      POSTGRES_PASSWORD: rgpv
+      POSTGRES_DB: rgpv_connect
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U rgpv -d rgpv_connect']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  worker:
+    build:
+      context: ../services/result-worker
+    restart: unless-stopped
+    environment:
+      ALLOWED_ORIGINS: http://localhost:3000
+      RGPV_BASE_URL: http://result.rgpv.ac.in/Result
+      REDIS_URL: redis://redis:6379
+      LOG_LEVEL: INFO
+    ports:
+      - '8000:8000'
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://rgpv:rgpv@postgres:5432/rgpv_connect?schema=public
+      AUTH_SECRET: ${AUTH_SECRET:-changeme-dev-secret}
+      AUTH_GOOGLE_ID: ${AUTH_GOOGLE_ID:-}
+      AUTH_GOOGLE_SECRET: ${AUTH_GOOGLE_SECRET:-}
+      RESULT_WORKER_URL: http://worker:8000
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      worker:
+        condition: service_started
+
+volumes:
+  postgres-data:
+  redis-data:

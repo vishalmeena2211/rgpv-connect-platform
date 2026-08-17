@@ -1,0 +1,28 @@
+{
+  "name": "@rgpv/config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared ESLint, TypeScript and Tailwind presets for RGPV Connect.",
+  "type": "module",
+  "files": ["eslint", "tsconfig", "tailwind"],
+  "exports": {
+    "./eslint/base": "./eslint/base.js",
+    "./eslint/next": "./eslint/next.js",
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/next.json": "./tsconfig/next.json",
+    "./tsconfig/library.json": "./tsconfig/library.json"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.11.1",
+    "@next/eslint-plugin-next": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.1",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "globals": "^15.9.0",
+    "typescript-eslint": "^8.8.0"
+  },
+  "peerDependencies": {
+    "eslint": "^9.11.1",
+    "typescript": "^5.6.2"
+  }
+}

@@ -1,0 +1,474 @@
+// RGPV Connect database schema.
+//
+// Organised top-down by product layer:
+//   1. Enums
+//   2. Identity      — User, College, Connection
+//   3. Academics     — Course → Year → Branch → Semester → Subject (catalogue)
+//   4. Resources     — student-contributed Notes / Papers, ratings
+//   5. Results       — cached exam results tied to a user
+//   6. Network        — Post, Comment, Group, GroupMember
+//
+// Run `pnpm db:generate` after editing.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// 1. Enums
+// ---------------------------------------------------------------------------
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum Role {
+  STUDENT
+  MENTOR
+  ADMIN
+  RECRUITER
+}
+
+enum PostScope {
+  COLLEGE
+  UNIVERSITY
+  GROUP
+}
+
+enum GroupType {
+  COLLEGE
+  BRANCH
+  INTEREST
+}
+
+enum ResourceType {
+  NOTE
+  PAPER
+}
+
+enum ModStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ResultStatus {
+  PASS
+  FAIL
+  WITHHELD
+  UNKNOWN
+}
+
+enum JobType {
+  FULL_TIME
+  INTERNSHIP
+  PART_TIME
+}
+
+enum ListingCategory {
+  BOOKS
+  ELECTRONICS
+  NOTES
+  HOSTEL
+  OTHER
+}
+
+enum ListingStatus {
+  ACTIVE
+  SOLD
+}
+
+enum NotificationType {
+  FOLLOW
+  POST_LIKE
+  POST_COMMENT
+  MESSAGE
+}
+
+// ---------------------------------------------------------------------------
+// 2. Identity
+// ---------------------------------------------------------------------------
+
+/// A verified RGPV student (or mentor/admin/recruiter) account.
+/// Grouping fields (collegeId, branchCode, batches) are derived from the
+/// enrollment number during verification — never entered manually.
+model User {
+  id     String  @id @default(cuid())
+  phone  String? @unique
+  email  String? @unique
+  name   String
+  avatarUrl String?
+  bio       String?
+
+  // Hybrid identity
+  enrollmentNumber     String?            @unique
+  verificationStatus   VerificationStatus @default(PENDING)
+  collegeEmail         String?            @unique
+  collegeEmailVerified Boolean            @default(false)
+
+  // Auto-derived grouping
+  collegeId       String?
+  college         College? @relation(fields: [collegeId], references: [id])
+  branchCode      String?
+  admissionYear   Int?
+  graduatingBatch Int?
+
+  role      Role    @default(STUDENT)
+
+  // Relations
+  posts        Post[]
+  comments     Comment[]
+  resources    Resource[]     @relation("ResourceUploader")
+  ratings      ResourceRating[]
+  resultRecords ResultRecord[]
+  groupMemberships GroupMember[]
+  following    Connection[]   @relation("Follower")
+  followers    Connection[]   @relation("Following")
+  jobPosts     JobPost[]
+  listings     MarketListing[]
+  conversations     ConversationMember[]
+  messages          Message[]
+  notifications     Notification[]      @relation("NotificationRecipient")
+  actorNotifications Notification[]     @relation("NotificationActor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([collegeId])
+  @@index([graduatingBatch])
+  @@index([branchCode])
+  @@index([verificationStatus])
+}
+
+/// An RGPV-affiliated college, keyed by the 4-digit enrollment college code.
+model College {
+  id          String  @id @default(cuid())
+  code        String  @unique // e.g. "0751"
+  name        String
+  city        String  @default("Bhopal")
+  emailDomain String? // for the optional college-email badge
+
+  users    User[]
+  groups   Group[]
+  listings MarketListing[]
+
+  createdAt DateTime @default(now())
+
+  @@index([code])
+}
+
+/// A directed follow edge between two users.
+model Connection {
+  id          String @id @default(cuid())
+  followerId  String
+  followingId String
+  follower    User   @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User   @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+}
+
+// ---------------------------------------------------------------------------
+// 3. Academic catalogue (Course → Year → Branch → Semester → Subject)
+// ---------------------------------------------------------------------------
+
+model Course {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  years Year[]
+}
+
+model Year {
+  id       Int      @id @default(autoincrement())
+  number   Int
+  courseId Int
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  branches Branch[]
+
+  @@unique([courseId, number])
+}
+
+model Branch {
+  id        Int        @id @default(autoincrement())
+  name      String
+  yearId    Int
+  year      Year       @relation(fields: [yearId], references: [id], onDelete: Cascade)
+  semesters Semester[]
+
+  @@index([yearId])
+}
+
+model Semester {
+  id       Int       @id @default(autoincrement())
+  number   Int
+  branchId Int
+  branch   Branch    @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  subjects Subject[]
+
+  @@unique([branchId, number])
+}
+
+model Subject {
+  id         Int        @id @default(autoincrement())
+  name       String
+  code       String?
+  semesterId Int
+  semester   Semester   @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  resources  Resource[]
+
+  @@index([semesterId])
+}
+
+// ---------------------------------------------------------------------------
+// 4. Student-contributed resources (notes & previous-year papers)
+// ---------------------------------------------------------------------------
+
+model Resource {
+  id        String       @id @default(cuid())
+  type      ResourceType
+  title     String
+  unitName  String?
+  pdfUrl    String
+  subjectId Int
+  subject   Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  uploaderId String
+  uploader   User   @relation("ResourceUploader", fields: [uploaderId], references: [id])
+
+  rating      Float            @default(0)
+  ratingCount Int              @default(0)
+  ratings     ResourceRating[]
+  status      ModStatus        @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  @@index([subjectId, status])
+  @@index([uploaderId])
+}
+
+/// One user's star rating of a resource. Aggregated onto Resource.rating.
+model ResourceRating {
+  id         String   @id @default(cuid())
+  resourceId String
+  userId     String
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stars      Int // 1..5
+
+  createdAt DateTime @default(now())
+
+  @@unique([resourceId, userId])
+}
+
+// ---------------------------------------------------------------------------
+// 5. Cached exam results
+// ---------------------------------------------------------------------------
+
+/// A cached semester result for a user. `payload` stores the full parsed
+/// result (SemesterResult shape from @rgpv/shared) for rich rendering, while
+/// sgpa/cgpa are denormalised for analytics queries.
+model ResultRecord {
+  id       String       @id @default(cuid())
+  userId   String
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  semester Int
+  status   ResultStatus @default(UNKNOWN)
+  sgpa     Float?
+  cgpa     Float?
+  payload  Json
+
+  fetchedAt DateTime @default(now())
+
+  @@unique([userId, semester])
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// 6. Network (feed, groups)
+// ---------------------------------------------------------------------------
+
+model Post {
+  id       String    @id @default(cuid())
+  authorId String
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  body     String
+  imageUrl String?
+  scope    PostScope @default(COLLEGE)
+  collegeId String?
+  groupId  String?
+  group    Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  comments Comment[]
+  likeCount Int      @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([scope, createdAt])
+  @@index([collegeId, createdAt])
+  @@index([groupId])
+}
+
+model Comment {
+  id       String @id @default(cuid())
+  postId   String
+  authorId String
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  body     String
+
+  createdAt DateTime @default(now())
+
+  @@index([postId])
+}
+
+model Group {
+  id        String    @id @default(cuid())
+  name      String
+  type      GroupType
+  collegeId String?
+  college   College?  @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+
+  members GroupMember[]
+  posts   Post[]
+
+  createdAt DateTime @default(now())
+
+  @@index([type])
+}
+
+model GroupMember {
+  id      String @id @default(cuid())
+  groupId String
+  userId  String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  joinedAt DateTime @default(now())
+
+  @@unique([groupId, userId])
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// 7. Marketplace (jobs board + campus buy/sell)
+// ---------------------------------------------------------------------------
+
+/// A job or internship posted by a recruiter/mentor for RGPV students.
+model JobPost {
+  id          String  @id @default(cuid())
+  title       String
+  company     String
+  location    String?
+  type        JobType @default(FULL_TIME)
+  description String
+  applyUrl    String
+  isRemote    Boolean @default(false)
+
+  postedById String
+  postedBy   User   @relation(fields: [postedById], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([postedById])
+}
+
+/// A campus buy/sell listing (books, electronics, hostel goods). Scoped to a
+/// college so students transact within their own campus.
+model MarketListing {
+  id          String          @id @default(cuid())
+  title       String
+  description String
+  priceCents  Int             // store money as integer paise/cents to avoid float drift
+  category    ListingCategory @default(OTHER)
+  imageUrl    String?
+  status      ListingStatus   @default(ACTIVE)
+
+  sellerId  String
+  seller    User    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  collegeId String?
+  college   College? @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([collegeId, status, createdAt])
+  @@index([category, status])
+  @@index([sellerId])
+}
+
+// ---------------------------------------------------------------------------
+// 8. Direct messages
+// ---------------------------------------------------------------------------
+
+/// A private conversation between members. Modelled as a thread with a member
+/// join table so it can extend to small group chats later without reshaping.
+model Conversation {
+  id            String               @id @default(cuid())
+  members       ConversationMember[]
+  messages      Message[]
+  lastMessageAt DateTime             @default(now())
+
+  createdAt DateTime @default(now())
+
+  @@index([lastMessageAt])
+}
+
+/// A user's membership in a conversation, tracking their own read cursor so
+/// unread counts are per-member.
+model ConversationMember {
+  id             String       @id @default(cuid())
+  conversationId String
+  userId         String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt     DateTime     @default(now())
+
+  joinedAt DateTime @default(now())
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  senderId       String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body           String
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// 9. Notifications
+// ---------------------------------------------------------------------------
+
+/// An activity notification for a recipient. `actor` is who triggered it and
+/// `entityId` points at the relevant post/conversation for deep-linking.
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String
+  recipient   User             @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actorId     String
+  actor       User             @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  entityId    String?
+  readAt      DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([recipientId, readAt])
+  @@index([recipientId, createdAt])
+}
