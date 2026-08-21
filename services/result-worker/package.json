@@ -1,0 +1,15 @@
+{
+  "name": "@rgpv/result-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FastAPI service that fetches and parses RGPV exam results.",
+  "scripts": {
+    "setup": "python3 -m venv .venv && .venv/bin/pip install -e '.[dev]'",
+    "dev": ".venv/bin/python3.14 -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "start": ".venv/bin/python3.14 -m uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "test": ".venv/bin/python3.14 -m pytest",
+    "lint": ".venv/bin/python3.14 -m ruff check .",
+    "typecheck": ".venv/bin/python3.14 -m mypy app",
+    "clean": "rm -rf .venv __pycache__ .pytest_cache .mypy_cache .ruff_cache"
+  }
+}

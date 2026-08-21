@@ -195,6 +195,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.9(@types/node@22.19.19)
 
+  services/result-worker: {}
+
 packages:
 
   '@alloc/quick-lru@5.2.0':

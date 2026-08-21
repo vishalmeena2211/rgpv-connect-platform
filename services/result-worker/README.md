@@ -57,16 +57,24 @@ app/
 
 ## Local development
 
+From the **monorepo root** (recommended):
+
 ```bash
-cd services/result-worker
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"          # needs Tesseract installed system-wide
-cp .env.example .env
+pnpm worker:setup                # create .venv + pip install -e ".[dev]"
+cp services/result-worker/.env.example services/result-worker/.env
+pnpm dev:worker                  # http://localhost:8000/docs
 
-uvicorn app.main:app --reload    # http://localhost:8000/docs
+# or run web + worker together
+pnpm dev
+```
 
-pytest                           # run unit tests
-ruff check . && mypy app         # lint + type-check
+From this directory directly:
+
+```bash
+pnpm setup                       # same as pnpm worker:setup from root
+pnpm dev
+pnpm test
+pnpm lint && pnpm typecheck
 ```
 
 > **Note:** OCR requires the `tesseract` binary (`brew install tesseract` on

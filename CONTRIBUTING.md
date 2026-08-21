@@ -19,11 +19,13 @@ can agree on the approach and avoid wasted work.
 
 ## Local setup
 
-You need **Node ≥ 20**, **pnpm 9**, and **Docker** (for Postgres + Redis).
+You need **Node ≥ 20**, **pnpm 9**, **Python 3.11+**, **Tesseract OCR**, and **Docker**
+(for Postgres + Redis).
 
 ```bash
-# 1. Install JS dependencies
+# 1. Install JS dependencies + Python worker venv
 pnpm install
+pnpm worker:setup
 
 # 2. Start Postgres + Redis
 docker compose -f infra/docker-compose.yml up -d postgres redis
@@ -32,17 +34,16 @@ docker compose -f infra/docker-compose.yml up -d postgres redis
 cp packages/db/.env.example packages/db/.env
 pnpm db:generate && pnpm db:migrate && pnpm db:seed
 
-# 4. Run the web app
+# 4. Run the full stack (web + worker)
 cp apps/web/.env.example apps/web/.env.local
+cp services/result-worker/.env.example services/result-worker/.env
 pnpm dev
 ```
 
-The app runs at http://localhost:3000. The seed gives you a working database and
-a demo user, so you can develop the whole app **without any external accounts**
-(Google OAuth, email, etc. are optional in dev).
-
-The Python result-worker has its own setup — see
-[services/result-worker/README.md](services/result-worker/README.md).
+The web app runs at http://localhost:3000 and the worker API at
+http://localhost:8000/docs. The seed gives you a working database and a demo user,
+so you can develop the whole app **without any external accounts** (Google OAuth,
+email, etc. are optional in dev).
 
 ## Project layout
 
@@ -51,7 +52,7 @@ apps/web            Next.js 15 app (App Router, RSC, Server Actions)
 packages/config     Shared ESLint / TS / Tailwind presets
 packages/shared     Framework-agnostic domain logic (enrollment parser, types, zod)
 packages/db         Prisma schema + client + seed
-services/result-worker  FastAPI result fetcher (Python)
+services/result-worker  @rgpv/result-worker — FastAPI result fetcher (Python)
 infra               docker-compose + Dockerfiles
 docs                architecture + strategy
 ```
@@ -71,21 +72,13 @@ shared UI primitives under `apps/web/src/components/ui`.
 
 ### Checks to run before you push
 
-JavaScript / TypeScript (from the repo root):
+JavaScript / TypeScript + Python (from the repo root):
 
 ```bash
-pnpm lint         # ESLint across all workspaces
-pnpm typecheck    # tsc --noEmit (strict)
-pnpm test         # Vitest
+pnpm lint         # ESLint (web/packages) + ruff (worker)
+pnpm typecheck    # tsc --noEmit (strict) + mypy (worker)
+pnpm test         # Vitest + pytest
 pnpm format       # Prettier (or `pnpm format:check` to verify only)
-```
-
-Python worker (from `services/result-worker/`):
-
-```bash
-ruff check .
-mypy app
-pytest
 ```
 
 CI runs these same checks on every PR, so running them locally saves a round-trip.

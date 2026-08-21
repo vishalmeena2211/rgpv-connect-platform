@@ -37,17 +37,19 @@ college/branch/batch grouping is derived rather than self-reported.
 ## 3. Monorepo topology
 
 ```
-apps/web            Next.js 15 app (App Router, RSC, Server Actions)
-packages/config     Shared ESLint / TS / Tailwind presets
-packages/shared     Framework-agnostic domain logic (enrollment parser, types, zod)
-packages/db         Prisma schema + client singleton + seed
-services/result-worker  FastAPI scraper (merges 3 legacy Python repos)
-infra               docker-compose + Dockerfiles
-docs                this
+apps/web                Next.js 15 app (App Router, RSC, Server Actions)
+packages/config         Shared ESLint / TS / Tailwind presets
+packages/shared         Framework-agnostic domain logic (enrollment parser, types, zod)
+packages/db             Prisma schema + client singleton + seed
+services/result-worker  FastAPI scraper (@rgpv/result-worker — first-class Turbo package)
+infra                   docker-compose + Dockerfiles
+docs                    this
 ```
 
-pnpm workspaces + Turborepo orchestrate JS builds; the Python service is
-intentionally **outside** the workspace and deployed independently.
+pnpm workspaces + Turborepo orchestrate the **entire monorepo** — JS apps/packages
+and the Python result worker. The worker is `@rgpv/result-worker` with pnpm scripts
+that wrap pip, uvicorn, pytest, ruff, and mypy. Python deps still live in
+`pyproject.toml`; pnpm only coordinates tasks.
 
 ## 4. The result worker
 

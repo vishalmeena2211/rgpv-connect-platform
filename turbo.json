@@ -19,7 +19,11 @@
       "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputs": [".pytest_cache/**"]
+    },
+    "setup": {
+      "cache": false
     },
     "clean": {
       "cache": false

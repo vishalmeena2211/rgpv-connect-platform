@@ -10,7 +10,7 @@ from __future__ import annotations
 import asyncio
 
 from app.core import enrollment as enroll
-from app.core.captcha import solve_captcha
+from app.core.captcha import solve_captcha, solve_captcha_candidates
 from app.core.exceptions import CaptchaFailed, ResultNotFound, RGPVError
 from app.core.fetch import fetch_result_html
 from app.core.models import BulkResultItem, SemesterResult
@@ -35,9 +35,20 @@ def fetch_single(enrollment: str, semester: int, *, max_retries: int = 3) -> Sem
     for attempt in range(1, max_retries + 1):
         try:
             rgpv: RGPVSession = establish_session()
-            captcha = solve_captcha(rgpv.captcha_url)
-            html = fetch_result_html(rgpv, enrollment, semester, captcha)
-            return parse_result(html)
+            candidates = solve_captcha_candidates(rgpv.captcha_url)
+            if not candidates:
+                captcha = solve_captcha(rgpv.captcha_url)
+                candidates = [captcha]
+
+            for captcha in candidates:
+                html = fetch_result_html(rgpv, enrollment, semester, captcha)
+                try:
+                    return parse_result(html)
+                except CaptchaFailed:
+                    logger.info("Captcha candidate rejected for %s: %s", enrollment, captcha)
+                    continue
+
+            raise CaptchaFailed(f"All captcha candidates rejected for {enrollment}")
         except ResultNotFound:
             raise
         except CaptchaFailed as exc:

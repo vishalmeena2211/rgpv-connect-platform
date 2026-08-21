@@ -1,6 +1,5 @@
-# pnpm workspace definition.
-# Python services (services/result-worker) are intentionally NOT part of the
-# pnpm workspace — they manage their own dependencies via pip/poetry.
+# pnpm workspace definition — apps, shared packages, and Python services.
 packages:
   - "apps/*"
   - "packages/*"
+  - "services/*"

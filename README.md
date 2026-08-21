@@ -139,7 +139,7 @@ The enrollment parser lives in [`packages/shared`](packages/shared) and is **mir
 | **Auth** | Auth.js v5 (JWT sessions, edge-safe middleware guard) |
 | **Data** | Prisma ORM + PostgreSQL |
 | **Result worker** | Python 3.11, FastAPI, Redis session pool, Tesseract OCR (captcha) |
-| **Monorepo** | pnpm workspaces + Turborepo |
+| **Monorepo** | pnpm workspaces + Turborepo (apps, packages, and services) |
 | **Quality** | ESLint, Prettier, Vitest (TS) · Ruff, mypy, Pytest (Py) · GitHub Actions CI |
 
 <div align="right"><a href="#top">↑ back to top</a></div>
@@ -178,7 +178,9 @@ flowchart LR
 - **Server Actions** own every mutation: authenticate → validate with Zod → `revalidatePath`.
 - The web app talks to the worker through **one typed client** that validates worker output against a shared schema before it ever reaches the UI.
 
-Full write-up in [`docs/architecture.md`](docs/architecture.md).
+Full write-up in [`docs/architecture.md`](docs/architecture.md). Operational
+reference (portal quirks, enrollment format, API, troubleshooting) in
+[`docs/knowledge.md`](docs/knowledge.md).
 
 <div align="right"><a href="#top">↑ back to top</a></div>
 
@@ -199,14 +201,19 @@ docker compose -f infra/docker-compose.yml up -d postgres redis
 cp packages/db/.env.example packages/db/.env
 pnpm db:generate && pnpm db:migrate && pnpm db:seed
 
-# 4. Run the web app
+# 4. Bootstrap the result worker (Python venv + pip deps)
+pnpm worker:setup
+
+# 5. Run the full stack (web + worker in parallel)
 cp apps/web/.env.example apps/web/.env.local
 pnpm dev
 ```
 
-Open **http://localhost:3000** — you're in. The seed gives you a working database and a demo user (`0151CS21001`), so the whole app runs locally **without any external accounts** (Google OAuth, email, etc. are optional in dev).
+Open **http://localhost:3000** for the web app and **http://localhost:8000/docs** for the worker API.
 
-> The Python result-worker has its own setup — see [`services/result-worker/README.md`](services/result-worker/README.md).
+The seed gives you a working database and a demo user (`0151CS21001`), so the whole app runs locally **without any external accounts** (Google OAuth, email, etc. are optional in dev).
+
+> **Prerequisites for the worker:** Python 3.11+ and [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) on your PATH. See [`services/result-worker/README.md`](services/result-worker/README.md) for details.
 
 <div align="right"><a href="#top">↑ back to top</a></div>
 
@@ -221,10 +228,13 @@ rgpv-connect-platform/
 │   ├── shared/              Framework-agnostic domain logic (enrollment parser, zod, types)
 │   └── db/                  Prisma schema + client singleton + seed
 ├── services/
-│   └── result-worker/       FastAPI service that fetches RGPV results
+│   └── result-worker/       @rgpv/result-worker — FastAPI RGPV result scraper
 ├── infra/                   docker-compose + Dockerfiles
 └── docs/                    Architecture, strategy & launch docs
 ```
+
+See also [`docs/knowledge.md`](docs/knowledge.md) for RGPV portal details,
+enrollment format, worker API, performance notes, and troubleshooting.
 
 Code is **feature-first**: domain logic under `apps/web/src/features/*`, UI primitives under `apps/web/src/components/ui`.
 

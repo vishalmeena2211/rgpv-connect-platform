@@ -45,9 +45,10 @@ def _alert_text(html: HTML, line: int) -> str:
 
 def detect_error(html: HTML) -> None:
     """Raise the appropriate typed error if the page is an error page."""
-    if _alert_text(html, 17) == ERR_NOT_FOUND:
+    raw = html.html
+    if ERR_NOT_FOUND in raw or _alert_text(html, 17) == ERR_NOT_FOUND:
         raise ResultNotFound("Result for this Enrollment No. not found")
-    if _alert_text(html, 19) == ERR_WRONG_CAPTCHA:
+    if ERR_WRONG_CAPTCHA in raw or _alert_text(html, 19) == ERR_WRONG_CAPTCHA:
         raise CaptchaFailed("RGPV rejected the captcha text")
 
 
