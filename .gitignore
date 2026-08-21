@@ -36,3 +36,10 @@ packages/db/prisma/*.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Vercel CLI (adds .vercel and a local OIDC .env.local on `vercel link`)
+.vercel
+.env*
+# Re-assert the template exception: `.env*` above is matched last and would
+# otherwise swallow the committed .env.example files contributors rely on.
+!.env.example
