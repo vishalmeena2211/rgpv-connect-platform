@@ -11,7 +11,8 @@ existed in all three legacy workers.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import time
+from dataclasses import dataclass, field
 
 import requests
 from requests_html import HTML
@@ -37,6 +38,12 @@ class RGPVSession:
     eventvalidation: str
     cookie: str
     captcha_url: str
+    #: Wall-clock time the handshake completed. RGPV rejects a result POST that
+    #: arrives too soon after the session was created (see
+    #: ``Settings.min_session_age_seconds``), so callers wait out the remainder
+    #: before submitting. Pooled sessions carry their original value and are
+    #: therefore usually old enough to submit immediately.
+    established_at: float = field(default_factory=time.time)
 
 
 def _base_url() -> str:

@@ -59,7 +59,9 @@ with a shared `core/`:
 
 - **`core/session`** performs the ASP.NET WebForms handshake (`__VIEWSTATE`,
   `__EVENTVALIDATION`).
-- **`core/captcha`** solves the 5-character image captcha with Tesseract OCR.
+- **`core/azcaptcha` + `core/captcha`** solve the 5-character image captcha via
+  the [AZCaptcha](https://azcaptcha.com) API (`ImageToTextTask`). Local
+  Tesseract OCR remains as an offline fallback when no API key is set.
 - **`core/fetch` + `core/parser`** POST the result form and parse the HTML.
 - **`services/session_pool`** keeps a Redis-backed pool of warm sessions so the
   captcha/handshake cost is amortised across requests.

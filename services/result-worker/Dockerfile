@@ -1,11 +1,11 @@
 # RGPV Result Worker image.
-# Includes Tesseract (captcha OCR). wkhtmltopdf can be added later for PDF export.
+# Captcha: AZCaptcha API (primary). Tesseract bundled for offline fallback only.
 FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# System deps: Tesseract OCR engine for captcha solving.
+# Optional fallback: Tesseract OCR when CAPTCHA_PROVIDER=tesseract.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends tesseract-ocr \
     && rm -rf /var/lib/apt/lists/*

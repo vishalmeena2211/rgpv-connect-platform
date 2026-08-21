@@ -10,8 +10,8 @@ cp .env.example .env.local      # fill in AUTH_SECRET + Google OAuth creds
 pnpm --filter @rgpv/web dev     # http://localhost:3000
 ```
 
-Requires Postgres + Redis + the result worker — see the
-[root README](../../README.md).
+Requires Postgres + Redis + the result worker (with `AZCAPTCHA_API_KEY` set) —
+see the [root README](../../README.md).
 
 ## Environment
 

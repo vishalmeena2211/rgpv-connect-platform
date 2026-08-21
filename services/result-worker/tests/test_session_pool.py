@@ -29,14 +29,14 @@ def _pool(redis_mock: MagicMock) -> SessionPool:
 
 def test_pop_returns_none_when_pool_is_empty() -> None:
     redis_mock = MagicMock()
-    redis_mock.lpop.return_value = None
+    redis_mock.rpop.return_value = None
 
     assert _pool(redis_mock).pop() is None
 
 
 def test_pop_rehydrates_a_fresh_session() -> None:
     redis_mock = MagicMock()
-    redis_mock.lpop.return_value = _entry()
+    redis_mock.rpop.return_value = _entry()
 
     session = _pool(redis_mock).pop()
 
@@ -50,7 +50,7 @@ def test_pop_rehydrates_a_fresh_session() -> None:
 
 def test_pop_discards_stale_sessions_and_keeps_looking() -> None:
     redis_mock = MagicMock()
-    redis_mock.lpop.side_effect = [
+    redis_mock.rpop.side_effect = [
         _entry(age_seconds=MAX_SESSION_AGE_SECONDS + 60),
         _entry(),
     ]
@@ -58,12 +58,12 @@ def test_pop_discards_stale_sessions_and_keeps_looking() -> None:
     session = _pool(redis_mock).pop()
 
     assert session is not None
-    assert redis_mock.lpop.call_count == 2
+    assert redis_mock.rpop.call_count == 2
 
 
 def test_pop_returns_none_when_every_entry_is_stale() -> None:
     redis_mock = MagicMock()
-    redis_mock.lpop.side_effect = [
+    redis_mock.rpop.side_effect = [
         _entry(age_seconds=MAX_SESSION_AGE_SECONDS + 1),
         None,
     ]
@@ -73,7 +73,7 @@ def test_pop_returns_none_when_every_entry_is_stale() -> None:
 
 def test_pop_skips_malformed_entries() -> None:
     redis_mock = MagicMock()
-    redis_mock.lpop.side_effect = [b"not-json", _entry()]
+    redis_mock.rpop.side_effect = [b"not-json", _entry()]
 
     assert _pool(redis_mock).pop() is not None
 
@@ -81,7 +81,7 @@ def test_pop_skips_malformed_entries() -> None:
 def test_pop_treats_entry_without_timestamp_as_stale() -> None:
     """Legacy entries written before timestamps existed must not be trusted."""
     redis_mock = MagicMock()
-    redis_mock.lpop.side_effect = [_entry(created_at=0), None]
+    redis_mock.rpop.side_effect = [_entry(created_at=0), None]
 
     assert _pool(redis_mock).pop() is None
 
@@ -89,6 +89,6 @@ def test_pop_treats_entry_without_timestamp_as_stale() -> None:
 def test_pop_never_raises_when_redis_is_down() -> None:
     """A pool miss must degrade to an inline handshake, not an error."""
     redis_mock = MagicMock()
-    redis_mock.lpop.side_effect = ConnectionError("redis unreachable")
+    redis_mock.rpop.side_effect = ConnectionError("redis unreachable")
 
     assert _pool(redis_mock).pop() is None

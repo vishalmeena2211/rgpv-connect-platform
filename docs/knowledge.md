@@ -124,9 +124,52 @@ End-to-end flow (implemented in `services/result-worker/app/core/`):
 
 **Orchestration** (`services/result_service.py`):
 
-- Tries all OCR candidates on the same session before re-handshaking.
-- Retries up to a configured limit on captcha failure.
-- Does **not** yet consume the Redis session pool (see §8).
+1. Establish a fresh RGPV session (handshake).
+2. Download the captcha PNG from the session's captcha URL.
+3. Submit to **AZCaptcha** (`POST /createTask` → poll `/getTaskResult`) and get a
+   5-character answer (~0.3–1 s).
+4. POST the result form; if RGPV rejects the captcha, retry with a new AZCaptcha
+   solve on the **same session** before re-handshaking.
+5. Up to 3 full attempts (new session) on persistent failure.
+6. Does **not** yet consume the Redis session pool (see §8).
+
+### AZCaptcha integration details
+
+| Setting | Env var | Default |
+| --- | --- | --- |
+| Provider | `CAPTCHA_PROVIDER` | `azcaptcha` |
+| API key | `AZCAPTCHA_API_KEY` | *(required in production)* |
+| Base URL | `AZCAPTCHA_BASE_URL` | `https://azcaptcha.com` |
+
+**API flow** (`core/azcaptcha.py`):
+
+```python
+# 1. Submit
+POST https://azcaptcha.com/createTask
+{
+  "clientKey": "<AZCAPTCHA_API_KEY>",
+  "task": {
+    "type": "ImageToTextTask",
+    "body": "<base64 captcha PNG>",
+    "module": "azcaptcha_v2",
+    "minLength": 5,
+    "maxLength": 5,
+    "textinstructions": "5 alphanumeric characters — letters and digits only",
+    "case": false
+  }
+}
+# → { "errorId": 0, "taskId": 12345 }
+
+# 2. Poll every 3s (max 20 polls)
+POST https://azcaptcha.com/getTaskResult
+{ "clientKey": "<key>", "taskId": 12345 }
+# → { "status": "ready", "solution": { "text": "AB12C" } }
+```
+
+**Fallback:** set `CAPTCHA_PROVIDER=tesseract` (or leave `AZCAPTCHA_API_KEY` empty)
+to use local Tesseract OCR via `core/captcha.py`. Useful for offline dev only.
+
+**Cost:** ~$0.40 per 1,000 image captchas ([AZCaptcha pricing](https://azcaptcha.com)).
 
 ---
 
@@ -219,8 +262,8 @@ docker compose -f infra/docker-compose.yml up -d postgres redis
 | Node.js | ≥ 20 | |
 | pnpm | 9.x | |
 | Python | ≥ 3.11 | Worker venv may use 3.14 locally |
-| Tesseract OCR | optional | Only needed if `CAPTCHA_PROVIDER=tesseract` |
-| AZCaptcha API key | recommended | Set `AZCAPTCHA_API_KEY` in worker `.env` |
+| AZCaptcha API key | **required** | `AZCAPTCHA_API_KEY` in worker `.env` |
+| Tesseract OCR | optional | Only if `CAPTCHA_PROVIDER=tesseract` |
 | Docker | optional | Postgres `:5432`, Redis `:6379` |
 
 **Env files**
@@ -246,9 +289,17 @@ AZCAPTCHA_API_KEY=your_key_here     # from https://azcaptcha.com dashboard
 AZCAPTCHA_BASE_URL=https://azcaptcha.com
 ```
 
-AZCaptcha uses the JSON API (`POST /createTask` → poll `POST /getTaskResult`) with
-task type `ImageToTextTask`, module `azcaptcha_v2`, and 5-char length hints.
-Typical solve time: **0.3–1 s** vs 10–50 s with Tesseract retries.
+**Production (Fly.io):**
+
+```bash
+fly secrets set AZCAPTCHA_API_KEY=your_key_here CAPTCHA_PROVIDER=azcaptcha
+```
+
+**Docker Compose:** pass via host env — `AZCAPTCHA_API_KEY=${AZCAPTCHA_API_KEY}` is
+already wired in `infra/docker-compose.yml`.
+
+Typical solve time with AZCaptcha: **0.3–1 s** per captcha (vs 10–50 s with
+Tesseract retries).
 
 ### Timing (observed, Aug 2026)
 
@@ -256,10 +307,9 @@ Typical solve time: **0.3–1 s** vs 10–50 s with Tesseract retries.
 | --- | --- |
 | ASP.NET handshake | ~1–2 s |
 | Captcha (AZCaptcha) | ~0.3–1 s |
-| Captcha (Tesseract fallback) | ~70–80% of total variance |
-| **Single result (AZCaptcha)** | ~3–8 s |
-| **Single result (typical)** | 10–20 s |
-| **Single result (many captcha retries)** | up to ~50 s |
+| Captcha (Tesseract fallback) | 10–50 s |
+| **Single result (AZCaptcha)** | **~3–11 s** |
+| **Single result (Tesseract)** | 10–50 s |
 
 ### Verified test enrollment
 
@@ -272,12 +322,11 @@ Typical solve time: **0.3–1 s** vs 10–50 s with Tesseract retries.
 1. **Session pool not consumed** — `SessionPool` LPUSHes warm sessions to Redis
    but `fetch_single()` never LPOPs them. Wiring the pool in is the highest-ROI
    speed win.
-2. **Captcha accuracy** — AZCaptcha is primary; Tesseract remains as offline fallback.
-3. **Bulk concurrency** — currently capped at 5 parallel fetches; can raise once
+2. **Bulk concurrency** — currently capped at 5 parallel fetches; can raise once
    pool is wired.
-4. **Result caching** — no Redis/Postgres cache before hitting RGPV; add for
+3. **Result caching** — no Redis/Postgres cache before hitting RGPV; add for
    repeat lookups.
-5. **Python venv quirk** — on some Mac setups `.venv/bin/python` points to 3.9
+4. **Python venv quirk** — on some Mac setups `.venv/bin/python` points to 3.9
    while packages install under `python3.14`. Scripts use `python3.14` explicitly.
 
 ---
@@ -298,9 +347,20 @@ Use `.venv/bin/python3.14` if the default `python` symlink is wrong.
 
 ### Captcha keeps failing / "Grading panel missing"
 
-Usually means wrong captcha text was submitted and the error wasn't detected.
-Check `core/parser.py` → `detect_error()` against live portal HTML if RGPV
-changed markup.
+**With AZCaptcha (default):**
+
+- Check `AZCAPTCHA_API_KEY` is set and valid (`ERROR_KEY_DOES_NOT_EXIST` in logs).
+- Check AZCaptcha balance at [azcaptcha.com](https://azcaptcha.com).
+- Wrong answer from solver → RGPV rejects with `"you have entered a wrong text"`;
+  worker retries automatically (up to 3 session attempts).
+
+**With Tesseract fallback:**
+
+- Usually means OCR misread the 5-char image. Switch to AZCaptcha for production.
+
+**Portal markup changed:**
+
+- Check `core/parser.py` → `detect_error()` against live portal HTML.
 
 ### `Result service is unreachable` (web app)
 
@@ -315,6 +375,17 @@ Start Docker Desktop, then:
 docker compose -f infra/docker-compose.yml up -d postgres redis
 pnpm db:migrate && pnpm db:seed
 ```
+
+### `AZCAPTCHA_API_KEY is not configured`
+
+Copy `services/result-worker/.env.example` → `.env` and set your key:
+
+```bash
+AZCAPTCHA_API_KEY=your_key_here
+CAPTCHA_PROVIDER=azcaptcha
+```
+
+Or use Tesseract offline: `CAPTCHA_PROVIDER=tesseract` (requires `tesseract` binary).
 
 ### Direct Python test (no HTTP server)
 

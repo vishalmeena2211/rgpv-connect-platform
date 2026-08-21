@@ -12,8 +12,9 @@ guarded by a 5-character image captcha. Fetching a result means:
 1. **Handshake** — load `ProgramSelect.aspx`, extract `__VIEWSTATE` /
    `__EVENTVALIDATION`, post the B.Tech program selection, capture the session
    cookie. (`core/session.py`)
-2. **Captcha** — download the captcha image and OCR it with Tesseract.
-   (`core/captcha.py`)
+2. **Captcha** — download the captcha PNG and solve it via **AZCaptcha**
+   (`core/azcaptcha.py` → `core/captcha.py`). Tesseract OCR is available as an
+   offline fallback when no API key is configured.
 3. **Fetch** — POST the result form with the tokens, enrollment, semester and
    solved captcha. (`core/fetch.py`)
 4. **Parse** — turn the grading-panel HTML into a structured result.
@@ -21,6 +22,38 @@ guarded by a 5-character image captcha. Fetching a result means:
 
 The legacy repos duplicated steps 1–4 across three codebases; here they live
 once in `app/core/`.
+
+## Captcha flow (AZCaptcha)
+
+```
+RGPV portal                    Result worker                    AZCaptcha
+     │                              │                              │
+     │  handshake + captcha URL       │                              │
+     │◄─────────────────────────────│                              │
+     │                              │  GET captcha PNG               │
+     │─────────────────────────────►│                              │
+     │                              │  POST /createTask              │
+     │                              │  (ImageToTextTask, base64)     │
+     │                              │─────────────────────────────►│
+     │                              │  poll POST /getTaskResult      │
+     │                              │◄─────────────────────────────│
+     │                              │  5-char answer                 │
+     │  POST result form + captcha  │                              │
+     │◄─────────────────────────────│                              │
+```
+
+Configuration (`.env`):
+
+```bash
+CAPTCHA_PROVIDER=azcaptcha          # azcaptcha | tesseract
+AZCAPTCHA_API_KEY=your_key_here     # required for azcaptcha
+AZCAPTCHA_BASE_URL=https://azcaptcha.com
+```
+
+| Provider | When to use | Typical solve time |
+| --- | --- | --- |
+| `azcaptcha` | Production and local dev (default) | ~0.3–1 s |
+| `tesseract` | Offline dev without API key | 10–50 s (many retries) |
 
 ## Layout
 
@@ -35,7 +68,8 @@ app/
 │   ├── exceptions.py    Typed errors (ResultNotFound, CaptchaFailed, …)
 │   ├── enrollment.py    Enrollment parser (mirror of @rgpv/shared)
 │   ├── session.py       RGPVSession + handshake
-│   ├── captcha.py       Tesseract OCR solver
+│   ├── azcaptcha.py     AZCaptcha.com API client
+│   ├── captcha.py       Captcha orchestration (AZCaptcha primary, Tesseract fallback)
 │   ├── fetch.py         Result form submission
 │   ├── parser.py        HTML → SemesterResult
 │   └── models.py        Pydantic request/response models
@@ -62,6 +96,7 @@ From the **monorepo root** (recommended):
 ```bash
 pnpm worker:setup                # create .venv + pip install -e ".[dev]"
 cp services/result-worker/.env.example services/result-worker/.env
+# Set AZCAPTCHA_API_KEY in .env
 pnpm dev:worker                  # http://localhost:8000/docs
 
 # or run web + worker together
@@ -77,8 +112,10 @@ pnpm test
 pnpm lint && pnpm typecheck
 ```
 
-> **Note:** OCR requires the `tesseract` binary (`brew install tesseract` on
-> macOS, `apt-get install tesseract-ocr` on Debian). The Docker image bundles it.
+> **Note:** Production uses **AZCaptcha** — get an API key from
+> [azcaptcha.com](https://azcaptcha.com). Tesseract (`brew install tesseract`)
+> is only required when `CAPTCHA_PROVIDER=tesseract`. The Docker image bundles
+> Tesseract for that fallback path.
 
 ## Caveat
 

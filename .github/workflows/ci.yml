@@ -60,6 +60,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install system deps
+        # Tesseract only needed when CAPTCHA_PROVIDER=tesseract (offline fallback).
         run: sudo apt-get update && sudo apt-get install -y tesseract-ocr
 
       - name: Install dependencies

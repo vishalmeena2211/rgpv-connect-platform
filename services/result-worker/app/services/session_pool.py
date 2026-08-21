@@ -34,6 +34,17 @@ TARGET_SIZE = 20
 MAX_SESSION_AGE_SECONDS = 240
 
 
+def _created_at(payload: dict[str, object]) -> float:
+    """Read a pool entry's creation timestamp, tolerating missing/odd values."""
+    raw = payload.get("created_at", 0)
+    if isinstance(raw, (int, float, str)):
+        try:
+            return float(raw)
+        except ValueError:
+            return 0.0
+    return 0.0
+
+
 class SessionPool:
     """Maintains a Redis list of pre-warmed session payloads."""
 
@@ -108,7 +119,10 @@ class SessionPool:
         """
         while True:
             try:
-                raw = self._redis.lpop(POOL_KEY)
+                # Oldest-first (refill lpushes to the head, so the tail is the
+                # oldest). The most-aged session is the most likely to already
+                # be past RGPV's submit window, so it needs no extra wait.
+                raw = self._redis.rpop(POOL_KEY)
             except Exception as exc:  # noqa: BLE001 - pool is best-effort
                 logger.warning("Session pool pop failed: %s", exc)
                 return None
@@ -124,7 +138,7 @@ class SessionPool:
                 logger.warning("Discarding malformed pooled session")
                 continue
 
-            age = time.time() - float(payload.get("created_at", 0))
+            age = time.time() - _created_at(payload)
             if age > MAX_SESSION_AGE_SECONDS:
                 logger.debug("Discarding stale pooled session (age %.0fs)", age)
                 continue
@@ -145,6 +159,9 @@ class SessionPool:
             eventvalidation=str(payload["eventvalidation"]),
             cookie=cookie,
             captcha_url=str(payload["captcha_url"]),
+            # Preserve the original handshake time: the session has been ageing
+            # in Redis, which is exactly what lets it skip the submit delay.
+            established_at=_created_at(payload) or time.time(),
         )
 
     # -- introspection -------------------------------------------------------

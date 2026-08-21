@@ -138,7 +138,7 @@ The enrollment parser lives in [`packages/shared`](packages/shared) and is **mir
 | **UI** | Tailwind CSS, shadcn/ui, Radix, Lucide, `next-themes` |
 | **Auth** | Auth.js v5 (JWT sessions, edge-safe middleware guard) |
 | **Data** | Prisma ORM + PostgreSQL |
-| **Result worker** | Python 3.11, FastAPI, Redis session pool, Tesseract OCR (captcha) |
+| **Result worker** | Python 3.11, FastAPI, Redis session pool, [AZCaptcha](https://azcaptcha.com) (captcha) |
 | **Monorepo** | pnpm workspaces + Turborepo (apps, packages, and services) |
 | **Quality** | ESLint, Prettier, Vitest (TS) · Ruff, mypy, Pytest (Py) · GitHub Actions CI |
 
@@ -159,7 +159,7 @@ flowchart LR
     end
 
     subgraph Worker["🐍 Fly.io"]
-        RW["FastAPI result-worker<br/>captcha OCR · session pool"]
+        RW["FastAPI result-worker<br/>AZCaptcha · session pool"]
         RD[("Redis<br/>warm sessions")]
     end
 
@@ -203,6 +203,8 @@ pnpm db:generate && pnpm db:migrate && pnpm db:seed
 
 # 4. Bootstrap the result worker (Python venv + pip deps)
 pnpm worker:setup
+cp services/result-worker/.env.example services/result-worker/.env
+# Add your AZCAPTCHA_API_KEY to services/result-worker/.env
 
 # 5. Run the full stack (web + worker in parallel)
 cp apps/web/.env.example apps/web/.env.local
@@ -213,7 +215,10 @@ Open **http://localhost:3000** for the web app and **http://localhost:8000/docs*
 
 The seed gives you a working database and a demo user (`0151CS21001`), so the whole app runs locally **without any external accounts** (Google OAuth, email, etc. are optional in dev).
 
-> **Prerequisites for the worker:** Python 3.11+ and [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) on your PATH. See [`services/result-worker/README.md`](services/result-worker/README.md) for details.
+> **Prerequisites for the worker:** Python 3.11+ and an [AZCaptcha](https://azcaptcha.com)
+> API key (`AZCAPTCHA_API_KEY` in `services/result-worker/.env`). Tesseract is
+> only needed if you set `CAPTCHA_PROVIDER=tesseract` for offline dev. See
+> [`services/result-worker/README.md`](services/result-worker/README.md).
 
 <div align="right"><a href="#top">↑ back to top</a></div>
 

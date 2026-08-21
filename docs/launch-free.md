@@ -51,6 +51,21 @@ share-card, optionally invite a friend**. Everything else is friction.
 Total: **₹0/mo until ~5–10k MAU.** As the project grows, infra (not users) is the
 only cost. See ["When infra needs paying for"](#when-infra-needs-paying-for).
 
+### Result worker secrets (Fly.io)
+
+The worker needs an AZCaptcha key to solve RGPV captchas in production:
+
+```bash
+fly secrets set \
+  AZCAPTCHA_API_KEY=your_key_here \
+  CAPTCHA_PROVIDER=azcaptcha \
+  REDIS_URL=redis://... \
+  ALLOWED_ORIGINS=https://your-domain.vercel.app
+```
+
+Never commit `AZCAPTCHA_API_KEY` — it lives in `.env` locally and Fly secrets
+in production. Cost is ~$0.40 per 1,000 captchas.
+
 ### Watch-outs (limits that will bite first)
 
 - **Neon autosuspend = cold start.** Free tier suspends after 5 min idle. First
@@ -60,8 +75,9 @@ only cost. See ["When infra needs paying for"](#when-infra-needs-paying-for).
   project, so Hobby is a fine fit. If the project ever takes sponsorship or needs
   more headroom, move to a self-hosted VPS or Vercel Pro.
 - **Vercel function timeout = 10s.** The result-fetch proxy MUST complete in
-  <10s. Cache aggressively in Postgres (`ResultRecord` row) and only refresh on
-  user request with a 6-hour TTL.
+  <10s. With AZCaptcha (~3–11 s per fetch) this is comfortably within budget.
+  Cache aggressively in Postgres (`ResultRecord` row) and only refresh on user
+  request with a 6-hour TTL.
 - **R2 1M ops/mo.** A `HEAD`/`GET` per PDF view = 1 op each. Plenty for 10k PDF
   views/mo. Use signed-URL caching to dedupe.
 - **Resend 100/day.** = 100 signups + 100 magic-link-resends/day. Adequate for

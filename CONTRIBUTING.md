@@ -19,8 +19,8 @@ can agree on the approach and avoid wasted work.
 
 ## Local setup
 
-You need **Node ≥ 20**, **pnpm 9**, **Python 3.11+**, **Tesseract OCR**, and **Docker**
-(for Postgres + Redis).
+You need **Node ≥ 20**, **pnpm 9**, **Python 3.11+**, an **AZCaptcha API key**,
+and **Docker** (for Postgres + Redis).
 
 ```bash
 # 1. Install JS dependencies + Python worker venv
@@ -37,6 +37,7 @@ pnpm db:generate && pnpm db:migrate && pnpm db:seed
 # 4. Run the full stack (web + worker)
 cp apps/web/.env.example apps/web/.env.local
 cp services/result-worker/.env.example services/result-worker/.env
+# Set AZCAPTCHA_API_KEY in services/result-worker/.env
 pnpm dev
 ```
 
