@@ -1,8 +1,7 @@
-"""Captcha solving via Tesseract OCR.
+"""Captcha solving for the RGPV result portal.
 
-The RGPV portal protects the result form with a 5-character image captcha.
-We download the image and OCR it, retrying until we get a 5-char result or
-exhaust the retry budget.
+Primary: AZCaptcha.com (when ``AZCAPTCHA_API_KEY`` is set).
+Fallback: local Tesseract OCR (for offline dev without an API key).
 """
 
 from __future__ import annotations
@@ -13,6 +12,8 @@ import pytesseract
 import requests
 from PIL import Image, ImageFilter, ImageOps
 
+from app.config import get_settings
+from app.core.azcaptcha import download_captcha_image, solve_image_via_azcaptcha
 from app.core.constants import CAPTCHA_LENGTH
 from app.core.exceptions import CaptchaFailed
 from app.logging_config import get_logger
@@ -29,7 +30,7 @@ def _preprocess(image: Image.Image) -> Image.Image:
     return grey.resize((grey.width * 2, grey.height * 2), Image.Resampling.NEAREST)
 
 
-def _captcha_candidates(image: Image.Image) -> list[str]:
+def _tesseract_candidates(image: Image.Image) -> list[str]:
     variants: list[Image.Image] = [
         image,
         _preprocess(image.copy()),
@@ -52,14 +53,7 @@ def _captcha_candidates(image: Image.Image) -> list[str]:
     return candidates
 
 
-def solve_captcha(image_url: str, *, max_retries: int = 5, timeout: int = 15) -> str:
-    """Download and OCR the captcha image.
-
-    :param image_url: Absolute URL of the captcha image.
-    :param max_retries: Attempts before giving up.
-    :param timeout: Per-request HTTP timeout in seconds.
-    :raises CaptchaFailed: if no 5-character solution is found.
-    """
+def _solve_with_tesseract(image_url: str, *, max_retries: int, timeout: int) -> str:
     last_value = ""
     for attempt in range(1, max_retries + 1):
         try:
@@ -74,27 +68,54 @@ def solve_captcha(image_url: str, *, max_retries: int = 5, timeout: int = 15) ->
             last_value = cleaned
             if len(cleaned) == CAPTCHA_LENGTH:
                 return cleaned
-            logger.debug("Captcha attempt %d gave %r (wrong length)", attempt, cleaned)
+            logger.debug("Tesseract attempt %d gave %r (wrong length)", attempt, cleaned)
         except Exception as exc:  # noqa: BLE001 - OCR/network errors are all retryable
-            logger.debug("Captcha attempt %d failed: %s", attempt, exc)
+            logger.debug("Tesseract attempt %d failed: %s", attempt, exc)
 
     raise CaptchaFailed(
-        f"Could not solve captcha after {max_retries} attempts (last value: {last_value!r})"
+        f"Tesseract could not solve captcha after {max_retries} attempts "
+        f"(last value: {last_value!r})"
     )
 
 
-def solve_captcha_candidates(image_url: str, *, max_retries: int = 5, timeout: int = 15) -> list[str]:
-    """Return OCR candidates for one captcha image URL."""
+def _tesseract_candidates_from_url(
+    image_url: str, *, max_retries: int, timeout: int
+) -> list[str]:
     all_candidates: list[str] = []
     seen: set[str] = set()
     for attempt in range(1, max_retries + 1):
         try:
             response = requests.get(image_url, timeout=timeout)
             response.raise_for_status()
-            for candidate in _captcha_candidates(Image.open(BytesIO(response.content))):
+            for candidate in _tesseract_candidates(Image.open(BytesIO(response.content))):
                 if candidate not in seen:
                     seen.add(candidate)
                     all_candidates.append(candidate)
         except Exception as exc:  # noqa: BLE001
-            logger.debug("Captcha candidate attempt %d failed: %s", attempt, exc)
+            logger.debug("Tesseract candidate attempt %d failed: %s", attempt, exc)
     return all_candidates
+
+
+def solve_captcha(image_url: str, *, max_retries: int = 5, timeout: int = 15) -> str:
+    """Download and solve the captcha image."""
+    settings = get_settings()
+    if settings.use_azcaptcha:
+        image_bytes = download_captcha_image(image_url, timeout=timeout)
+        return solve_image_via_azcaptcha(image_bytes, timeout=max(timeout, 30))
+
+    return _solve_with_tesseract(image_url, max_retries=max_retries, timeout=timeout)
+
+
+def solve_captcha_candidates(
+    image_url: str, *, max_retries: int = 5, timeout: int = 15
+) -> list[str]:
+    """Return captcha candidates for one image URL."""
+    settings = get_settings()
+    if settings.use_azcaptcha:
+        try:
+            image_bytes = download_captcha_image(image_url, timeout=timeout)
+            return [solve_image_via_azcaptcha(image_bytes, timeout=max(timeout, 30))]
+        except CaptchaFailed:
+            raise
+
+    return _tesseract_candidates_from_url(image_url, max_retries=max_retries, timeout=timeout)

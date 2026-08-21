@@ -29,6 +29,18 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     bulk_rate_limit: str = "5/minute"
 
+    # Captcha solving — AZCaptcha (primary) or local Tesseract (fallback).
+    azcaptcha_api_key: str = ""
+    azcaptcha_base_url: str = "https://azcaptcha.com"
+    captcha_provider: str = "azcaptcha"
+
+    @property
+    def use_azcaptcha(self) -> bool:
+        """True when AZCaptcha should be used (key present or provider forced)."""
+        if self.captcha_provider.lower() == "tesseract":
+            return False
+        return bool(self.azcaptcha_api_key)
+
     @property
     def cors_origins(self) -> list[str]:
         """CORS origins as a list, trimmed of empties."""

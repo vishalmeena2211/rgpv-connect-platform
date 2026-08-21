@@ -15,7 +15,7 @@ see [`architecture.md`](architecture.md); for setup see the root
 | **Base path** | https://result.rgpv.ac.in/Result |
 | **Technology** | Legacy ASP.NET WebForms |
 | **Program** | B.Tech (radio value `24` on `ProgramSelect.aspx`) |
-| **Captcha** | 5-character image captcha (Tesseract OCR in our worker) |
+| **Captcha** | 5-character image captcha — solved via **AZCaptcha** (primary) or Tesseract (fallback) |
 | **Grading modes** | Grading / Non-Grading (we fetch **Grading** results) |
 
 The portal is **not** a REST API. Every lookup replays a full WebForms session:
@@ -96,9 +96,9 @@ End-to-end flow (implemented in `services/result-worker/app/core/`):
 │    POST program = B.Tech (24)                                     │
 │    → cookies, __VIEWSTATE, __EVENTVALIDATION, captcha image URL   │
 ├─────────────────────────────────────────────────────────────────┤
-│ 2. CAPTCHA OCR  (core/captcha.py)                                 │
-│    Download captcha PNG → preprocess → Tesseract (multi-PSM)      │
-│    → up to several candidate strings per image                    │
+│ 2. CAPTCHA  (core/captcha.py + core/azcaptcha.py)                 │
+│    Download captcha PNG → AZCaptcha ImageToTextTask API             │
+│    (fallback: local Tesseract OCR if no API key)                    │
 ├─────────────────────────────────────────────────────────────────┤
 │ 3. FETCH  (core/fetch.py)                                         │
 │    POST BErslt.aspx with enrollment, semester, captcha, tokens    │
@@ -219,7 +219,8 @@ docker compose -f infra/docker-compose.yml up -d postgres redis
 | Node.js | ≥ 20 | |
 | pnpm | 9.x | |
 | Python | ≥ 3.11 | Worker venv may use 3.14 locally |
-| Tesseract OCR | any recent | `brew install tesseract` (macOS) |
+| Tesseract OCR | optional | Only needed if `CAPTCHA_PROVIDER=tesseract` |
+| AZCaptcha API key | recommended | Set `AZCAPTCHA_API_KEY` in worker `.env` |
 | Docker | optional | Postgres `:5432`, Redis `:6379` |
 
 **Env files**
@@ -228,7 +229,7 @@ docker compose -f infra/docker-compose.yml up -d postgres redis
 | --- | --- |
 | `packages/db/.env` | `DATABASE_URL` for Prisma |
 | `apps/web/.env.local` | Auth secret, `RESULT_WORKER_URL`, OAuth keys |
-| `services/result-worker/.env` | CORS origins, `REDIS_URL`, `RGPV_BASE_URL` |
+| `services/result-worker/.env` | CORS origins, `REDIS_URL`, **`AZCAPTCHA_API_KEY`** |
 
 Copy from the corresponding `.env.example` files.
 
@@ -236,13 +237,27 @@ Copy from the corresponding `.env.example` files.
 
 ## 8. Performance & known gaps
 
+### Captcha configuration
+
+```bash
+# services/result-worker/.env
+CAPTCHA_PROVIDER=azcaptcha          # azcaptcha | tesseract
+AZCAPTCHA_API_KEY=your_key_here     # from https://azcaptcha.com dashboard
+AZCAPTCHA_BASE_URL=https://azcaptcha.com
+```
+
+AZCaptcha uses the JSON API (`POST /createTask` → poll `POST /getTaskResult`) with
+task type `ImageToTextTask`, module `azcaptcha_v2`, and 5-char length hints.
+Typical solve time: **0.3–1 s** vs 10–50 s with Tesseract retries.
+
 ### Timing (observed, Aug 2026)
 
 | Step | Typical time |
 | --- | --- |
 | ASP.NET handshake | ~1–2 s |
-| Captcha OCR + retries | ~70–80% of total variance |
-| **Single result (best case)** | ~6 s |
+| Captcha (AZCaptcha) | ~0.3–1 s |
+| Captcha (Tesseract fallback) | ~70–80% of total variance |
+| **Single result (AZCaptcha)** | ~3–8 s |
 | **Single result (typical)** | 10–20 s |
 | **Single result (many captcha retries)** | up to ~50 s |
 
@@ -257,8 +272,7 @@ Copy from the corresponding `.env.example` files.
 1. **Session pool not consumed** — `SessionPool` LPUSHes warm sessions to Redis
    but `fetch_single()` never LPOPs them. Wiring the pool in is the highest-ROI
    speed win.
-2. **Captcha accuracy** — Tesseract is fragile; a custom trained model would cut
-   retries dramatically.
+2. **Captcha accuracy** — AZCaptcha is primary; Tesseract remains as offline fallback.
 3. **Bulk concurrency** — currently capped at 5 parallel fetches; can raise once
    pool is wired.
 4. **Result caching** — no Redis/Postgres cache before hitting RGPV; add for
@@ -362,5 +376,5 @@ when the worker is down or returns 502.
 
 ---
 
-*Last updated: August 2026 — reflects monorepo consolidation, captcha multi-candidate
-OCR, and verified E2E fetch for `0198CS231019` sem 4.*
+*Last updated: August 2026 — AZCaptcha integration, monorepo consolidation, and
+verified E2E fetch for `0198CS231019` sem 4.*

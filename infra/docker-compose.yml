@@ -46,6 +46,9 @@ services:
       RGPV_BASE_URL: http://result.rgpv.ac.in/Result
       REDIS_URL: redis://redis:6379
       LOG_LEVEL: INFO
+      CAPTCHA_PROVIDER: azcaptcha
+      AZCAPTCHA_API_KEY: ${AZCAPTCHA_API_KEY:-}
+      AZCAPTCHA_BASE_URL: https://azcaptcha.com
     ports:
       - '8000:8000'
     depends_on:
