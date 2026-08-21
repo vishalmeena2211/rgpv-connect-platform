@@ -18,8 +18,19 @@ from app.logging_config import get_logger
 
 logger = get_logger(__name__)
 
-POLL_INTERVAL_SECONDS = 3
-MAX_POLLS = 20
+# AZCaptcha solves image captchas with OCR (not humans), typically in a few
+# hundred milliseconds. Poll on a short backoff rather than a flat multi-second
+# interval, or nearly all of the perceived solve time is just us sleeping.
+POLL_BACKOFF_SECONDS = (0.2, 0.3, 0.5, 0.8, 1.0)
+MAX_POLL_SECONDS = 30.0
+
+
+def _poll_delay(poll: int) -> float:
+    """Delay before poll number ``poll`` (1-indexed); first poll is immediate."""
+    if poll <= 1:
+        return 0.0
+    index = min(poll - 2, len(POLL_BACKOFF_SECONDS) - 1)
+    return POLL_BACKOFF_SECONDS[index]
 
 
 def download_captcha_image(image_url: str, *, timeout: int = 15) -> bytes:
@@ -72,9 +83,11 @@ def solve_image_via_azcaptcha(image_bytes: bytes, *, timeout: int = 30) -> str:
 
     logger.debug("AZCaptcha task %s submitted", task_id)
 
-    for poll in range(1, MAX_POLLS + 1):
-        if poll > 1:
-            time.sleep(POLL_INTERVAL_SECONDS)
+    poll = 0
+    deadline = time.monotonic() + MAX_POLL_SECONDS
+    while time.monotonic() < deadline:
+        poll += 1
+        time.sleep(_poll_delay(poll))
 
         result_response = requests.post(
             f"{base}/getTaskResult",
@@ -99,10 +112,14 @@ def solve_image_via_azcaptcha(image_bytes: bytes, *, timeout: int = 30) -> str:
             text = solution.get("text") or solution.get("answer") or ""
             cleaned = str(text).replace(" ", "").replace("\n", "").upper()
             if len(cleaned) == CAPTCHA_LENGTH:
-                logger.info("AZCaptcha solved task %s -> %s", task_id, cleaned)
+                logger.info(
+                    "AZCaptcha solved task %s in %d poll(s) -> %s", task_id, poll, cleaned
+                )
                 return cleaned
             raise CaptchaFailed(
                 f"AZCaptcha returned wrong length ({len(cleaned)}): {cleaned!r}"
             )
 
-    raise CaptchaFailed(f"AZCaptcha timed out after {MAX_POLLS} polls (task {task_id})")
+    raise CaptchaFailed(
+        f"AZCaptcha timed out after {MAX_POLL_SECONDS:.0f}s / {poll} polls (task {task_id})"
+    )

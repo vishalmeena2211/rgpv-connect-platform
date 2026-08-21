@@ -64,7 +64,7 @@ def _solve_with_tesseract(image_url: str, *, max_retries: int, timeout: int) -> 
                 image,
                 config="--psm 8 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
             )
-            cleaned = text.replace(" ", "").replace("\n", "").replace("\t", "").upper()
+            cleaned = str(text).replace(" ", "").replace("\n", "").replace("\t", "").upper()
             last_value = cleaned
             if len(cleaned) == CAPTCHA_LENGTH:
                 return cleaned

@@ -6,8 +6,8 @@ and the single/bulk/queue/health routers.
 
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from slowapi import _rate_limit_exceeded_handler
@@ -18,7 +18,7 @@ from app.config import get_settings
 from app.logging_config import configure_logging, get_logger
 from app.rate_limit import limiter
 from app.routers import bulk, health, queue, single
-from app.services.session_pool import SessionPool
+from app.services.session_pool import get_session_pool
 
 logger = get_logger(__name__)
 
@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Create the session pool on startup and stop it on shutdown."""
     settings = get_settings()
     configure_logging(settings.log_level)
-    app.state.session_pool = SessionPool()
+    app.state.session_pool = get_session_pool()
     logger.info("RGPV result worker ready (origins=%s)", settings.cors_origins)
     try:
         yield
@@ -47,7 +47,9 @@ def create_app() -> FastAPI:
     )
 
     app.state.limiter = limiter
-    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+    # slowapi's handler is typed against its own concrete exception rather than
+    # Starlette's broader `Exception` signature; the registration is correct.
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 
     app.add_middleware(
         CORSMiddleware,

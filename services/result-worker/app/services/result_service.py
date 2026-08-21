@@ -16,7 +16,9 @@ from app.core.fetch import fetch_result_html
 from app.core.models import BulkResultItem, SemesterResult
 from app.core.parser import parse_result
 from app.core.session import RGPVSession, establish_session
+from app.core.timing import StageTimings, timed
 from app.logging_config import get_logger
+from app.services.session_pool import get_session_pool
 
 logger = get_logger(__name__)
 
@@ -24,41 +26,69 @@ logger = get_logger(__name__)
 _BULK_CONCURRENCY = 5
 
 
+def acquire_session() -> RGPVSession:
+    """Return a ready RGPV session, preferring a pre-warmed one.
+
+    The pool removes two RGPV round-trips from the critical path. A miss (empty
+    pool, stale entries, or Redis down) transparently falls back to an inline
+    handshake, so the pool is a pure optimisation and never a dependency.
+    """
+    pooled = get_session_pool().pop()
+    if pooled is not None:
+        logger.debug("Using pre-warmed session from pool")
+        return pooled
+    return establish_session()
+
+
 def fetch_single(enrollment: str, semester: int, *, max_retries: int = 3) -> SemesterResult:
     """Fetch one student's result, retrying on captcha failure.
 
-    A fresh session is established per call. Captcha rejections are retried up
-    to ``max_retries`` times; :class:`ResultNotFound` is raised immediately
-    (retrying won't help).
+    Flow per attempt: acquire session (pooled if available, else a fresh
+    handshake) → solve captcha (AZCaptcha or Tesseract fallback) → POST result
+    form → parse HTML. On captcha rejection the same session is retried with the
+    remaining candidates before re-handshaking. Up to ``max_retries`` full
+    attempts; :class:`ResultNotFound` is raised immediately.
+
+    Emits a per-stage timing breakdown at INFO so it's clear which leg (RGPV
+    handshake, captcha service, result POST) dominates a given request.
     """
     last_error: RGPVError | None = None
-    for attempt in range(1, max_retries + 1):
-        try:
-            rgpv: RGPVSession = establish_session()
-            candidates = solve_captcha_candidates(rgpv.captcha_url)
-            if not candidates:
-                captcha = solve_captcha(rgpv.captcha_url)
-                candidates = [captcha]
+    timings = StageTimings()
 
-            for captcha in candidates:
-                html = fetch_result_html(rgpv, enrollment, semester, captcha)
-                try:
-                    return parse_result(html)
-                except CaptchaFailed:
-                    logger.info("Captcha candidate rejected for %s: %s", enrollment, captcha)
-                    continue
+    try:
+        for attempt in range(1, max_retries + 1):
+            try:
+                with timed("session", timings):
+                    rgpv: RGPVSession = acquire_session()
 
-            raise CaptchaFailed(f"All captcha candidates rejected for {enrollment}")
-        except ResultNotFound:
-            raise
-        except CaptchaFailed as exc:
-            last_error = exc
-            logger.info("Captcha retry %d/%d for %s", attempt, max_retries, enrollment)
-        except RGPVError as exc:
-            last_error = exc
-            logger.warning("Fetch attempt %d failed for %s: %s", attempt, enrollment, exc)
+                with timed("captcha", timings):
+                    candidates = solve_captcha_candidates(rgpv.captcha_url)
+                    if not candidates:
+                        candidates = [solve_captcha(rgpv.captcha_url)]
 
-    raise last_error or RGPVError(f"Failed to fetch result for {enrollment}")
+                for captcha in candidates:
+                    with timed("fetch", timings):
+                        html = fetch_result_html(rgpv, enrollment, semester, captcha)
+                    try:
+                        with timed("parse", timings):
+                            return parse_result(html)
+                    except CaptchaFailed:
+                        logger.info("Captcha candidate rejected for %s: %s", enrollment, captcha)
+                        continue
+
+                raise CaptchaFailed(f"All captcha candidates rejected for {enrollment}")
+            except ResultNotFound:
+                raise
+            except CaptchaFailed as exc:
+                last_error = exc
+                logger.info("Captcha retry %d/%d for %s", attempt, max_retries, enrollment)
+            except RGPVError as exc:
+                last_error = exc
+                logger.warning("Fetch attempt %d failed for %s: %s", attempt, enrollment, exc)
+
+        raise last_error or RGPVError(f"Failed to fetch result for {enrollment}")
+    finally:
+        logger.info("fetch_single %s sem %d — %s", enrollment, semester, timings.summary())
 
 
 async def _fetch_single_async(

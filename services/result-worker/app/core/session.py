@@ -47,7 +47,7 @@ def _extract_token(html: HTML, selector: str) -> str:
     elements = html.find(selector)
     if not elements:
         raise SessionUnavailable(f"Token {selector} not present on RGPV page")
-    return elements[0].attrs["value"]
+    return str(elements[0].attrs["value"])
 
 
 def _captcha_url(html: HTML) -> str:

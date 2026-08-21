@@ -37,7 +37,7 @@ def _alert_text(html: HTML, line: int) -> str:
     block = html.find("div.rslmain")
     if not block:
         return ""
-    lines = block[0].text.split("\n")
+    lines = str(block[0].text).split("\n")
     if line >= len(lines):
         return ""
     return lines[line].split('");')[0].replace('alert("', "")

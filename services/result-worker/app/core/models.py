@@ -6,12 +6,12 @@ The response shapes mirror the ``SemesterResult`` TypeScript type in
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
 
-class ResultStatus(str, Enum):
+class ResultStatus(StrEnum):
     PASS = "PASS"
     FAIL = "FAIL"
     WITHHELD = "WITHHELD"

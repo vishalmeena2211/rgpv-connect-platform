@@ -11,8 +11,8 @@ import pytest
 from requests_html import HTML
 
 from app.core.exceptions import CaptchaFailed, ResultNotFound
-from app.core.parser import _status, detect_error
 from app.core.models import ResultStatus
+from app.core.parser import _status, detect_error
 
 
 def _alert_page(line_count: int, line_index: int, message: str) -> HTML:
