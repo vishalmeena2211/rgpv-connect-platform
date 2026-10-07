@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1856" height="994" viewBox="0 0 1856 994" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <rect width="1856" height="994" fill="#f4f4fb"/>
+
+  <!-- panel 1: verify your enrollment -->
+  <g transform="translate(40,40)">
+    <rect width="900" height="440" rx="14" fill="#ffffff" stroke="#dcdcea"/>
+    <text x="28" y="46" font-size="26" font-weight="700" fill="#1e1b4b">One step to go: verify your enrollment</text>
+    <text x="28" y="76" font-size="18" fill="#5b5f7a">Verify your enrollment to join your college network. Seeded demo student shown.</text>
+    <!-- form -->
+    <text x="28" y="118" font-size="15" font-weight="700" fill="#1e1b4b">Enrollment number</text>
+    <rect x="28" y="128" width="380" height="44" rx="8" fill="#ffffff" stroke="#c7c9dc"/>
+    <text x="42" y="157" font-size="18" fill="#1e1b4b" letter-spacing="1">0151CS21001</text>
+    <text x="432" y="118" font-size="15" font-weight="700" fill="#1e1b4b">Semester</text>
+    <rect x="432" y="128" width="150" height="44" rx="8" fill="#ffffff" stroke="#c7c9dc"/>
+    <text x="446" y="157" font-size="18" fill="#1e1b4b">Semester 1</text>
+    <text x="566" y="157" font-size="14" fill="#5b5f7a">v</text>
+    <rect x="606" y="128" width="200" height="44" rx="8" fill="#4f46e5"/>
+    <text x="706" y="156" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Look up my result</text>
+    <!-- result preview -->
+    <rect x="28" y="200" width="844" height="212" rx="12" fill="#f4f4fb" stroke="#dcdcea"/>
+    <text x="52" y="240" font-size="24" font-weight="700" fill="#1e1b4b">Demo Student</text>
+    <rect x="232" y="219" width="102" height="30" rx="15" fill="#22c55e"/>
+    <text x="283" y="240" font-size="15" font-weight="700" fill="#052e16" text-anchor="middle">VERIFIED</text>
+    <text x="52" y="268" font-size="16" fill="#5b5f7a">Name taken from the fetched result. Nothing below was typed by hand.</text>
+    <g font-size="18" fill="#1e1b4b">
+      <text x="52" y="308" fill="#5b5f7a">College</text><text x="180" y="308" font-weight="700">0151</text><text x="236" y="308">University Institute of Technology, RGPV</text>
+      <text x="52" y="340" fill="#5b5f7a">Branch</text><text x="180" y="340" font-weight="700">CS</text><text x="236" y="340">Computer Science &amp; Engineering</text>
+      <text x="52" y="372" fill="#5b5f7a">Admitted</text><text x="180" y="372" font-weight="700">2021</text><text x="236" y="372">Batch 2025</text>
+    </g>
+    <text x="52" y="402" font-size="14" fill="#5b5f7a">One account per enrollment number. A number already linked to another account is refused.</text>
+  </g>
+
+  <!-- panel 2: result lookup -->
+  <g transform="translate(980,40)">
+    <rect width="836" height="440" rx="14" fill="#ffffff" stroke="#dcdcea"/>
+    <text x="28" y="46" font-size="26" font-weight="700" fill="#1e1b4b">Results: any semester, by enrollment number</text>
+    <text x="28" y="76" font-size="18" fill="#5b5f7a">fetched live from result.rgpv.ac.in by the worker · sample values</text>
+    <text x="28" y="124" font-size="24" font-weight="700" fill="#1e1b4b">Demo Student</text>
+    <text x="28" y="150" font-size="16" fill="#5b5f7a">0151CS21001 · Semester 1 · Computer Science &amp; Engineering</text>
+    <rect x="726" y="104" width="82" height="30" rx="15" fill="#22c55e"/>
+    <text x="767" y="125" font-size="15" font-weight="700" fill="#052e16" text-anchor="middle">PASS</text>
+    <!-- tiles -->
+    <rect x="28" y="172" width="380" height="76" rx="12" fill="#f4f4fb" stroke="#dcdcea"/>
+    <text x="218" y="198" font-size="13" fill="#5b5f7a" text-anchor="middle" letter-spacing="1">SGPA</text>
+    <text x="218" y="234" font-size="30" font-weight="700" fill="#1e1b4b" text-anchor="middle">8.50</text>
+    <rect x="428" y="172" width="380" height="76" rx="12" fill="#f4f4fb" stroke="#dcdcea"/>
+    <text x="618" y="198" font-size="13" fill="#5b5f7a" text-anchor="middle" letter-spacing="1">CGPA</text>
+    <text x="618" y="234" font-size="30" font-weight="700" fill="#1e1b4b" text-anchor="middle">8.50</text>
+    <!-- table -->
+    <rect x="28" y="272" width="780" height="40" rx="8" fill="#f4f4fb"/>
+    <g font-size="13" fill="#5b5f7a" letter-spacing="1">
+      <text x="44" y="297">SUBJECT</text><text x="560" y="297" text-anchor="end">TOTAL</text><text x="660" y="297" text-anchor="end">EARNED</text><text x="790" y="297" text-anchor="end">GRADE</text>
+    </g>
+    <g font-size="17" fill="#1e1b4b">
+      <text x="44" y="346">Engineering Mathematics I · BT101</text><text x="560" y="346" text-anchor="end">100</text><text x="660" y="346" text-anchor="end">78</text><text x="790" y="346" text-anchor="end" font-weight="700">A</text>
+      <line x1="28" y1="364" x2="808" y2="364" stroke="#ececf4"/>
+      <text x="44" y="394">Programming for Problem Solving · BT104</text><text x="560" y="394" text-anchor="end">100</text><text x="660" y="394" text-anchor="end">71</text><text x="790" y="394" text-anchor="end" font-weight="700">B+</text>
+    </g>
+    <text x="28" y="426" font-size="14" fill="#5b5f7a">A PASS or FAIL result is cached and never fetched again. Sync takes about 3 to 11 seconds a semester.</text>
+  </g>
+
+  <!-- panel 3: notes and papers -->
+  <g transform="translate(40,520)">
+    <rect width="1776" height="434" rx="14" fill="#1e1b4b"/>
+    <text x="28" y="50" font-size="26" font-weight="700" fill="#eef2ff">Notes and papers: approved PDFs by subject, highest rated first</text>
+    <text x="28" y="82" font-size="18" fill="#eef2ff" opacity="0.7">Bachelor of Technology · Computer Science &amp; Engineering · Semester 1 · sample listings</text>
+    <!-- filter chips -->
+    <g font-size="16" font-weight="700">
+      <rect x="28" y="104" width="130" height="36" rx="18" fill="#a5b4fc"/><text x="93" y="128" fill="#1e1b4b" text-anchor="middle">All subjects</text>
+      <rect x="170" y="104" width="330" height="36" rx="18" fill="#ffffff" fill-opacity="0.1" stroke="#ffffff" stroke-opacity="0.25"/><text x="335" y="128" fill="#eef2ff" text-anchor="middle">Engineering Mathematics I · BT101</text>
+      <rect x="512" y="104" width="380" height="36" rx="18" fill="#ffffff" fill-opacity="0.1" stroke="#ffffff" stroke-opacity="0.25"/><text x="702" y="128" fill="#eef2ff" text-anchor="middle">Programming for Problem Solving · BT104</text>
+    </g>
+    <!-- cards -->
+    <g>
+      <rect x="28" y="166" width="560" height="236" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
+      <rect x="52" y="190" width="66" height="26" rx="13" fill="#a5b4fc"/><text x="85" y="208" font-size="13" font-weight="700" fill="#1e1b4b" text-anchor="middle">NOTE</text>
+      <text x="52" y="252" font-size="22" font-weight="700" fill="#eef2ff">Engineering Mathematics I, Unit 1</text>
+      <text x="52" y="282" font-size="16" fill="#eef2ff" opacity="0.7">BT101 · uploaded by Demo Student</text>
+      <text x="52" y="312" font-size="16" fill="#eef2ff" opacity="0.7">Approved · not rated yet</text>
+      <rect x="52" y="340" width="120" height="38" rx="8" fill="#4f46e5"/><text x="112" y="365" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">Open PDF</text>
+    </g>
+    <g transform="translate(594,0)">
+      <rect x="28" y="166" width="560" height="236" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
+      <rect x="52" y="190" width="66" height="26" rx="13" fill="#a5b4fc"/><text x="85" y="208" font-size="13" font-weight="700" fill="#1e1b4b" text-anchor="middle">NOTE</text>
+      <text x="52" y="252" font-size="22" font-weight="700" fill="#eef2ff">Engineering Mathematics I, Unit 2</text>
+      <text x="52" y="282" font-size="16" fill="#eef2ff" opacity="0.7">BT101 · uploaded by Demo Student</text>
+      <text x="52" y="312" font-size="16" fill="#eef2ff" opacity="0.7">Approved · not rated yet</text>
+      <rect x="52" y="340" width="120" height="38" rx="8" fill="#4f46e5"/><text x="112" y="365" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">Open PDF</text>
+    </g>
+    <g transform="translate(1188,0)">
+      <rect x="28" y="166" width="560" height="236" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.18"/>
+      <rect x="52" y="190" width="72" height="26" rx="13" fill="#fbbf24"/><text x="88" y="208" font-size="13" font-weight="700" fill="#1e1b4b" text-anchor="middle">PAPER</text>
+      <text x="52" y="252" font-size="22" font-weight="700" fill="#eef2ff">Programming for Problem Solving</text>
+      <text x="52" y="282" font-size="16" fill="#eef2ff" opacity="0.7">BT104 · previous-year paper · uploaded by Demo Student</text>
+      <text x="52" y="312" font-size="16" fill="#eef2ff" opacity="0.7">Approved · not rated yet</text>
+      <rect x="52" y="340" width="120" height="38" rx="8" fill="#4f46e5"/><text x="112" y="365" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">Open PDF</text>
+    </g>
+    <text x="28" y="422" font-size="14" fill="#eef2ff" opacity="0.6">Only approved resources are listed. Uploading and rating from the app are on the roadmap.</text>
+  </g>
+</svg>
