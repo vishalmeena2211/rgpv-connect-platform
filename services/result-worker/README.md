@@ -75,8 +75,10 @@ app/
 │   └── models.py        Pydantic request/response models
 ├── services/
 │   ├── result_service.py  Single + concurrent bulk orchestration
-│   └── session_pool.py    Redis-backed pre-warmed session pool
-└── routers/             single, bulk, queue, health
+│   ├── session_pool.py    Redis-backed pre-warmed session pool
+│   └── metrics.py         Per-day fetch counters, timings and recent fetches in Redis
+├── security.py          X-Worker-Key guard
+└── routers/             single, bulk, queue, ops (stats, parser check), health
 ```
 
 ## Endpoints
@@ -87,7 +89,14 @@ app/
 | POST   | `/api/v1/bulk-results`  | Inclusive enrollment range (rate-limited)|
 | POST   | `/api/v1/queue/refresh` | Start/extend the session-pool refill     |
 | GET    | `/api/v1/queue/status`  | Pool size                                |
+| GET    | `/api/v1/stats`         | Today's counters, median and 90th-percentile time, recent fetches (serials masked), pool size, captcha balance |
+| POST   | `/api/v1/checks/parser` | Fetch `CHECK_ENROLLMENT` and confirm the page still parses (one captcha) |
 | GET    | `/health`               | Liveness                                 |
+
+Every endpoint except `/health` needs `X-Worker-Key: <WORKER_API_KEY>` once that
+setting is present; set it in production, because an open worker lets anyone
+spend the captcha balance. Responses use camelCase keys (`totalMarks`,
+`resultDescription`) to match `@rgpv/shared`.
 
 ## Local development
 

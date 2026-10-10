@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".github/readme/banner.png" alt="RGPV Connect: results, notes and a student network where every profile is tied to a real RGPV enrollment number" width="100%">
+<img src=".github/readme/banner.png" alt="RGPV Connect: your RGPV result in ten seconds, then your whole batch. A verified result card shows SGPA 8.41 and CGPA 7.95 for an example student in CS 2028 at UIT-RGPV" width="100%">
 
 <br>
 
@@ -8,27 +8,28 @@
 
 <br>
 
-[![Next.js 15](https://img.shields.io/badge/Next.js-15-1e1b4b?logo=nextdotjs&logoColor=white)](https://nextjs.org)
-[![React 19](https://img.shields.io/badge/React-19-1e1b4b?logo=react&logoColor=61dafb)](https://react.dev)
-[![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-4f46e5?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Tailwind CSS 3](https://img.shields.io/badge/Tailwind_CSS-3-4f46e5?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Postgres with Prisma 5](https://img.shields.io/badge/Postgres-Prisma_5-4f46e5?logo=postgresql&logoColor=white)](https://www.prisma.io)
-[![Auth.js v5](https://img.shields.io/badge/Auth.js-v5,_Google-4f46e5)](https://authjs.dev)
-[![FastAPI worker](https://img.shields.io/badge/FastAPI-Python_3.11-1e1b4b?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![pnpm and Turborepo](https://img.shields.io/badge/pnpm_9-Turborepo-1e1b4b?logo=pnpm&logoColor=white)](https://turbo.build)
+[![Next.js 15](https://img.shields.io/badge/Next.js-15-0F2A24?logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![React 19](https://img.shields.io/badge/React-19-0F2A24?logo=react&logoColor=61dafb)](https://react.dev)
+[![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-0F8A6F?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Tailwind CSS 3](https://img.shields.io/badge/Tailwind_CSS-3-0F8A6F?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Postgres with Prisma 5](https://img.shields.io/badge/Postgres-Prisma_5-0F8A6F?logo=postgresql&logoColor=white)](https://www.prisma.io)
+[![Auth.js v5](https://img.shields.io/badge/Auth.js-email_link,_Google-0F8A6F)](https://authjs.dev)
+[![FastAPI worker](https://img.shields.io/badge/FastAPI-Python_3.11-0F2A24?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![pnpm and Turborepo](https://img.shields.io/badge/pnpm_9-Turborepo-0F2A24?logo=pnpm&logoColor=white)](https://turbo.build)
 <br>
-[![Status: early](https://img.shields.io/badge/status-early,_no_students_on_it_yet-4f46e5)](#how-far-to-trust-it)
-[![Free](https://img.shields.io/badge/free-no_paid_tier,_no_ads-4f46e5)](#the-rules-it-keeps)
-[![Licence: MIT](https://img.shields.io/badge/licence-MIT-1e1b4b)](#licence)
+[![Status: early](https://img.shields.io/badge/status-early,_no_students_on_it_yet-0F8A6F)](#how-far-to-trust-it)
+[![Installable](https://img.shields.io/badge/installable-offline_results,_push-0F8A6F)](#what-it-does)
+[![Free](https://img.shields.io/badge/free-no_paid_tier,_no_ads-0F8A6F)](#the-rules-it-keeps)
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-0F2A24)](#licence)
 
-[What it does](#what-it-does) · [The rules it keeps](#the-rules-it-keeps) · [How far to trust it](#how-far-to-trust-it) · [How it works](#how-it-works) · [Run it yourself](#run-it-on-your-machine) · [Docs](docs)
+[What it does](#what-it-does) · [Screens](#screens) · [The rules it keeps](#the-rules-it-keeps) · [How far to trust it](#how-far-to-trust-it) · [How it works](#how-it-works) · [Run it yourself](#run-it-on-your-machine) · [Docs](docs)
 
 </div>
 
 <br>
 
 <p align="center">
-  <img src=".github/readme/screens.png" alt="Three screens: a verified profile decoded from the enrollment number 0151CS21001; a semester result lookup with SGPA, CGPA and the subject table; and the notes listing filtered by subject" width="100%">
+  <img src=".github/readme/screens.png" alt="My results on a laptop: CGPA 7.95, latest SGPA 8.41, a semester-by-semester trend chart and the list of semesters. Two phones beside it show a result with its subject table, and the share card sheet with a Share to WhatsApp button" width="100%">
 </p>
 
 ## Why RGPV Connect
@@ -56,14 +57,42 @@ It started as a plain results-lookup site. This repository is the rewrite as a f
 | **Jobs and campus market** | Built, and switched off with the network (`ENABLED_FEATURES=campus`). Jobs target branches and batches and close on a date. The market is college-only, with no payments and no commission. |
 | **Admin** | Review queue, results-day runner, worker health and captcha balance, data deletion requests and identity claims, batch sizes and roles. Every decision is written to an audit log. |
 
+## Screens
+
+All screens below are the real app running on the seeded demo data, at UIT-RGPV in October 2026. Names and grades are examples.
+
+| | |
+|---|---|
+| <img src="docs/screenshots/landing.png" alt="Landing page: the headline, a live result lookup card and three feature cards"> | <img src="docs/screenshots/result.png" alt="A public result: SGPA 8.41 in a dark tile, CGPA, credits and the subject table with grades and points"> |
+| **Check a result, no account.** The lookup is on the landing page and decodes the number as you type. | **The result.** SGPA, CGPA, credits and every subject, fetched live or from the six-hour cache. |
+| <img src="docs/screenshots/verify.png" alt="Verification: Is this you? with the name RGPV holds, college, branch, batch and semester 4 SGPA, and Not me and Yes buttons"> | <img src="docs/screenshots/my-results.png" alt="My results: four headline tiles, a trend chart and the list of semesters with a not-declared semester 5"> |
+| **Verify once.** The name comes from RGPV; college, branch and batch from the number. | **My results.** Every semester, the CGPA trend, where you stand in your batch, and when the next result is due. |
+| <img src="docs/screenshots/share-card.png" alt="Share dialog with a dark result card, options for what is on it, and Share to WhatsApp, Save image and Copy link buttons"> | <img src="docs/screenshots/calculator.png" alt="SGPA calculator pre-filled with semester 5 subjects and a target saying an average SGPA of 8.86 is needed"> |
+| **Share card.** A verified card for the batch group. The link holds a token, never the enrollment number. | **Plan next semester.** What-if grades on the real syllabus, and the average needed for a target CGPA. |
+| <img src="docs/screenshots/not-declared.png" alt="Semester 5 is not declared yet, with when the exams are and when the result usually appears"> | <img src="docs/screenshots/notes.png" alt="Notes for CS semester 5, filtered by subject, with ratings, downloads and who shared them"> |
+| **Not out yet.** Says when the result usually appears, instead of an error. | **Notes and papers.** By branch, semester and subject, shared by verified students and reviewed. |
+| <img src="docs/screenshots/admin-results-day.png" alt="Admin results day: five sample numbers checked against the portal, 38 students in the batch, and a Fetch and notify button"> | <img src="docs/screenshots/my-results-dark.png" alt="My results in dark mode"> |
+| **Results day.** Check five sample numbers, then fetch the batch and notify everyone. | **Dark mode.** Every screen follows the system setting. |
+
+<p align="center">
+  <img src="docs/screenshots/phone-landing.png" alt="Landing page on a phone" width="22%">
+  <img src="docs/screenshots/phone-my-results.png" alt="My results on a phone with the bottom tab bar" width="22%">
+  <img src="docs/screenshots/phone-result.png" alt="A result on a phone" width="22%">
+  <img src="docs/screenshots/phone-share.png" alt="The share sheet on a phone" width="22%">
+</p>
+
+More: [review queue](docs/screenshots/admin-review.png), [result worker health](docs/screenshots/admin-worker.png), [my uploads](docs/screenshots/uploads.png). The screens were planned first as [wireframes](docs/wireframes/rgpv-connect-wireframes.html) (download and open in a browser).
+
 ## The rules it keeps
 
 - **Every verified profile is backed by a fetched result.** Typing a number is not enough. The worker must return that student's result from RGPV.
 - **College, branch and batch are derived, never self-reported.** They come from the enrollment number, parsed on the server by `@rgpv/shared` and mirrored in Python in the worker, so both sides decode the same way.
 - **It is free, and stays free.** No paid tier, no commission, no ads. The last premium code path was removed in the migration `remove_premium_tier`. Contributions that add paywalls are declined in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - **The result fetcher is best effort.** Every caller must degrade cleanly when the worker is down or the portal rejects a request.
-- **Secrets stay out of the browser.** The captcha solver key lives only in the worker's `.env`, never in the web app.
-- **Student data is treated as personal data.** Report a vulnerability privately, as [`SECURITY.md`](SECURITY.md) asks. India's DPDP Act applies.
+- **Grades are private.** Other students see a name, college, branch and batch. Grades show only on a card the student shares, or on the opt-in semester board. Batch standing is shown only for groups of 20 or more.
+- **Share links never carry an enrollment number.** A card is a random token; anonymous cards hide the serial.
+- **Secrets stay out of the browser.** The captcha solver key lives only in the worker, and the worker refuses any caller without the shared `WORKER_API_KEY`.
+- **Student data is treated as personal data.** A student can ask for deletion from Settings; after seven days everything goes, and the request stays in the audit log without details. Report a vulnerability privately, as [`SECURITY.md`](SECURITY.md) asks. India's DPDP Act applies.
 - **Not affiliated with the university.** Result data belongs to RGPV.
 
 ## How far to trust it
@@ -89,30 +118,38 @@ flowchart LR
     WEB["Next.js 15<br/>Server Components read, Server Actions write"]
   end
   subgraph data ["Data"]
-    PG[("Postgres<br/>users, results, posts, listings")]
+    PG[("Postgres<br/>users, results, result cache, audit log")]
+    FILES[("R2 or local disk<br/>notes and papers")]
   end
   subgraph worker ["Result worker, Python"]
-    API["FastAPI<br/>/api/v1/result"]
-    POOL[("Redis<br/>pre-warmed portal sessions")]
+    API["FastAPI<br/>/api/v1/result, /stats"]
+    POOL[("Redis<br/>warm portal sessions, metrics")]
   end
+  MAIL["Resend<br/>sign-in emails"]
+  PUSH["Web Push<br/>results-day alerts"]
   CAPTCHA["AZCaptcha<br/>solves the image captcha"]
   RGPV[["result.rgpv.ac.in<br/>official portal"]]
   WEB <-->|Prisma| PG
-  WEB -->|typed client, zod-checked reply| API
+  STUDENT -->|signed upload| FILES
+  WEB -->|X-Worker-Key, zod-checked reply| API
+  WEB --> MAIL
+  WEB --> PUSH
   API <--> POOL
   API -->|captcha image| CAPTCHA
   API -->|handshake, post form, parse HTML| RGPV
 ```
 
-The web app reads from Postgres in Server Components and writes through Server Actions, which check the session, validate with Zod and revalidate the path. It talks to the worker through one client, `apps/web/src/lib/result-worker.ts`, which checks every reply against the shared `semesterResultSchema` before the UI sees it. The worker keeps a pool of warmed-up portal sessions in Redis, because the portal only accepts a form some seconds after the session was opened; a pooled session has already waited.
+The web app reads from Postgres in Server Components and writes through Server Actions, which check the session, validate with Zod and revalidate the path. Every lookup checks the Postgres result cache first; only a miss reaches the worker, through one client, `apps/web/src/lib/result-worker.ts`, which sends the shared key and checks every reply against `semesterResultSchema`. Uploads go from the browser straight to storage with a ten-minute signed URL. The worker keeps a pool of warmed-up portal sessions in Redis, because the portal only accepts a form some seconds after the session was opened; a pooled session has already waited.
 
 | Part | What it uses |
 |---|---|
-| Web app | [Next.js 15](https://nextjs.org) App Router, [React 19](https://react.dev), TypeScript strict, [Tailwind CSS 3](https://tailwindcss.com) with [shadcn/ui](https://ui.shadcn.com) and Radix |
+| Web app | [Next.js 15](https://nextjs.org) App Router, [React 19](https://react.dev), TypeScript strict, [Tailwind CSS 3](https://tailwindcss.com) on theme tokens for light and dark, [Radix](https://www.radix-ui.com) primitives, [lucide](https://lucide.dev) icons, Plus Jakarta Sans and DM Sans |
+| App shell | Installable: web manifest, a service worker that keeps My results for offline use, and [Web Push](https://github.com/web-push-libs/web-push) for results day and messages |
 | Signing in | [Auth.js v5](https://authjs.dev) with email links and Google, JWT sessions, and a small adapter over the project's own User table. An edge-safe config guards routes in middleware |
-| Database | Postgres through [Prisma 5](https://www.prisma.io). Schema and seed in `packages/db` |
-| Shared logic | `packages/shared`: the enrollment parser, branch codes, Zod schemas and domain types, with no React or Prisma in it |
-| Result worker | Python 3.11, [FastAPI](https://fastapi.tiangolo.com), `requests`, Redis session pool, [AZCaptcha](https://azcaptcha.com) with Tesseract as a fallback, `slowapi` rate limit on the bulk endpoint |
+| Database | Postgres through [Prisma 5](https://www.prisma.io). Schema, migrations and the demo seed in `packages/db`. Rate limits and the result cache live in Postgres too, so serverless instances share them |
+| Files | Notes and papers on any S3-compatible bucket, [Cloudflare R2](https://developers.cloudflare.com/r2/) in the launch plan, or local disk in development |
+| Shared logic | `packages/shared`: the enrollment parser, the academic calendar (which semester is out when), GPA maths, batch percentile, Zod schemas and domain types, with no React or Prisma in it |
+| Result worker | Python 3.11, [FastAPI](https://fastapi.tiangolo.com), `requests`, Redis session pool and fetch metrics, [AZCaptcha](https://azcaptcha.com) with Tesseract as a fallback, a shared-key guard, `slowapi` rate limit on the bulk endpoint |
 | Monorepo | pnpm 9 workspaces and [Turborepo](https://turbo.build). The Python service is a workspace package whose scripts wrap pip, uvicorn, pytest, ruff and mypy |
 | Checks | ESLint, Prettier, Vitest for TypeScript; Ruff, mypy, pytest for Python; both run in GitHub Actions on every push and pull request |
 | Hosting | `vercel.json` builds the web app on [Vercel](https://vercel.com). The worker has a Dockerfile; the docs plan Fly.io for it |
@@ -194,13 +231,14 @@ The key header is only needed once `WORKER_API_KEY` is set. The worker's endpoin
 
 | Folder | What is in it |
 |---|---|
-| [`apps/web/`](apps/web) | The Next.js app. Feature folders under `src/features/*`, UI primitives under `src/components/ui`. See [`apps/web/README.md`](apps/web/README.md) |
+| [`apps/web/`](apps/web) | The Next.js app. Feature folders under `src/features/*` (results, auth, resources, admin, network, marketplace and more), UI primitives under `src/components/ui`. See [`apps/web/README.md`](apps/web/README.md) |
 | [`packages/shared/`](packages/shared) | Enrollment parser, branch codes, Zod schemas, domain types |
 | [`packages/db/`](packages/db) | Prisma schema, migrations, client singleton and the seed |
 | [`packages/config/`](packages/config) | Shared ESLint, TypeScript and Tailwind presets |
 | [`services/result-worker/`](services/result-worker) | The FastAPI worker: session handshake, captcha, fetch, parse, Redis pool. See its [README](services/result-worker/README.md) |
 | [`infra/`](infra) | `docker-compose.yml` for Postgres, Redis, the worker and the web app |
-| [`docs/`](docs) | [Architecture](docs/architecture.md), the [portal and worker reference](docs/knowledge.md), the [strategy](docs/strategy.md) and the [free-tier launch guide](docs/launch-free.md) |
+| [`docs/`](docs) | [Every setting](docs/configuration.md), [architecture](docs/architecture.md), the [portal and worker reference](docs/knowledge.md), the [strategy](docs/strategy.md), the [free-tier launch guide](docs/launch-free.md), the [wireframes](docs/wireframes) and the [screenshots](docs/screenshots) |
+| [`.github/readme/`](.github/readme) | The banner and screens images, and the HTML they are rendered from |
 
 New here? Read [`docs/architecture.md`](docs/architecture.md) first, then [`docs/knowledge.md`](docs/knowledge.md) for how a result is actually fetched.
 
@@ -239,7 +277,8 @@ RGPV Connect stands on other people's work:
 
 - **Result data** comes from the official portal, [result.rgpv.ac.in](https://result.rgpv.ac.in/Result/BErslt.aspx), and belongs to RGPV.
 - **Captcha solving** by [AZCaptcha](https://azcaptcha.com), with [Tesseract](https://github.com/tesseract-ocr/tesseract) as the offline fallback.
-- Built with [Next.js](https://nextjs.org), [Prisma](https://www.prisma.io), [shadcn/ui](https://ui.shadcn.com), [Auth.js](https://authjs.dev), [FastAPI](https://fastapi.tiangolo.com) and [Turborepo](https://turbo.build).
+- Built with [Next.js](https://nextjs.org), [Prisma](https://www.prisma.io), [Auth.js](https://authjs.dev), [Radix](https://www.radix-ui.com), [lucide](https://lucide.dev), [web-push](https://github.com/web-push-libs/web-push), [FastAPI](https://fastapi.tiangolo.com) and [Turborepo](https://turbo.build). Sign-in emails through [Resend](https://resend.com).
+- Type: [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) and [DM Sans](https://fonts.google.com/specimen/DM+Sans), both under the SIL Open Font Licence.
 
 ## Licence
 
@@ -249,12 +288,15 @@ RGPV Connect stands on other people's work:
 
 | Word | What it means |
 |---|---|
-| **Enrollment number** | The eleven-character student number RGPV issues, `CCCCBBYYNNN`. `0751BT16012` is college 0751, Biotechnology, admitted 2016, serial 012 |
+| **Enrollment number** | The twelve-character student number RGPV issues, `CCCCBBYYNNNN`. `0198CS231019` is college 0198, Computer Science, admitted 2023, serial 1019. Older numbers have a three-digit serial, and both are accepted |
 | **Verified** | A profile whose enrollment number returned a real result from the portal, and whose college, branch and batch were decoded from it |
 | **College code** | The first four digits of the number. `0151` is UIT-RGPV, the university's own institute |
 | **Batch** | The graduating year, admission year plus four for a B.Tech |
 | **SGPA, CGPA** | Semester and cumulative grade point averages on RGPV's 10-point scale |
 | **Result worker** | The Python service that fetches a result from the portal: handshake, captcha, post, parse |
+| **Share card** | An image of one semester's SGPA and CGPA, with the student's name if they verified, behind a random link |
+| **Results day** | The day RGPV declares a semester. An admin checks five sample numbers, then the app fetches the semester for the whole batch and notifies everyone |
+| **Density** | The share of a batch that is verified. The feed, directory and campus sections open at about a third |
 | **Session pool** | Portal sessions the worker opens ahead of time and keeps in Redis, so a lookup does not wait for the handshake and the portal's submit window |
 
 <br>

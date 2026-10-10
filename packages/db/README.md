@@ -19,23 +19,34 @@ the client and types from one place.
 
 Organised top-down by product layer:
 
-1. **Enums** — verification, roles, scopes, result/job/listing states
-2. **Identity** — `User` (hybrid-identity fields), `College`, `Connection`
-3. **Academic catalogue** — `Course → Year → Branch → Semester → Subject`
-4. **Resources** — `Resource` (notes/papers) + `ResourceRating`
-5. **Results** — `ResultRecord` (cached parsed result + denormalised SGPA/CGPA)
-6. **Network** — `Post`, `Comment`, `Group`, `GroupMember`
-7. **Marketplace** — `JobPost`, `MarketListing`
+1. **Enums**: verification, roles, scopes, result, job, listing, report, dispute and deletion states
+2. **Identity**: `User` (hybrid-identity fields, notification and board preferences), `Account` and `VerificationToken` for Auth.js, `College`, `Connection`
+3. **Academic catalogue**: `Course → Year → Branch → Semester → Subject`, with credits
+4. **Resources**: `Resource` (notes and papers, with review fields, downloads and file keys) and `ResourceRating`
+5. **Results**: `ResultRecord` (a student's saved semesters), `ResultCache` (public lookups, six hours), `ShareCard`
+6. **Network**: `Post`, `PostLike`, `Comment`, `Group` (auto-created college and batch groups by slug), `GroupMember`, `CohortSize`
+7. **Marketplace**: `JobPost` (branches, batches, closing date), `MarketListing`
+8. **Messages**: `Conversation`, `ConversationMember`, `Message`
+9. **Notifications**: `Notification`, `PushSubscription`
+10. **Trust and operations**: `Report`, `IdentityDispute`, `DeletionRequest`, `ResultsDeclaration`, `RateLimit`, `AuditLog`
 
 ## Commands
 
 ```bash
-cp .env.example .env                  # DATABASE_URL
+cp .env.example .env                  # DATABASE_URL, pointing at localhost
 
 pnpm db:generate                      # regenerate the client (after schema edits)
-pnpm db:migrate                       # create/apply a dev migration
-pnpm db:seed                          # seed colleges, B.Tech catalogue, demo user
+pnpm db:migrate                       # create and apply a migration while developing
+pnpm db:migrate:deploy                # apply existing migrations, no prompts
+pnpm db:seed                          # load the demo world
 ```
 
-The seed inserts four Bhopal colleges, a B.Tech catalogue, and a demo verified
-user (`0151CS21001`) for local development.
+The seed upserts four Bhopal colleges and the B.Tech CS catalogue for
+semesters 1 to 8, then recreates a demo world at UIT-RGPV: 38 verified CS 2028
+students with four semesters each, two seniors, notes and papers in review
+states, posts, jobs, listings, a conversation and notifications. It deletes and
+recreates only accounts with an `@rgpvconnect.dev` email, so it never touches
+real users. Sign in locally as `priyanshi@rgpvconnect.dev`,
+`new.student@rgpvconnect.dev` or `admin@rgpvconnect.dev`.
+
+Keep `DATABASE_URL` on a local database when seeding.
