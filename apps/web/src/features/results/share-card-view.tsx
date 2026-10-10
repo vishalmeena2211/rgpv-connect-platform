@@ -10,12 +10,12 @@ export function ShareCardView({ data, className }: { data: ShareCardData; classN
   return (
     <div
       className={cn(
-        'bg-ink-gradient relative flex w-full max-w-[360px] flex-col gap-3 overflow-hidden rounded-[22px] p-[22px] text-ink-foreground shadow-float',
+        'bg-ink-gradient relative flex h-fit w-full max-w-[360px] flex-col gap-3 self-start overflow-hidden rounded-[22px] p-[22px] text-ink-foreground shadow-float',
         className,
       )}
     >
       <div className="glow-primary pointer-events-none absolute inset-0" aria-hidden />
-      <div className="relative flex items-center justify-between text-xs text-ink-foreground/80">
+      <div className="relative flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs text-ink-foreground/80">
         <span className="font-display font-bold">RGPV Connect</span>
         <span>
           Semester {data.semester}

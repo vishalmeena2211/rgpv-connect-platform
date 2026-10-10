@@ -123,7 +123,7 @@ const gradeFor = (points: number) => GRADE_FOR.find(([min]) => points >= min)?.[
 function resultPayload(name: string, enrollment: string, admissionYear: number, semester: number, sgpa: number, cgpa: number, random: () => number) {
   const subjects = (CS_SCHEME[semester] ?? []).map(([code, subjectName, credits]) => {
     const points = Math.max(4, Math.min(10, Math.round(sgpa + (random() - 0.5) * 2.4)));
-    return { name: `${code}- [T]`, code, subjectName, credits, grade: gradeFor(points) };
+    return { name: `${code}- [${part(code)}]`, code, subjectName, credits, grade: gradeFor(points) };
   });
   const schedule = semesterSchedule(semester, admissionYear);
   return {
@@ -134,12 +134,19 @@ function resultPayload(name: string, enrollment: string, admissionYear: number, 
     branch: 'CS',
     semester,
     status: 'PASS',
-    subjects: subjects.map(({ code, grade }) => ({ name: `${code}- [T]`, code, grade })),
+    subjects: subjects.map(({ code, grade }) => ({ name: `${code}- [${part(code)}]`, code, grade })),
     resultDescription: 'PASS',
     sgpa,
     cgpa,
   };
 }
+
+/** Labs, workshops and projects print as practical rows ("[P]") on RGPV results. */
+const isPractical = (name: string) => /Lab|Workshop|Project|Practices|Training/.test(name);
+const part = (code: string) => {
+  const subject = Object.values(CS_SCHEME).flat().find(([c]) => c === code);
+  return subject && isPractical(subject[1]) ? 'P' : 'T';
+};
 
 /** Fixed subject grades for the lead demo student's semester 4 (SGPA 8.41). */
 const PRIYANSHI_SEM4 = [['CS401', 'A'], ['CS402', 'B+'], ['CS403', 'B+'], ['CS404', 'B'], ['CS405', 'A+'], ['CS406', 'A']] as const;
@@ -236,7 +243,7 @@ async function createStudent(student: DemoStudent, collegeId: string) {
     const cgpa = cgpaFromSemesters(student.sgpas.slice(0, semester).map((s) => ({ sgpa: s }))) ?? sgpa;
     const payload = resultPayload(student.name, parsed.raw, parsed.admissionYear, semester, sgpa, cgpa, random);
     if (student.enrollment === '0151CS241042' && semester === 4) {
-      payload.subjects = PRIYANSHI_SEM4.map(([code, grade]) => ({ name: `${code}- [T]`, code, grade }));
+      payload.subjects = PRIYANSHI_SEM4.map(([code, grade]) => ({ name: `${code}- [${part(code)}]`, code, grade }));
     }
     return { userId: user.id, semester, status: 'PASS', sgpa, cgpa, payload, fetchedAt: hoursAgo(24 * (60 - semester)) };
   });

@@ -48,6 +48,8 @@ export function SubjectTable({
   names?: Map<string, string>;
 }) {
   const showCredits = Boolean(credits && credits.size > 0);
+  // A subject can print as a theory row and a practical row; its credits go on the first one.
+  const credited = new Set<string>();
   return (
     <div className="overflow-x-auto rounded-md border">
       <table className="w-full min-w-[420px] text-[13px]">
@@ -62,7 +64,8 @@ export function SubjectTable({
         <tbody>
           {result.subjects.map((subject, index) => {
             const { code, part } = splitSubject(subject);
-            const credit = code && (part === 'T' || part === null) ? credits?.get(code) : undefined;
+            const credit = code && !credited.has(code) ? credits?.get(code) : undefined;
+            if (code && credit !== undefined) credited.add(code);
             const name = code ? names?.get(code) : undefined;
             return (
               <tr key={`${subject.name}-${index}`} className="border-t">

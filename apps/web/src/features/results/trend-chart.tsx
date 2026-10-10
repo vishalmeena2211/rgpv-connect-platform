@@ -4,19 +4,28 @@ import { COURSE_SEMESTERS } from '@rgpv/shared';
  * SGPA (solid, filled) and CGPA (dashed) by semester on one 6–10 scale, with
  * room for the semesters still to come. Pure SVG, coloured from theme tokens.
  */
-export function TrendChart({
-  points,
-  height = 160,
-}: {
-  points: { semester: number; sgpa: number | null; cgpa: number | null }[];
-  height?: number;
-}) {
-  const w = 640;
-  const h = height;
+type Point = { semester: number; sgpa: number | null; cgpa: number | null };
+
+export function TrendChart({ points }: { points: Point[] }) {
+  // Two drawings of one scale: a wide one for desktop and a narrow one whose
+  // labels stay readable on a phone, instead of one SVG shrunk to fit.
+  return (
+    <>
+      <div className="hidden sm:block">
+        <TrendSvg points={points} w={640} h={160} font={10} />
+      </div>
+      <div className="sm:hidden">
+        <TrendSvg points={points} w={340} h={170} font={11} short />
+      </div>
+    </>
+  );
+}
+
+function TrendSvg({ points, w, h, font, short = false }: { points: Point[]; w: number; h: number; font: number; short?: boolean }) {
   const values = points.flatMap((p) => [p.sgpa, p.cgpa]).filter((v): v is number => v != null);
   const floor = Math.min(6, Math.floor(Math.min(...values, 6)));
-  const left = 36;
-  const right = 16;
+  const left = short ? 26 : 36;
+  const right = short ? 12 : 16;
   const top = 18;
   const bottom = 26;
   const x = (semester: number) => left + (semester - 1) * ((w - left - right) / (COURSE_SEMESTERS - 1));
@@ -34,7 +43,7 @@ export function TrendChart({
       {ticks.map((tick) => (
         <g key={tick}>
           <line x1={left} x2={w - right} y1={y(tick)} y2={y(tick)} stroke="rgb(var(--border))" />
-          <text x={left - 8} y={y(tick) + 4} fontSize="10" textAnchor="end" fill="rgb(var(--faint-foreground))">
+          <text x={left - 8} y={y(tick) + 4} fontSize={font} textAnchor="end" fill="rgb(var(--faint-foreground))">
             {tick}
           </text>
         </g>
@@ -44,11 +53,11 @@ export function TrendChart({
           key={semester}
           x={x(semester)}
           y={h - 6}
-          fontSize="10"
+          fontSize={font}
           textAnchor="middle"
           fill={points.some((p) => p.semester === semester) ? 'rgb(var(--muted-foreground))' : 'rgb(var(--border))'}
         >
-          Sem {semester}
+          {short ? `S${semester}` : `Sem ${semester}`}
         </text>
       ))}
       {sgpa.length > 1 ? (
@@ -76,7 +85,7 @@ export function TrendChart({
         <text
           x={x(last.semester)}
           y={y(last.sgpa) - 11}
-          fontSize="11"
+          fontSize={font + 1}
           fontWeight="600"
           textAnchor="middle"
           fill="rgb(var(--foreground))"
