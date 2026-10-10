@@ -31,14 +31,16 @@ jobs:
       - name: Generate Prisma client
         run: pnpm db:generate
 
+      # The Python worker has its own job (it needs a virtualenv), so the JS
+      # job filters it out; running it here failed every push since Aug 2026.
       - name: Lint
-        run: pnpm lint
+        run: pnpm turbo run lint --filter='!@rgpv/result-worker'
 
       - name: Typecheck
-        run: pnpm typecheck
+        run: pnpm turbo run typecheck --filter='!@rgpv/result-worker'
 
       - name: Test
-        run: pnpm test
+        run: pnpm turbo run test --filter='!@rgpv/result-worker'
 
   worker:
     name: Result worker

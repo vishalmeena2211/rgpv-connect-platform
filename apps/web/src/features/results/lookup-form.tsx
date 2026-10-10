@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Field, Input, Select } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
+import { lookupHref } from './links';
+
 const RECENT_KEY = 'rgpv:recent-lookups';
 
 export interface RecentLookup {
@@ -32,13 +34,6 @@ function remember(entry: RecentLookup) {
   } catch {
     // Private mode or blocked storage: recent lookups are a convenience only.
   }
-}
-
-/** Where a lookup goes: the public result page, or the in-app Look up tab. */
-export function lookupHref(mode: 'public' | 'app', enrollment: string, semester: number): string {
-  return mode === 'public'
-    ? `/result/${enrollment}?semester=${semester}`
-    : `/results/lookup?enrollment=${enrollment}&semester=${semester}`;
 }
 
 /**

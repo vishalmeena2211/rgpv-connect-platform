@@ -24,6 +24,11 @@ export function formatCount(value: number): string {
   return COUNT.format(value);
 }
 
+/** "PRIYANSHI RATHORE" → "Priyanshi Rathore": RGPV prints names in capitals. */
+export function titleCase(name: string): string {
+  return name.toLowerCase().replace(/\b\p{L}/gu, (c) => c.toUpperCase()).trim();
+}
+
 /** Up-to-two-letter initials from a name, for avatar fallbacks. */
 export function initials(name: string): string {
   return name

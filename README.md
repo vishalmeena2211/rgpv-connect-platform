@@ -43,17 +43,18 @@ It started as a plain results-lookup site. This repository is the rewrite as a f
 
 | | |
 |---|---|
-| **Result lookup** | Any signed-in user can type an enrollment number and a semester (1 to 8) and get the name, SGPA, CGPA, pass or fail status and the full subject table. The result worker fetches it live from `result.rgpv.ac.in`. |
-| **My Results** | A verified student syncs every semester they could have sat, worked out from their admission year. Results are cached in Postgres. A semester already recorded as PASS or FAIL is never fetched again, so a repeat sync is usually free. |
-| **SGPA calculator** | Credits and a grade per subject on RGPV's 10-point scale (A+ is 10, F is 0). The SGPA updates as you type. |
-| **Verified profiles** | Verification fetches a real result for the number, which proves it belongs to you. The number `CCCCBBYYNNN` is then decoded: college code, branch, admission year, graduating batch. One account per enrollment number. |
-| **Notes and papers** | Approved PDFs listed by subject, highest rated first. Browsing is built. Uploading and rating from the web app are not built yet, though the database already has the tables for them. |
-| **Feed** | Posts from your college, with likes and comments. Only verified students can post. |
-| **Directory and follows** | Verified students browse their college, or the whole university, search by name and follow each other. |
-| **Groups** | College, branch and interest groups that a verified student can join or leave. Groups are not created automatically yet. |
-| **Direct messages** | One-to-one threads with an unread count per member, and in-app notifications for follows, likes, comments and messages. |
-| **Jobs and internships** | Recruiters and admins post. Students filter by full-time, internship or part-time. |
-| **Campus market** | Buy and sell within your college: books, electronics, notes, hostel goods. Prices are stored in paise. There is no payment flow and no commission. |
+| **Result lookup** | Anyone can type an enrollment number, no account needed, and get the name, SGPA, CGPA, pass or fail status and the subject table. The result worker fetches it live from `result.rgpv.ac.in`. A found result is cached for six hours, so results-day repeats are instant and free. |
+| **My Results** | A verified student fetches every semester they have sat, one semester at a time with progress shown. A semester already recorded as PASS or FAIL is never fetched again. The page charts SGPA and CGPA, and shows where the student stands in their branch and batch once 20 or more of them are verified. |
+| **Share card** | A card with the SGPA, CGPA and (for verified students) their name, shared to WhatsApp or saved as an image. The link holds a random token, never the enrollment number. |
+| **Calculator** | A what-if for next semester, pre-filled with the real subjects and credits, and the average SGPA needed to reach a target CGPA. |
+| **Verified profiles** | Verification fetches a real result for the number, which proves it belongs to you. The number is decoded into college, branch and batch, and the student joins their college and batch groups. One account per number; a student whose number was taken can file a claim. |
+| **Notes and papers** | Listed by branch, semester and subject. Verified students upload PDFs or photos straight to storage; reviewers publish or send them back with a note. Ratings and download counts. |
+| **Results day** | An admin checks five sample numbers against the portal, then the app fetches the semester for the whole batch and notifies everyone, by Web Push if they allow it. |
+| **Messages and notifications** | One-to-one messages with read receipts. Notifications for results, reviews and messages, with per-type switches for what reaches the phone. |
+| **Installable app** | Add to home screen; My Results opens offline. |
+| **Feed, directory, groups** | Built, and switched off until a college reaches about a third of a batch verified (`ENABLED_FEATURES=network`). The feed is college-only, with reporting: three reports hide a post until a reviewer decides. |
+| **Jobs and campus market** | Built, and switched off with the network (`ENABLED_FEATURES=campus`). Jobs target branches and batches and close on a date. The market is college-only, with no payments and no commission. |
+| **Admin** | Review queue, results-day runner, worker health and captcha balance, data deletion requests and identity claims, batch sizes and roles. Every decision is written to an audit log. |
 
 ## The rules it keeps
 
@@ -74,16 +75,16 @@ Things to know before relying on it:
 
 - **The result worker scrapes a government portal.** `result.rgpv.ac.in` is a legacy ASP.NET WebForms site behind a five-character image captcha. The worker replays the full session, pays [AZCaptcha](https://azcaptcha.com) about $0.40 per thousand captchas to solve it, waits about six seconds because the portal rejects a form posted sooner, and parses the HTML. A change to the portal's markup breaks it. Scraping may also raise terms-of-use questions for any commercial deployment.
 - **A single lookup takes about 3 to 11 seconds** with AZCaptcha. The Tesseract fallback takes 10 to 50 seconds and is for offline development only.
-- **The enrollment parser accepts a three-digit serial** (`0751BT16012`). The examples in [`docs/knowledge.md`](docs/knowledge.md) show newer numbers with a four-digit serial (`0198CS231019`). The worker will fetch those, but verification will reject them until the parser is widened.
-- **Result lookup needs a sign-in.** The middleware only leaves `/` and `/login` open. Lookup without an account is on the roadmap, not in the code.
-- **Only Google sign-in exists today.** Phone OTP and email links are planned.
-- **There are no end-to-end tests.** Unit tests cover the enrollment parser and the worker's parser, captcha client, session pool and result service.
+- **Public lookups are rate-limited.** Each uncached lookup costs a captcha, so a connection gets 30 an hour by default. Cached results never count.
+- **Sign-in is by email link or Google.** Phone OTP is not built. Email needs a [Resend](https://resend.com) key in production; locally the link is printed in the terminal.
+- **Batch sizes are typed in by hand.** RGPV publishes no class sizes, so the density figures depend on an admin entering them.
+- **Automated tests are unit tests.** They cover the enrollment parser, the academic calendar and GPA maths, the worker's parser, captcha client, session pool, API contract and result service. The interactive flows were checked by hand with a scripted browser, not in CI.
 
 ## How it works
 
 ```mermaid
 flowchart LR
-  STUDENT(("Student")) -->|signs in with Google| WEB
+  STUDENT(("Student")) -->|email link or Google| WEB
   subgraph vercel ["Web app"]
     WEB["Next.js 15<br/>Server Components read, Server Actions write"]
   end
@@ -108,7 +109,7 @@ The web app reads from Postgres in Server Components and writes through Server A
 | Part | What it uses |
 |---|---|
 | Web app | [Next.js 15](https://nextjs.org) App Router, [React 19](https://react.dev), TypeScript strict, [Tailwind CSS 3](https://tailwindcss.com) with [shadcn/ui](https://ui.shadcn.com) and Radix |
-| Signing in | [Auth.js v5](https://authjs.dev) with Google and JWT sessions. An edge-safe config guards routes in middleware; the Node config upserts the user in Postgres |
+| Signing in | [Auth.js v5](https://authjs.dev) with email links and Google, JWT sessions, and a small adapter over the project's own User table. An edge-safe config guards routes in middleware |
 | Database | Postgres through [Prisma 5](https://www.prisma.io). Schema and seed in `packages/db` |
 | Shared logic | `packages/shared`: the enrollment parser, branch codes, Zod schemas and domain types, with no React or Prisma in it |
 | Result worker | Python 3.11, [FastAPI](https://fastapi.tiangolo.com), `requests`, Redis session pool, [AZCaptcha](https://azcaptcha.com) with Tesseract as a fallback, `slowapi` rate limit on the bulk endpoint |
@@ -154,7 +155,15 @@ cp apps/web/.env.example apps/web/.env.local
 pnpm dev
 ```
 
-The web app is at http://localhost:3000 and the worker's API docs at http://localhost:8000/docs. The seed creates four Bhopal colleges, a small B.Tech catalogue and a verified demo student, `0151CS21001`, so the app runs without any Google credentials. Google sign-in needs `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` in `apps/web/.env.local`; generate `AUTH_SECRET` with `openssl rand -base64 32`.
+The web app is at http://localhost:3000 and the worker's API docs at http://localhost:8000/docs. The seed builds a demo world at UIT-RGPV: 38 verified CS 2028 students with four semesters each, two seniors, notes, papers, posts, jobs and listings. Sign in with any demo email; the sign-in link is printed in the terminal running `pnpm dev`:
+
+| Email | Who |
+|---|---|
+| `priyanshi@rgpvconnect.dev` | A verified CS 2028 student with results, uploads and messages |
+| `new.student@rgpvconnect.dev` | Signed in, not verified yet |
+| `admin@rgpvconnect.dev` | Admin |
+
+Set `ENABLED_FEATURES=network,campus` in `apps/web/.env.local` to open the feed, directory, groups, jobs and market for students. Every setting is listed in [`docs/configuration.md`](docs/configuration.md).
 
 To call the worker directly:
 
@@ -182,22 +191,22 @@ New here? Read [`docs/architecture.md`](docs/architecture.md) first, then [`docs
 
 - [x] Monorepo with web app, shared package, database package and Python worker
 - [x] Enrollment verification by fetching a real result, with college, branch and batch decoded from the number
-- [x] Result lookup, My Results sync with caching, SGPA calculator
-- [x] Feed, directory, follows, groups, direct messages, notifications, jobs, market
-- [x] Premium code paths removed; the project is free
-- [x] Redis session pool wired into every fetch
-- [ ] Widen the enrollment parser to four-digit serials
-- [ ] Result lookup without an account
-- [ ] Notes and papers upload, with a moderation queue
-- [ ] Email magic-link and phone OTP sign-in
-- [ ] Installable app shell and offline results
-- [ ] Web Push on results day
-- [ ] Share card for a result, with a WhatsApp link
+- [x] Enrollment parser accepts current 12-character numbers
+- [x] Result lookup without an account, cached and rate-limited
+- [x] My Results with trend, batch standing and an opt-in semester board
+- [x] Share card for a result, with a WhatsApp link and an Open Graph image
+- [x] Notes and papers upload with a review queue
+- [x] Email magic-link sign-in
+- [x] Installable app with offline My Results
+- [x] Web Push, and a results-day fetch-and-notify run
+- [x] Reporting and moderation for posts and listings
+- [x] Privacy notice and a seven-day data-deletion request
+- [x] Worker locked behind an API key, with health and captcha balance for admins
+- [ ] Phone OTP sign-in
 - [ ] Self-hosted, privacy-safe analytics
-- [ ] Privacy notice and a data-deletion endpoint
+- [ ] Comments on posts in the redesigned feed
+- [ ] Catalogue for branches other than CS
 - [ ] Placement outcomes by branch and batch, published as a public good
-
-The thinking behind the order is in [`docs/strategy.md`](docs/strategy.md).
 
 ## Contributing
 

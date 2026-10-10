@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { auth, signIn, signOut } from '@/auth';
 import { lookupResult } from '@/features/results/service';
 import { rateLimit } from '@/lib/rate-limit';
-import { maskEnrollment } from '@/lib/utils';
+import { maskEnrollment, titleCase } from '@/lib/utils';
 
 /** Only same-site paths are allowed as a post-sign-in destination. */
 function safeCallback(value: FormDataEntryValue | null): string {
@@ -108,7 +108,7 @@ export async function previewEnrollment(enrollmentInput: string, semester: numbe
     ok: true,
     enrollment: parsed.raw,
     semester,
-    name: result.name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
+    name: titleCase(result.name),
     collegeCode: parsed.collegeCode,
     collegeName: await collegeName(parsed.collegeCode),
     branchName: parsed.branchName,
@@ -165,10 +165,7 @@ export async function confirmEnrollment(enrollmentInput: string, semester: numbe
     where: { enrollment_semester: { enrollment: parsed.raw, semester } },
   });
   if (!cached?.found || !cached.payload) return { ok: false, error: 'Find your result first.' };
-  const name = String((cached.payload as { name?: string }).name ?? '')
-    .toLowerCase()
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-    .trim();
+  const name = titleCase(String((cached.payload as { name?: string }).name ?? ''));
 
   try {
     await prisma.$transaction(async (tx) => {

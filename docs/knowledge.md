@@ -25,11 +25,11 @@ load page → extract hidden tokens → select program → solve captcha → POS
 
 ## 2. Enrollment number format
 
-RGPV enrollment numbers are **12 characters** in the shape `CCCCBBYYNNN`:
+RGPV enrollment numbers are **12 characters** in the shape `CCCCBBYYNNNN`. Some older numbers carry a 3-digit serial (11 characters), so the parser accepts both:
 
 ```
 0198 CS 23 1019
-│    │  │  └── serial (3 digits — roll within college/branch)
+│    │  │  └── serial (4 digits, 3 on older numbers: roll within college/branch)
 │    │  └───── admission year (2 digits → 2023)
 │    └──────── branch code (2 letters, e.g. CS, IT, EC, ME)
 └───────────── college code (4 digits, affiliated institute)
@@ -51,7 +51,7 @@ The parser lives in:
 Both sides must stay in sync — enrollment decoding drives auto-grouping (college,
 branch, batch) after verification.
 
-**Validation regex:** `^(\d{4})([A-Z]{2})(\d{2})(\d{3})$`
+**Validation regex:** `^(\d{4})([A-Z]{2})(\d{2})(\d{3,4})$` (widened in October 2026; before that every current 12-character number failed verification)
 
 ---
 
@@ -179,11 +179,15 @@ Base URL (local): `http://localhost:8000`
 
 | Method | Path | Body | Purpose |
 | --- | --- | --- | --- |
-| `GET` | `/health` | — | Liveness |
+| `GET` | `/health` | — | Liveness (no key needed) |
 | `POST` | `/api/v1/result` | `{ enrollment, semester }` | Single result |
 | `POST` | `/api/v1/bulk-results` | `{ first_enrollment, last_enrollment, semester }` | Range fetch (rate-limited) |
 | `POST` | `/api/v1/queue/refresh` | — | Refill Redis session pool |
 | `GET` | `/api/v1/queue/status` | — | Current pool size |
+| `GET` | `/api/v1/stats` | — | Today's fetch counters, median and 90th-percentile time, recent fetches (serials masked), pool size, captcha balance, last parser check |
+| `POST` | `/api/v1/checks/parser` | — | Fetch `CHECK_ENROLLMENT` and confirm it still parses (costs one captcha) |
+
+Every endpoint except `/health` requires the header `X-Worker-Key: <WORKER_API_KEY>` once that variable is set. Responses use camelCase keys (`totalMarks`, `resultDescription`), matching `@rgpv/shared`; before October 2026 they were snake_case and the web app silently dropped those fields.
 
 **Example — single result**
 
@@ -206,7 +210,7 @@ curl -s -X POST http://localhost:8000/api/v1/result \
   "status": "UNKNOWN",
   "sgpa": 4.71,
   "cgpa": 5.23,
-  "result_description": "Fail in BT401",
+  "resultDescription": "Fail in BT401",
   "subjects": [ { "name": "BT401- [T]", "grade": "F", ... } ]
 }
 ```
@@ -319,13 +323,14 @@ Tesseract retries).
 
 ### Known gaps (improvement backlog)
 
-1. **Session pool not consumed** — `SessionPool` LPUSHes warm sessions to Redis
-   but `fetch_single()` never LPOPs them. Wiring the pool in is the highest-ROI
-   speed win.
-2. **Bulk concurrency** — currently capped at 5 parallel fetches; can raise once
-   pool is wired.
-3. **Result caching** — no Redis/Postgres cache before hitting RGPV; add for
-   repeat lookups.
+1. **Pool is not refilled automatically** — `fetch_single()` now prefers a
+   pooled session, but the refill thread only runs after `POST
+   /api/v1/queue/refresh`. The admin "Warm the session pool" button calls it,
+   and a results-day run calls it on start.
+2. **Bulk concurrency** — capped at 5 parallel fetches. The web app's results-day
+   run does not use the bulk endpoint; it fetches a few students per step.
+3. **Result caching** — done in the web app: `ResultCache` in Postgres keeps a
+   found result for six hours and "not declared" for twenty minutes.
 4. **Python venv quirk** — on some Mac setups `.venv/bin/python` points to 3.9
    while packages install under `python3.14`. Scripts use `python3.14` explicitly.
 

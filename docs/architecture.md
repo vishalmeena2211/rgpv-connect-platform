@@ -23,7 +23,7 @@ tier. Three layers, built in order:
 Most RGPV-affiliated colleges do **not** issue institutional email, so
 college-email login alone can't group students. Instead:
 
-- Users authenticate with **Google** (phone-OTP is stubbed for later).
+- Users sign in with an **email link** (primary, since most students have no college Google account) or **Google**. Phone OTP is planned.
 - They must **verify an enrollment number**, which we confirm by fetching a real
   result from the worker.
 - The enrollment number `CCCCBBYYNNN` is **decoded** (`@rgpv/shared`) into
@@ -87,9 +87,12 @@ sides decode enrollment numbers identically.
 
 ### Auth.js v5 split
 
-`auth.config.ts` is **edge-safe** (providers + the `authorized` route guard) and
-powers the middleware. `auth.ts` adds the Node-only bits (Prisma upsert on
-sign-in, JWT/session callbacks). Session strategy is **JWT**: we own the `User`
+`auth.config.ts` is **edge-safe** (the public-path list and the `authorized`
+route guard) and powers the middleware. `auth.ts` adds the Node-only bits: the
+email and Google providers, a small adapter over our own `User` table
+(`lib/auth-adapter.ts`, which stores email sign-in tokens and linked Google
+accounts), and the JWT/session callbacks that carry verification status and
+role. Session strategy is **JWT**: we own the `User`
 table, so the token mirrors our DB id + verification status and the middleware
 guards routes without a DB round-trip.
 

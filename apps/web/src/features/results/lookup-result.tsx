@@ -13,7 +13,7 @@ import { ResultCard } from './result-card';
 import { InvalidEnrollment, NotDeclared, PortalDown, RateLimited } from './result-states';
 import { lookupResult } from './service';
 import { ShareDialog } from './share-dialog';
-import { lookupHref } from './lookup-form';
+import { lookupHref } from './links';
 
 /**
  * Runs one lookup (cache first) and renders the outcome. Wrapped in Suspense

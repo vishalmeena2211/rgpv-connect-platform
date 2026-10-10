@@ -3,7 +3,7 @@ import { GRADE_POINTS, isGrade, type SemesterResult } from '@rgpv/shared';
 
 import { Badge } from '@/components/ui/badge';
 import { StatTile } from '@/components/ui/stat-tile';
-import { cn } from '@/lib/utils';
+import { cn, titleCase } from '@/lib/utils';
 
 import { splitSubject } from './subjects';
 
@@ -117,7 +117,7 @@ export function ResultCard({
         <header className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2.5">
-              <h2 className="font-display text-[22px] font-bold capitalize tracking-[-0.02em]">{result.name.toLowerCase()}</h2>
+              <h2 className="font-display text-[22px] font-bold tracking-[-0.02em]">{titleCase(result.name)}</h2>
               <StatusBadge status={result.status} />
             </div>
             <p className="mt-1 text-[13px] text-muted-foreground tabular">

@@ -28,8 +28,8 @@ export default async function OnboardingPage({
         </span>
         <h1 className="font-display text-[22px] font-bold tracking-[-0.02em]">We are checking {claimed}</h1>
         <Callout tone="info" title="Your claim is with the reviewers">
-          They check RGPV’s record and decide within two days. You will get a notification either way. Until then, you can
-          still check results and browse notes.
+          They check RGPV’s record and decide within two days. Come back to this page: once the number is released to
+          you, you can verify straight away. Until then, you can still check results and browse notes.
         </Callout>
       </div>
     );
