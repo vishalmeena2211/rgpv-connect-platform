@@ -3,7 +3,9 @@ import { branchName, isKnownBranchCode } from './branch-codes';
 /**
  * Structured representation of an RGPV enrollment number.
  *
- * RGPV enrollment numbers follow the shape `CCCCBBYYNNN`, e.g. `0751BT16012`:
+ * RGPV enrollment numbers follow the shape `CCCCBBYYNNNN`, e.g. `0198CS231019`.
+ * Current numbers carry a 4-digit serial; some older ones a 3-digit one
+ * (`0751BT16012`), so both are accepted:
  *
  * | Segment        | Example | Meaning                                   |
  * | -------------- | ------- | ----------------------------------------- |
@@ -28,14 +30,14 @@ export interface ParsedEnrollment {
   admissionYear: number;
   /** Expected graduating batch year (admission + 4 for a B.Tech). */
   graduatingBatch: number;
-  /** Student serial number within the college/branch, e.g. `"012"`. */
+  /** Student serial number within the college/branch, e.g. `"1019"` or `"012"`. */
   serial: string;
   /** Whether the branch code is one we recognise. */
   isKnownBranch: boolean;
 }
 
-/** Canonical RGPV enrollment pattern: 4 digits, 2 letters, 2 digits, 3 digits. */
-const ENROLLMENT_PATTERN = /^(\d{4})([A-Z]{2})(\d{2})(\d{3})$/;
+/** Canonical RGPV enrollment pattern: 4 digits, 2 letters, 2 digits, then a 3- or 4-digit serial. */
+const ENROLLMENT_PATTERN = /^(\d{4})([A-Z]{2})(\d{2})(\d{3,4})$/;
 
 /** Course length in years, used to derive the graduating batch from admission year. */
 const DEFAULT_COURSE_YEARS = 4;
@@ -127,7 +129,8 @@ export function expandEnrollmentRange(
   const sharedPrefix =
     start.collegeCode === end.collegeCode &&
     start.branchCode === end.branchCode &&
-    start.admissionYear === end.admissionYear;
+    start.admissionYear === end.admissionYear &&
+    start.serial.length === end.serial.length;
   if (!sharedPrefix) return [];
 
   const from = Number(start.serial);

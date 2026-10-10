@@ -1,0 +1,1473 @@
+<title>RGPV Connect Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+<style>
+/* ─────────────────────────────────────────────────────────────────────────
+   Tokens. A proposed design system for RGPV Connect (10 Oct 2026), drawn
+   fresh rather than read from the current code, which is a stock component
+   kit. One teal-green accent family, warm off-white ground, hairlines, soft
+   two-layer shadows. Plus Jakarta Sans for display, DM Sans for everything
+   else. The gallery commits to light; dark is a token swap for later.
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --primary: #0F8A6F;                /* deep teal-green: every primary action */
+  --primary-hover: #0B7059;
+  --primary-deep: #0A5A48;           /* text on the tint */
+  --primary-soft: #E3F4EE;           /* tint: active pills, highlights */
+  --primary-soft-hover: #C9E8DD;
+  --primary-soft-fg: var(--primary-deep);
+  --ink: #0F2A24;                    /* brand ink: deep green-black for dark surfaces and display text */
+  --ink-2: #16453A;                  /* lighter ink for gradients */
+  --text: #1B2622;
+  --text-strong: #0F2A24;
+  --text-2: #5E6B66;                 /* secondary, 4.6:1 on white */
+  --text-3: #8C9792;                 /* tertiary, labels, placeholders */
+  --rule: #B9C2BD;                   /* rules and decoration only */
+  --border: #E6E9E6;                 /* hairline */
+  --border-strong: #D3D9D5;
+  --surface: #FFFFFF;
+  --surface-subtle: #F8F9F7;
+  --surface-muted: #F0F2EF;
+  --ground: #F6F6F3;                 /* warm off-white ground */
+  --hover: #F0F2EF;
+  --disabled: #EDEFEC;
+  --disabled-text: #A6AFAA;
+  --success: #15A06A;
+  --success-deep: #0E7A50;
+  --success-soft: #E4F6EC;
+  --warn: #B7791F;                   /* amber for waiting states and the warm glow */
+  --warn-soft: #FFF6E5;
+  --danger: #D92D20;
+  --danger-hover: #B42318;
+  --danger-soft: #FEECEB;
+  --info: #0E7490;
+  --info-soft: #E6F6FA;
+  /* Badges (soft pairs) */
+  --badge-success-bg: var(--success-soft); --badge-success-fg: var(--success-deep);
+  --badge-danger-bg: var(--danger-soft);   --badge-danger-fg: #B42318;
+  --badge-blue-bg: var(--primary-soft);    --badge-blue-fg: var(--primary-deep);
+  --badge-gray-bg: var(--surface-muted);   --badge-gray-fg: #4B5563;
+  --badge-warn-bg: var(--warn-soft);       --badge-warn-fg: #9A5B0B;
+  --badge-verified-bg: var(--primary);     --badge-verified-fg: #FFFFFF;
+  /* Derived */
+  --glow-a: color-mix(in srgb, var(--primary) 16%, transparent);
+  --glow-b: color-mix(in srgb, var(--warn) 14%, transparent);
+  --overlay: color-mix(in srgb, var(--ink) 48%, transparent);
+  --shadow-1: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent), 0 1px 1px color-mix(in srgb, var(--ink) 3%, transparent);
+  --shadow-2: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent), 0 12px 32px -8px color-mix(in srgb, var(--ink) 14%, transparent);
+  --shadow-3: 0 2px 4px color-mix(in srgb, var(--ink) 6%, transparent), 0 24px 64px -16px color-mix(in srgb, var(--ink) 28%, transparent);
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+  --display: "Plus Jakarta Sans", "Avenir Next", system-ui, sans-serif;
+  --ink-grad: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
+  --body: "DM Sans", "Helvetica Neue", system-ui, sans-serif;
+  /* Gallery chrome */
+  --doc-ground: var(--ground);
+  --doc-ink: var(--text);
+  --frame-shadow: var(--shadow-3);
+  --curve: cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--body);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--doc-ground); color: var(--doc-ink); font-size: 14px; -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1, "ss01" 1; }
+button { font: inherit; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+h1, h2, h3, h4, .display { font-family: var(--display); letter-spacing: -0.01em; }
+
+/* ── Gallery chrome ─────────────────────────────────────────────────────── */
+.doc { display: grid; grid-template-columns: 272px minmax(0, 1fr); min-height: 100vh; }
+.index { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 24px 16px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 20px; }
+.index h1 { font-size: 16px; line-height: 22px; margin: 0; font-weight: 700; text-wrap: balance; }
+.index .lede { font-size: 12px; line-height: 18px; color: var(--text-2); margin: 4px 0 0; }
+.group-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); font-weight: 600; margin: 0 0 6px 8px; }
+.index ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.index button { width: 100%; text-align: left; border: 0; background: transparent; padding: 7px 8px; border-radius: 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text); cursor: pointer; display: flex; gap: 8px; align-items: baseline; }
+.index button:hover { background: var(--hover); }
+.index button[aria-current="true"] { background: var(--primary-soft); color: var(--primary-deep); }
+.index .code { font-variant-numeric: tabular-nums; color: var(--text-3); min-width: 22px; }
+.index button[aria-current="true"] .code { color: var(--primary-deep); }
+.index .foot { margin-top: auto; font-size: 11px; line-height: 16px; color: var(--text-2); border-top: 1px solid var(--border); padding-top: 12px; }
+
+.stage { padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.stage-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.stage-head .eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-deep); font-weight: 600; }
+.stage-head h2 { margin: 2px 0 0; font-size: 22px; line-height: 28px; font-weight: 700; text-wrap: balance; }
+.stage-nav { display: flex; gap: 8px; align-items: center; }
+.stage-nav button { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; cursor: pointer; box-shadow: var(--shadow-1); }
+.stage-nav button:hover { border-color: var(--primary); }
+.frame-fit { width: 100%; overflow: hidden; }
+.frame { width: 1280px; transform-origin: top left; box-shadow: var(--frame-shadow); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.frame.phone-pair { width: 1280px; background: transparent; box-shadow: none; display: flex; gap: 32px; justify-content: center; padding: 8px 0 16px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.note { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.note h3 { margin: 0 0 6px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); font-weight: 600; font-family: var(--body); }
+.note ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 19px; max-width: 65ch; }
+.sample-flag { font-size: 11px; color: var(--text-2); background: var(--surface); border: 1px dashed var(--rule); border-radius: 6px; padding: 3px 8px; }
+
+/* ── App shell: blurred top bar, pill sidebar, ground with white cards ───── */
+.app { display: grid; grid-template-rows: 60px minmax(0, 1fr); height: 820px; font-size: 13px; color: var(--text); background: var(--ground); }
+.topbar { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; padding: 0 20px; background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(12px); }
+.wordmark { display: inline-flex; align-items: center; gap: 9px; font-family: var(--display); font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+.wordmark .mk { width: 28px; height: 28px; border-radius: 8px; background: var(--primary); color: var(--surface); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+.wordmark .mk i { width: 10px; height: 10px; border-radius: 3px; background: var(--surface); display: block; }
+.wordmark em { font-style: normal; color: var(--text-2); font-weight: 600; }
+.topbar .spacer { flex: 1; }
+.topnav { display: flex; gap: 2px; }
+.topnav span { height: 36px; padding: 0 12px; border-radius: 10px; display: inline-flex; align-items: center; font-weight: 500; color: var(--text-2); }
+.topnav span.on { color: var(--ink); background: var(--surface-muted); }
+.search { height: 38px; width: 380px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); display: flex; align-items: center; gap: 8px; padding: 0 12px; color: var(--text-3); box-shadow: var(--shadow-1); }
+.search svg { width: 16px; height: 16px; stroke: var(--text-3); }
+.search kbd { margin-left: auto; font: 11px var(--body); color: var(--text-3); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; background: var(--surface-subtle); }
+.iconbtn { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; position: relative; flex: none; border: 1px solid transparent; }
+.iconbtn:hover { background: var(--hover); }
+.iconbtn svg { width: 19px; height: 19px; stroke: var(--text); }
+.iconbtn .n { position: absolute; top: 5px; right: 5px; min-width: 16px; height: 16px; border-radius: 999px; background: var(--primary); color: var(--surface); font-size: 10px; font-weight: 600; display: grid; place-items: center; padding: 0 4px; border: 2px solid var(--surface); box-sizing: content-box; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-soft), var(--primary-soft-hover)); color: var(--primary-deep); display: grid; place-items: center; font-weight: 700; font-size: 12px; flex: none; font-family: var(--display); }
+.avatar.lg { width: 64px; height: 64px; font-size: 20px; }
+.avatar.sm { width: 26px; height: 26px; font-size: 10px; }
+.body { display: grid; grid-template-columns: 232px minmax(0, 1fr); min-height: 0; }
+.side { padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+.nav { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; font-weight: 500; line-height: 20px; color: var(--text-2); position: relative; }
+.nav svg { width: 18px; height: 18px; stroke: currentColor; flex: none; }
+.nav.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); border: 1px solid var(--border); padding: 7px 9px; }
+.nav.on svg { stroke: var(--primary); }
+.nav .count { margin-left: auto; font-size: 10px; font-weight: 700; background: var(--primary); color: var(--surface); border-radius: 999px; padding: 0 6px; line-height: 16px; }
+.nav.later { color: var(--text-3); }
+.nav .later-tag { margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); border: 1px solid var(--border); border-radius: 5px; padding: 0 5px; line-height: 15px; }
+.side .grouplbl { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); padding: 14px 10px 4px; }
+.main { padding: 24px 28px; overflow: hidden; min-width: 0; }
+.col { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.col.wide { max-width: 900px; }
+.col.full { max-width: none; }
+.page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.page-head h1 { margin: 0; font-size: 26px; line-height: 32px; font-weight: 700; letter-spacing: -0.02em; }
+.page-head p { margin: 4px 0 0; color: var(--text-2); font-size: 13px; }
+.subtabs { display: inline-flex; gap: 2px; padding: 3px; background: var(--surface-muted); border-radius: 11px; align-self: flex-start; }
+.subtabs .tab { height: 32px; border: 0; background: transparent; border-radius: 9px; color: var(--text-2); }
+.subtabs .tab.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); }
+.tab { height: 34px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-2); white-space: nowrap; }
+.tab.on { border-color: var(--primary-soft-hover); background: var(--primary-soft); color: var(--primary-deep); }
+.tab svg { width: 14px; height: 14px; stroke: currentColor; }
+
+/* ── Marketing / auth shells ────────────────────────────────────────────── */
+.site { height: 820px; display: flex; flex-direction: column; font-size: 13px; color: var(--text); background: var(--surface); position: relative; overflow: hidden; }
+.site .topbar { border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent); padding: 0 48px; position: relative; z-index: 2; }
+.mesh { position: absolute; inset: 0; pointer-events: none; background:
+  radial-gradient(600px 320px at 18% 0%, var(--glow-a), transparent 70%),
+  radial-gradient(520px 300px at 86% 12%, var(--glow-b), transparent 70%),
+  linear-gradient(180deg, var(--surface) 0%, var(--ground) 100%); }
+.grain { position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in srgb, var(--ink) 3%, transparent) 31px 32px), repeating-linear-gradient(90deg, transparent 0 31px, color-mix(in srgb, var(--ink) 3%, transparent) 31px 32px); mask-image: linear-gradient(180deg, color-mix(in srgb, var(--ink) 60%, transparent), transparent 70%); }
+.hero { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; padding: 44px 64px 28px; }
+.hero h1 { margin: 0; font-size: 50px; line-height: 54px; font-weight: 800; letter-spacing: -0.035em; text-wrap: balance; color: var(--ink); }
+.hero h1 em { font-style: normal; color: var(--primary); }
+.hero p.lead { font-size: 17px; line-height: 27px; color: var(--text-2); margin: 16px 0 0; max-width: 46ch; }
+.pill { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px 0 6px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; font-weight: 500; box-shadow: var(--shadow-1); }
+.pill .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--success-soft); display: grid; place-items: center; }
+.pill .dot svg { width: 11px; height: 11px; stroke: var(--success-deep); }
+.pill svg { width: 14px; height: 14px; stroke: currentColor; }
+.lookup { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-3); display: flex; flex-direction: column; gap: 14px; position: relative; }
+.lookup .lk-head { display: flex; justify-content: space-between; align-items: center; }
+.lookup .lk-head b { font-family: var(--display); font-size: 15px; }
+.proof { position: relative; z-index: 1; display: flex; gap: 28px; padding: 10px 64px 0; align-items: center; color: var(--text-2); font-size: 12px; }
+.proof b { color: var(--ink); font-family: var(--display); font-size: 14px; font-variant-numeric: tabular-nums; }
+.proof .avs { display: inline-flex; }
+.proof .avs .avatar { width: 24px; height: 24px; font-size: 9px; margin-left: -6px; border: 2px solid var(--surface); box-sizing: content-box; }
+.bento { position: relative; z-index: 1; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 12px; padding: 18px 64px 0; }
+.feature { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow-1); min-height: 132px; }
+.feature .ico { width: 34px; height: 34px; border-radius: 10px; background: var(--primary-soft); display: grid; place-items: center; }
+.feature .ico svg { width: 17px; height: 17px; stroke: var(--primary-deep); }
+.feature b { font-family: var(--display); font-size: 14px; letter-spacing: -0.01em; }
+.feature p { margin: 0; color: var(--text-2); font-size: 12.5px; line-height: 18px; }
+.feature.dark { background: var(--ink-grad); color: var(--surface); border-color: var(--ink); }
+.feature.dark p { color: color-mix(in srgb, var(--surface) 72%, transparent); }
+.feature.dark .ico { background: color-mix(in srgb, var(--surface) 12%, transparent); } .feature.dark .ico svg { stroke: var(--surface); }
+.spark { height: 44px; width: 100%; display: block; }
+.steps3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow-1); }
+.step .no { font-family: var(--display); font-size: 11px; letter-spacing: 0.1em; color: var(--primary-deep); font-weight: 700; }
+.step b { font-family: var(--display); font-size: 14px; }
+.step p { margin: 0; color: var(--text-2); font-size: 12.5px; line-height: 18px; }
+.footer { position: relative; z-index: 1; margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding: 14px 64px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 12px; background: var(--surface); }
+.footer span + span { margin-left: 18px; }
+.pagewrap { position: relative; z-index: 1; padding: 24px 64px; display: flex; flex-direction: column; gap: 16px; max-width: 980px; margin: 0 auto; width: 100%; }
+.auth { position: relative; z-index: 1; flex: 1; display: grid; place-items: center; }
+.authcard { width: 420px; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; gap: 14px; background: var(--surface); box-shadow: var(--shadow-3); }
+.authcard .mark { width: 44px; height: 44px; border-radius: 13px; background: var(--primary); display: grid; place-items: center; margin: 0 auto; }
+.authcard .mark svg { width: 22px; height: 22px; stroke: var(--surface); }
+.authcard h2 { margin: 0; font-size: 22px; text-align: center; letter-spacing: -0.02em; }
+.authcard p { margin: 0; text-align: center; color: var(--text-2); font-size: 13px; line-height: 19px; }
+.steps { display: flex; gap: 6px; justify-content: center; }
+.steps i { width: 28px; height: 4px; border-radius: 2px; background: var(--border); }
+.steps i.done { background: var(--primary); }
+
+/* ── Primitives ─────────────────────────────────────────────────────────── */
+.badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 2px 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; line-height: 14px; }
+.badge svg { width: 11px; height: 11px; stroke: currentColor; }
+.b-success { background: var(--badge-success-bg); color: var(--badge-success-fg); }
+.b-danger { background: var(--badge-danger-bg); color: var(--badge-danger-fg); }
+.b-blue { background: var(--badge-blue-bg); color: var(--badge-blue-fg); }
+.b-gray { background: var(--badge-gray-bg); color: var(--badge-gray-fg); }
+.b-warn { background: var(--badge-warn-bg); color: var(--badge-warn-fg); }
+.b-verified { background: var(--badge-verified-bg); color: var(--badge-verified-fg); }
+
+.btn { height: 40px; padding: 0 16px; border-radius: var(--radius-sm); border: 1px solid transparent; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: default; white-space: nowrap; font-family: var(--body); }
+.btn.sm { height: 34px; padding: 0 12px; font-size: 12.5px; }
+.btn.lg { height: 46px; padding: 0 22px; font-size: 14px; border-radius: 12px; }
+.btn svg { width: 16px; height: 16px; stroke: currentColor; }
+.btn-primary { background: var(--primary); color: var(--surface); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 20%, transparent), 0 1px 2px color-mix(in srgb, var(--primary) 40%, transparent); }
+.btn-secondary { background: var(--primary-soft); color: var(--primary-deep); }
+.btn-ink { background: var(--primary); color: var(--surface); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 20%, transparent), 0 1px 2px color-mix(in srgb, var(--primary) 40%, transparent); }
+.btn-outline { background: var(--surface); color: var(--text); border-color: var(--border-strong); box-shadow: var(--shadow-1); }
+.btn-ghost { background: transparent; color: var(--text-2); }
+.btn-danger { background: var(--danger); color: var(--surface); }
+.btn-danger-outline { background: var(--surface); color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, var(--surface)); }
+.btn-disabled { background: var(--disabled); color: var(--disabled-text); cursor: not-allowed; box-shadow: none; }
+.btn-block { width: 100%; }
+.link { color: var(--primary-deep); font-weight: 600; }
+
+.input { height: 40px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 0 12px; display: flex; align-items: center; gap: 8px; color: var(--text-3); background: var(--surface); font-size: 13px; box-shadow: inset 0 1px 2px color-mix(in srgb, var(--ink) 3%, transparent); }
+.input svg { width: 16px; height: 16px; stroke: var(--text-3); flex: none; }
+.input.filled { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 500; }
+.input.lg { height: 48px; font-size: 15px; border-radius: 12px; }
+.input.err { border-color: var(--danger); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 12px; font-weight: 600; color: var(--text); }
+.hint { font-size: 12px; line-height: 17px; color: var(--text-2); }
+.hint.err { color: var(--danger); }
+.row { display: flex; gap: 8px; align-items: center; }
+.row.end { justify-content: flex-end; }
+.row.between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+
+.card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-1); }
+.card-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.card-h h4 { margin: 0; font-size: 14px; font-weight: 700; }
+.card-b { padding: 16px 18px; }
+.card-b.tight { padding: 12px 18px; }
+.label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+.kv { display: grid; grid-template-columns: 140px 1fr; gap: 8px 12px; font-size: 13px; line-height: 19px; margin: 0; }
+.kv dt { color: var(--text-2); }
+.kv dd { margin: 0; color: var(--text); font-variant-numeric: tabular-nums; font-weight: 500; }
+.num { font-variant-numeric: tabular-nums; }
+
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tiles.four { grid-template-columns: repeat(4, 1fr); }
+.tile { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: var(--shadow-1); }
+.tile .v { font-family: var(--display); font-size: 28px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 32px; color: var(--ink); }
+.tile .s { font-size: 12px; color: var(--text-2); }
+.tile .s.up { color: var(--success-deep); font-weight: 500; }
+.tile.accent { background: var(--ink-grad); border-color: var(--ink); color: var(--surface); }
+.tile.accent .v { color: var(--surface); } .tile.accent .label { color: color-mix(in srgb, var(--surface) 60%, transparent); } .tile.accent .s { color: color-mix(in srgb, var(--surface) 72%, transparent); }
+
+.callout { border-radius: var(--radius-md); padding: 12px 14px; font-size: 13px; line-height: 19px; }
+.callout b { display: block; margin-bottom: 2px; font-family: var(--display); font-weight: 700; }
+.callout.warn { background: var(--warn-soft); border: 1px solid color-mix(in srgb, var(--warn) 30%, var(--surface)); }
+.callout.danger { background: var(--danger-soft); border: 1px solid color-mix(in srgb, var(--danger) 25%, var(--surface)); }
+.callout.info { background: var(--info-soft); border: 1px solid color-mix(in srgb, var(--info) 25%, var(--surface)); }
+.callout.success { background: var(--success-soft); border: 1px solid color-mix(in srgb, var(--success) 30%, var(--surface)); }
+.callout.brand { background: var(--primary-soft); border: 1px solid var(--primary-soft-hover); }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 19px; }
+.check svg { width: 16px; height: 16px; flex: none; margin-top: 1px; }
+.ok svg { stroke: var(--success); } .bad svg { stroke: var(--danger); } .wait svg { stroke: var(--warn); }
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table th { text-align: left; font-weight: 600; color: var(--text-3); padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface-subtle); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; }
+.table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.table .r { text-align: right; font-variant-numeric: tabular-nums; }
+.table tr:last-child td { border-bottom: 0; }
+.table-wrap { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.grade { display: inline-block; min-width: 34px; text-align: center; padding: 3px 7px; border-radius: 7px; font-weight: 700; font-size: 12px; background: var(--surface-muted); font-variant-numeric: tabular-nums; font-family: var(--display); }
+.grade.top { background: var(--success-soft); color: var(--success-deep); }
+.grade.fail { background: var(--danger-soft); color: var(--danger); }
+
+.empty { display: grid; place-items: center; text-align: center; color: var(--text-2); padding: 36px 20px; }
+.empty .ico { width: 44px; height: 44px; border-radius: 14px; background: var(--surface-muted); display: grid; place-items: center; margin: 0 auto 10px; }
+.empty .ico svg { width: 20px; height: 20px; stroke: var(--text-2); }
+.empty b { display: block; color: var(--text); font-size: 15px; margin-bottom: 4px; font-family: var(--display); }
+
+.overlay { position: absolute; inset: 0; background: var(--overlay); display: grid; place-items: center; backdrop-filter: blur(2px); }
+.dialog { width: 460px; background: var(--surface); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-3); }
+.dialog h3 { margin: 0; font-size: 18px; letter-spacing: -0.02em; }
+.dialog p { margin: 0; color: var(--text-2); font-size: 13px; line-height: 19px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 6px; font-size: 12px; background: var(--surface); font-weight: 500; }
+.chip.on { border-color: var(--primary-soft-hover); background: var(--primary-soft); color: var(--primary-deep); }
+.chip svg { width: 12px; height: 12px; stroke: currentColor; }
+.textarea { border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 10px 12px; min-height: 72px; color: var(--text-3); font-size: 13px; line-height: 19px; }
+.textarea.filled { color: var(--text); }
+.rel { position: relative; }
+.checkbox { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--rule); flex: none; }
+.checkbox.on { background: var(--primary); border-color: var(--primary); display: grid; place-items: center; }
+.checkbox.on svg { width: 11px; height: 11px; stroke: var(--surface); }
+.radio { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--rule); flex: none; }
+.radio.on { border: 5px solid var(--primary); }
+.progress { height: 6px; background: var(--surface-muted); border-radius: 3px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--primary); border-radius: 3px; }
+.sep { color: var(--rule); }
+
+/* ── Results-specific ───────────────────────────────────────────────────── */
+.result-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.result-head h2 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.result-head .line { color: var(--text-2); font-size: 13px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.trend { display: flex; flex-direction: column; gap: 6px; }
+.trend svg { width: 100%; height: 150px; display: block; }
+.semlist { display: flex; flex-direction: column; gap: 8px; }
+.semrow { display: grid; grid-template-columns: 110px 1fr auto auto auto; gap: 14px; align-items: center; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-1); }
+.semrow b { font-size: 13px; font-family: var(--display); }
+.semrow .s { color: var(--text-2); font-size: 12px; }
+.semrow .g { font-family: var(--display); font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 52px; text-align: right; letter-spacing: -0.02em; }
+.semrow .g small { font-size: 10px; color: var(--text-3); font-weight: 600; display: block; text-align: right; font-family: var(--body); letter-spacing: 0.06em; }
+.semrow.wait { background: var(--surface-subtle); box-shadow: none; }
+.share-card { width: 360px; border-radius: 22px; padding: 22px; background: var(--ink-grad); color: var(--surface); display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-3); position: relative; overflow: hidden; }
+.share-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(260px 160px at 100% 0%, var(--glow-a), transparent 70%), radial-gradient(220px 140px at 0% 100%, var(--glow-b), transparent 70%); }
+.share-card > * { position: relative; }
+.share-card .top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; opacity: 0.8; }
+.share-card .big { font-family: var(--display); font-size: 54px; font-weight: 800; letter-spacing: -0.04em; line-height: 56px; font-variant-numeric: tabular-nums; }
+.share-card .big small { font-size: 14px; font-weight: 600; opacity: 0.8; letter-spacing: 0.04em; margin-left: 8px; font-family: var(--body); }
+.share-card .who { font-family: var(--display); font-size: 17px; font-weight: 700; }
+.share-card .sub { font-size: 12px; opacity: 0.8; }
+.share-card .foot { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.8; border-top: 1px solid color-mix(in srgb, var(--surface) 18%, transparent); padding-top: 10px; }
+.whatif { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: end; }
+
+/* ── Lists, posts, resources ────────────────────────────────────────────── */
+.list { display: flex; flex-direction: column; gap: 10px; }
+.lrow { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-1); }
+.lrow.unread { border-color: var(--primary-soft-hover); background: color-mix(in srgb, var(--primary) 4%, var(--surface)); }
+.lrow .t { font-weight: 600; font-size: 13px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.lrow .s { color: var(--text-2); font-size: 12px; line-height: 17px; }
+.res { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; background: var(--surface); box-shadow: var(--shadow-1); }
+.res .t { font-weight: 600; font-size: 13px; line-height: 18px; font-family: var(--display); }
+.res .m { display: flex; gap: 8px; align-items: center; color: var(--text-2); font-size: 12px; flex-wrap: wrap; }
+.res .m svg { width: 13px; height: 13px; stroke: var(--text-2); }
+.stars { color: var(--warn); display: inline-flex; gap: 1px; vertical-align: -2px; }
+.resgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.crumbs { display: flex; gap: 6px; align-items: center; color: var(--text-2); font-size: 12px; }
+.crumbs b { color: var(--text); font-weight: 600; }
+.post { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; background: var(--surface); box-shadow: var(--shadow-1); }
+.post .who { display: flex; gap: 10px; align-items: center; }
+.post .who b { font-size: 13px; display: block; }
+.post .who span { font-size: 12px; color: var(--text-2); }
+.post p { margin: 0; font-size: 13.5px; line-height: 21px; }
+.post .acts { display: flex; gap: 16px; color: var(--text-2); font-size: 12px; }
+.post .acts span { display: inline-flex; gap: 5px; align-items: center; }
+.post .acts svg { width: 15px; height: 15px; stroke: currentColor; }
+.composer { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; gap: 12px; background: var(--surface); box-shadow: var(--shadow-1); }
+.cohorts { display: flex; flex-wrap: wrap; gap: 8px; }
+.cohort { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 12px; background: var(--surface); }
+.cohort b { font-size: 13px; font-family: var(--display); }
+.cohort .n { color: var(--text-2); }
+.cohort svg { width: 14px; height: 14px; stroke: var(--primary); }
+.person { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-1); }
+.person b { font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.person span { font-size: 12px; color: var(--text-2); }
+.two { display: grid; grid-template-columns: 300px minmax(0, 1fr); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; height: 660px; background: var(--surface); box-shadow: var(--shadow-1); }
+.threads { border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+.thread { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); align-items: center; }
+.thread.on { background: var(--primary-soft); }
+.thread b { font-size: 13px; display: block; }
+.thread span { font-size: 12px; color: var(--text-2); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.thread .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
+.convo { display: flex; flex-direction: column; min-height: 0; }
+.convo .head { display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.convo .msgs { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; background: var(--surface-subtle); }
+.msg { max-width: 72%; padding: 9px 13px; border-radius: 16px; font-size: 13px; line-height: 19px; }
+.msg.me { align-self: flex-end; background: var(--primary); color: var(--surface); border-bottom-right-radius: 6px; }
+.msg.them { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 6px; }
+.msg .ts { display: block; font-size: 10px; opacity: 0.7; margin-top: 2px; }
+.convo .foot { border-top: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 8px; }
+.jobcard { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: start; background: var(--surface); box-shadow: var(--shadow-1); }
+.jobcard .logo { width: 44px; height: 44px; border-radius: 12px; background: var(--surface-muted); display: grid; place-items: center; font-weight: 700; color: var(--text-2); font-family: var(--display); }
+.jobcard b { font-size: 14px; font-family: var(--display); }
+.jobcard .m { color: var(--text-2); font-size: 12px; display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.listing { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; background: var(--surface); box-shadow: var(--shadow-1); }
+.listing .img { height: 120px; background: linear-gradient(135deg, var(--surface-muted), var(--surface-subtle)); display: grid; place-items: center; color: var(--text-3); font-size: 12px; }
+.listing .img svg { width: 24px; height: 24px; stroke: var(--rule); }
+.listing .bd { padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.listing b { font-size: 13px; }
+.listing .price { font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; font-family: var(--display); }
+.listing .m { font-size: 12px; color: var(--text-2); }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+.plain-tl { display: flex; flex-direction: column; }
+.ptl { display: grid; grid-template-columns: 64px 28px 1fr; gap: 0 10px; align-items: start; font-size: 12px; }
+.ptl .t { color: var(--text-2); font-variant-numeric: tabular-nums; padding-top: 6px; }
+.ptl .dotcol { display: flex; flex-direction: column; align-items: center; height: 100%; }
+.ptl .dotcol span { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-subtle); border: 1px solid var(--border); flex: none; }
+.ptl .dotcol span svg { width: 13px; height: 13px; stroke: var(--text-2); }
+.ptl .dotcol i { flex: 1; width: 1px; background: var(--border); min-height: 14px; }
+.ptl:last-child .dotcol i { display: none; }
+.ptl .txt { padding: 5px 0 14px; line-height: 18px; }
+.ptl .txt .hint { display: block; }
+.ptl.bad .dotcol span { background: var(--danger-soft); } .ptl.bad .dotcol span svg { stroke: var(--danger); }
+.ptl.good .dotcol span { background: var(--success-soft); } .ptl.good .dotcol span svg { stroke: var(--success-deep); }
+.toastbar { position: absolute; top: 76px; left: 50%; transform: translateX(-50%); background: var(--ink-grad); color: var(--surface); border-radius: 10px; padding: 10px 14px; display: flex; gap: 8px; align-items: center; font-size: 13px; box-shadow: var(--shadow-3); }
+.toastbar svg { width: 16px; height: 16px; stroke: var(--success); }
+.chip-live { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font-weight: 500; }
+.chip-live i { width: 8px; height: 8px; border-radius: 50%; background: var(--success); display: inline-block; }
+
+/* ── Phones (390×820) ───────────────────────────────────────────────────── */
+.phone { width: 390px; height: 820px; border-radius: 44px; border: 10px solid var(--text); background: var(--ground); overflow: hidden; display: flex; flex-direction: column; font-size: 13px; box-shadow: var(--shadow-3); position: relative; flex: none; }
+.status-bar { height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; font-size: 13px; font-weight: 600; flex: none; background: var(--surface); }
+.status-bar span:last-child { letter-spacing: 1px; }
+.ptop { min-height: 54px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; padding: 0 14px; flex: none; background: var(--surface); }
+.ptop .ttl { flex: 1; min-width: 0; }
+.ptop .ttl b { font-size: 17px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--display); letter-spacing: -0.01em; }
+.ptop .ttl span { font-size: 11.5px; color: var(--text-2); }
+.ptop .iconbtn { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.ptop .iconbtn svg { width: 18px; height: 18px; }
+.pbody { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.pscroll { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+.pfoot { border-top: 1px solid var(--border); padding: 10px 12px 22px; display: flex; flex-direction: column; gap: 8px; background: var(--surface); flex: none; }
+.pfoot .btns { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
+.pfoot .btn { height: 46px; font-size: 14px; border-radius: 12px; }
+.ptabs { border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 8px 20px; background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(12px); flex: none; }
+.ptabs div { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--text-3); padding: 4px 0; border-radius: 12px; font-weight: 500; }
+.ptabs div.on { color: var(--primary-deep); background: var(--primary-soft); }
+.ptabs svg { width: 22px; height: 22px; stroke: currentColor; }
+.hscroll { display: flex; gap: 8px; overflow: hidden; }
+.hscroll .tab { flex: none; }
+.summary { border-radius: var(--radius-lg); padding: 16px; background: var(--ink-grad); color: var(--surface); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
+.summary::before { content: ""; position: absolute; inset: 0; background: radial-gradient(220px 140px at 100% 0%, var(--glow-a), transparent 70%); }
+.summary > * { position: relative; }
+.summary .label { color: color-mix(in srgb, var(--surface) 60%, transparent); }
+.summary .big { font-family: var(--display); font-size: 36px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; line-height: 40px; }
+.summary .big small { font-size: 12px; font-weight: 600; color: color-mix(in srgb, var(--surface) 65%, transparent); font-family: var(--body); letter-spacing: 0.04em; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.facts div { background: color-mix(in srgb, var(--surface) 10%, transparent); border: 1px solid color-mix(in srgb, var(--surface) 14%, transparent); border-radius: 12px; padding: 8px 10px; }
+.facts span { display: block; font-size: 11px; color: color-mix(in srgb, var(--surface) 60%, transparent); }
+.facts b { font-size: 13px; font-weight: 600; }
+.acc { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-1); }
+.acc-h { display: flex; justify-content: space-between; align-items: center; padding: 12px; font-weight: 600; }
+.acc-h svg { width: 16px; height: 16px; stroke: var(--text-2); }
+.acc-b { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
+.sheet-scrim { position: absolute; inset: 0; background: var(--overlay); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface); border-radius: 24px 24px 0 0; padding: 8px 16px 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-3); }
+.sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--border-strong); align-self: center; margin-bottom: 4px; }
+.sheet h3 { margin: 0; font-size: 18px; letter-spacing: -0.02em; }
+.sheet p { margin: 0; font-size: 13px; line-height: 19px; color: var(--text-2); }
+.radio-list { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; }
+.radio-list div { display: flex; align-items: center; gap: 10px; padding: 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+.radio-list div:last-child { border-bottom: 0; }
+.toast { position: absolute; left: 12px; right: 12px; bottom: 100px; background: var(--ink-grad); color: var(--surface); border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; align-items: center; font-size: 13px; box-shadow: var(--shadow-3); }
+.toast svg { width: 18px; height: 18px; stroke: var(--success); flex: none; }
+.pcard { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; display: flex; flex-direction: column; gap: 6px; background: var(--surface); box-shadow: var(--shadow-1); }
+.install { border: 1px solid var(--primary-soft-hover); background: var(--primary-soft); border-radius: var(--radius-md); padding: 12px; display: grid; grid-template-columns: 36px 1fr auto; gap: 10px; align-items: center; font-size: 12px; }
+.install .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--primary); display: grid; place-items: center; }
+.install .ic svg { width: 18px; height: 18px; stroke: var(--surface); }
+.install b { display: block; font-size: 13px; font-family: var(--display); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .index button, .stage-nav button { transition: background-color 140ms var(--curve), border-color 140ms var(--curve); }
+}
+@media (max-width: 900px) {
+  .doc { grid-template-columns: 1fr; }
+  .index { position: static; height: auto; }
+  .stage { padding: 16px; }
+}
+</style>
+
+<div class="doc">
+  <nav class="index" aria-label="Screens">
+    <div>
+      <h1>RGPV Connect wireframes</h1>
+      <p class="lede">The replanned product, one frame per state. Results and verification first; the network held back until a college reaches density. Drawn in a proposed design system, not the current code.</p>
+    </div>
+    <div id="index-groups"></div>
+    <p class="foot">Names, enrollment numbers, grades and counts are example data. Frames use a proposed design system for RGPV Connect (10 Oct 2026): Plus Jakarta Sans + DM Sans, one teal-green accent on warm off-white.</p>
+  </nav>
+
+  <main class="stage">
+    <div class="stage-head">
+      <div>
+        <div class="eyebrow" id="screen-eyebrow"></div>
+        <h2 id="screen-title"></h2>
+      </div>
+      <div class="stage-nav">
+        <span class="sample-flag">Example data</span>
+        <button type="button" id="prev">← Previous</button>
+        <button type="button" id="next">Next →</button>
+      </div>
+    </div>
+    <div class="frame-fit" id="fit"><div class="frame" id="frame"></div></div>
+    <section class="notes" id="notes" aria-label="Notes for this screen"></section>
+  </main>
+</div>
+
+<script>
+/* ── Icons: one stroke set (lucide geometry, as the app uses lucide-react) ── */
+const I = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const ICON = {
+  home: I('<path d="M3 10.5 12 3l9 7.5V21H3z"/>'),
+  cap: I('<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>'),
+  notes: I('<path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/>'),
+  paper: I('<path d="M4 2v20l3-2 3 2 3-2 3 2 3-2V2l-3 2-3-2-3 2-3-2-3 2z"/><path d="M8 8h8M8 12h8M8 16h5"/>'),
+  users: I('<circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/>'),
+  user: I('<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>'),
+  group: I('<circle cx="12" cy="7" r="3"/><circle cx="5" cy="10" r="2"/><circle cx="19" cy="10" r="2"/><path d="M8 21v-2a4 4 0 0 1 8 0v2M1 20v-1a3 3 0 0 1 4-2.8M23 20v-1a3 3 0 0 0-4-2.8"/>'),
+  brief: I('<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M2 13h20"/>'),
+  bag: I('<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/>'),
+  chat: I('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'),
+  bell: I('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/>'),
+  search: I('<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>'),
+  check: I('<path d="M20 6 9 17l-5-5"/>'),
+  checkCircle: I('<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>'),
+  x: I('<path d="M18 6 6 18M6 6l12 12"/>'),
+  xCircle: I('<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/>'),
+  clock: I('<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'),
+  alert: I('<path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><path d="M12 9v4M12 17h.01"/>'),
+  info: I('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'),
+  lock: I('<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'),
+  shield: I('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>'),
+  back: I('<path d="m15 18-6-6 6-6"/>'),
+  chevDown: I('<path d="m6 9 6 6 6-6"/>'),
+  chevRight: I('<path d="m9 18 6-6-6-6"/>'),
+  arrowRight: I('<path d="M5 12h14M12 5l7 7-7 7"/>'),
+  share: I('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>'),
+  download: I('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>'),
+  upload: I('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>'),
+  refresh: I('<path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/>'),
+  star: I('<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>'),
+  flag: I('<path d="M4 22V4a1 1 0 0 1 1-1h11l-1 4 1 4H5"/>'),
+  send: I('<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>'),
+  trendUp: I('<path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/>'),
+  mail: I('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/>'),
+  phone: I('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>'),
+  heart: I('<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>'),
+  comment: I('<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.7-.9L3 21l1.9-5.3A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/>'),
+  more: I('<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>'),
+  menu: I('<path d="M4 6h16M4 12h16M4 18h16"/>'),
+  plus: I('<path d="M12 5v14M5 12h14"/>'),
+  copy: I('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),
+  ext: I('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/>'),
+  image: I('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>'),
+  building: I('<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/>'),
+  calc: I('<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 19h.01"/>'),
+  pin: I('<path d="M12 22s7-6 7-12a7 7 0 1 0-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>'),
+  eyeOff: I('<path d="M9.9 4.2A10 10 0 0 1 12 4c7 0 10 8 10 8a13 13 0 0 1-1.7 2.7M6.6 6.6A13.5 13.5 0 0 0 2 12s3 8 10 8a9.7 9.7 0 0 0 5.4-1.6M2 2l20 20"/><path d="M14.1 14.1a3 3 0 1 1-4.2-4.2"/>'),
+  sun: I('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
+  zap: I('<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>'),
+  trash: I('<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/>'),
+  gear: I('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
+};
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ── Example world ──────────────────────────────────────────────────────── */
+/* One student across every frame. Numbers add up:
+   SGPA 7.42 · 7.85 · 8.10 · 8.41 → CGPA 7.95 after 4 semesters (equal credits).
+   Semester 4: (9×4 + 8×3 + 8×3 + 7×3 + 10×2 + 9×2) / 17 = 143/17 = 8.41 */
+const ME = { name: 'Priyanshi Rathore', enr: '0151CS23042', college: 'UIT-RGPV, Bhopal', branch: 'Computer Science & Engineering', batch: 2027, initials: 'PR' };
+const SEMS = [
+  { n: 1, session: 'Dec 2023', sgpa: 7.42, cgpa: 7.42, status: 'PASS' },
+  { n: 2, session: 'Jun 2024', sgpa: 7.85, cgpa: 7.64, status: 'PASS' },
+  { n: 3, session: 'Dec 2024', sgpa: 8.10, cgpa: 7.79, status: 'PASS' },
+  { n: 4, session: 'Jun 2025', sgpa: 8.41, cgpa: 7.95, status: 'PASS' },
+];
+const SEM4 = [
+  ['CS401', 'Analysis & Design of Algorithms', 4, 'A', 9],
+  ['CS402', 'Software Engineering', 3, 'B+', 8],
+  ['CS403', 'Computer Organisation & Architecture', 3, 'B+', 8],
+  ['CS404', 'Operating Systems', 3, 'B', 7],
+  ['CS405', 'Java Programming', 2, 'A+', 10],
+  ['CS406', 'Algorithms Lab', 2, 'A', 9],
+];
+const badge = (text, tone = 'gray', icon = '') => `<span class="badge b-${tone}">${icon ? ICON[icon] : ''}${text}</span>`;
+const verified = () => badge('Verified', 'verified', 'shield');
+const bar = () => `<div class="status-bar"><span>9:41</span><span style="font-size:10px;letter-spacing:0">5G ▮</span></div>`;
+
+/* ── Shells ─────────────────────────────────────────────────────────────── */
+const NAV_NOW = [['cap', 'Results', 'results'], ['notes', 'Notes', 'notes'], ['paper', 'Papers', 'papers'], ['chat', 'Messages', 'messages'], ['user', 'My profile', 'profile']];
+const NAV_LATER = [['home', 'Home feed'], ['users', 'Network'], ['group', 'Groups'], ['brief', 'Jobs'], ['bag', 'Market']];
+
+function topbar({ signedIn = true, unreadMsgs = 1, unreadBell = 2, active = '' } = {}) {
+  return `<header class="topbar">
+    <span class="wordmark"><span class="mk"><i></i></span>RGPV Connect</span>
+    <div class="spacer"></div>
+    ${signedIn ? `<div class="search">${ICON.search}<span>Search students, notes, papers…</span><kbd>⌘K</kbd></div>` : `<div class="topnav"><span class="${active === 'results' ? 'on' : ''}">Results</span><span>Notes</span><span>Papers</span><span>How it works</span><span>Open source</span></div>`}
+    <div class="spacer"></div>
+    ${signedIn ? `
+      <span class="iconbtn">${ICON.chat}${unreadMsgs ? `<span class="n">${unreadMsgs}</span>` : ''}</span>
+      <span class="iconbtn">${ICON.bell}${unreadBell ? `<span class="n">${unreadBell}</span>` : ''}</span>
+      <span class="iconbtn">${ICON.sun}</span>
+      <span class="avatar">${ME.initials}</span>`
+    : `<span class="btn btn-ghost">Sign in</span><span class="btn btn-ink">Join with your enrollment</span>`}
+  </header>`;
+}
+
+function appShell(content, { active = 'results', later = true, wide = false, full = false, signedIn = true } = {}) {
+  return `<div class="app">
+    ${topbar({ signedIn })}
+    <div class="body">
+      <aside class="side">
+        ${NAV_NOW.map(([ic, l, k]) => `<div class="nav ${k === active ? 'on' : ''}">${ICON[ic]}<span>${l}</span>${k === 'messages' ? '<span class="count">1</span>' : ''}</div>`).join('')}
+        ${later ? `<div class="grouplbl">After launch</div>` + NAV_LATER.map(([ic, l]) => `<div class="nav later">${ICON[ic]}<span>${l}</span><span class="later-tag">Later</span></div>`).join('') : ''}
+      </aside>
+      <main class="main"><div class="col ${wide ? 'wide' : ''} ${full ? 'full' : ''}">${content}</div></main>
+    </div>
+  </div>`;
+}
+
+function adminShell(content, { active = 'review', title = 'RGPV Connect · Admin' } = {}) {
+  const items = [['flag', 'Review queue', 'review', 7], ['zap', 'Results day', 'blast'], ['refresh', 'Result worker', 'worker'], ['eyeOff', 'Privacy requests', 'privacy', 1], ['users', 'Students', 'students']];
+  return `<div class="app">
+    <header class="topbar"><span class="wordmark"><span class="mk"><i></i></span>RGPV Connect <em>· Admin</em></span><div class="spacer"></div><span class="avatar">VM</span></header>
+    <div class="body">
+      <aside class="side">${items.map(([ic, l, k, n]) => `<div class="nav ${k === active ? 'on' : ''}">${ICON[ic]}<span>${l}</span>${n ? `<span class="count">${n}</span>` : ''}</div>`).join('')}</aside>
+      <main class="main"><div class="col full">${content}</div></main>
+    </div>
+  </div>`;
+}
+
+function siteShell(content, opts = {}) {
+  return `<div class="site"><div class="mesh"></div><div class="grain"></div>${topbar({ signedIn: false, ...opts })}${content}</div>`;
+}
+
+function resultsTabs(on) {
+  return `<div class="subtabs">
+    <span class="tab ${on === 'lookup' ? 'on' : ''}">${ICON.search}Look up a result</span>
+    <span class="tab ${on === 'me' ? 'on' : ''}">${ICON.cap}My results</span>
+    <span class="tab ${on === 'calc' ? 'on' : ''}">${ICON.calc}SGPA calculator</span>
+  </div>`;
+}
+
+/* Phone pieces */
+function ptabs(on) {
+  const items = [['cap', 'Results', 'results'], ['notes', 'Notes', 'notes'], ['chat', 'Messages', 'messages'], ['user', 'Me', 'me']];
+  return `<div class="ptabs">${items.map(([ic, l, k]) => `<div class="${k === on ? 'on' : ''}">${ICON[ic]}<span>${l}</span></div>`).join('')}</div>`;
+}
+function phone(top, body, { tabs, foot, extra = '' } = {}) {
+  return `<div class="phone">${bar()}${top}<div class="pbody"><div class="pscroll">${body}</div></div>${foot ? `<div class="pfoot">${foot}</div>` : ''}${tabs ? ptabs(tabs) : ''}${extra}</div>`;
+}
+const ptop = (title, sub, { back = false, right = '' } = {}) => `<div class="ptop">${back ? `<span class="iconbtn">${ICON.back}</span>` : ''}<span class="ttl"><b>${esc(title)}</b>${sub ? `<span>${esc(sub)}</span>` : ''}</span>${right}</div>`;
+
+/* ── Result pieces ──────────────────────────────────────────────────────── */
+function subjectTable(rows = SEM4) {
+  return `<div class="table-wrap"><table class="table">
+    <thead><tr><th>Subject</th><th class="r">Credits</th><th class="r">Grade</th><th class="r">Points</th></tr></thead>
+    <tbody>${rows.map(([code, name, cr, g, p]) => `<tr><td><b>${code}</b> <span class="hint">· ${name}</span></td><td class="r">${cr}</td><td class="r"><span class="grade ${g === 'A+' ? 'top' : g === 'F' ? 'fail' : ''}">${g}</span></td><td class="r">${p}</td></tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+function trendChart({ w = 600, h = 150 } = {}) {
+  /* One scale: 6 → 10. x spread across semesters 1–8 so future semesters have room. */
+  const x = (n) => 40 + (n - 1) * ((w - 60) / 7);
+  const y = (v) => 14 + (10 - v) * ((h - 34) / 4);
+  const pts = SEMS.map((s) => [x(s.n), y(s.sgpa)]);
+  const cg = SEMS.map((s) => [x(s.n), y(s.cgpa)]);
+  const path = (p) => p.map(([a, b], i) => `${i ? 'L' : 'M'}${a.toFixed(1)} ${b.toFixed(1)}`).join(' ');
+  const area = `${path(pts)} L${pts[pts.length - 1][0].toFixed(1)} ${y(6).toFixed(1)} L${pts[0][0].toFixed(1)} ${y(6).toFixed(1)} Z`;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="SGPA and CGPA by semester">
+    ${[6, 8, 10].map((v) => `<line x1="40" x2="${w - 20}" y1="${y(v)}" y2="${y(v)}" stroke="var(--border)" stroke-width="1"/><text x="34" y="${y(v) + 4}" font-size="10" text-anchor="end" fill="var(--text-2)">${v}</text>`).join('')}
+    ${[1, 2, 3, 4, 5, 6, 7, 8].map((n) => `<text x="${x(n)}" y="${h - 6}" font-size="10" text-anchor="middle" fill="${n <= 4 ? 'var(--text-2)' : 'var(--rule)'}">Sem ${n}</text>`).join('')}
+    <path d="${area}" fill="var(--primary-soft)"/>
+    <path d="${path(cg)}" fill="none" stroke="var(--rule)" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <path d="${path(pts)}" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
+    ${pts.map(([a, b], i) => `<circle cx="${a}" cy="${b}" r="${i === pts.length - 1 ? 5 : 3.5}" fill="var(--surface)" stroke="var(--primary)" stroke-width="2"/>`).join('')}
+    <text x="${pts[3][0]}" y="${pts[3][1] - 10}" font-size="11" font-weight="600" text-anchor="middle" fill="var(--text)">8.41</text>
+  </svg>`;
+}
+
+function shareCard() {
+  return `<div class="share-card">
+    <div class="top"><span>RGPV<b>Connect</b></span><span>Semester 4 · Jun 2025</span></div>
+    <div><div class="big">8.41<small>SGPA</small></div><div class="sub">CGPA 7.95 · up from 7.79</div></div>
+    <div><div class="who">${ME.name}</div><div class="sub">CS 2027 · UIT-RGPV</div></div>
+    <div class="foot"><span>${ICON.shield.replace('<svg', '<svg width="12" height="12" style="vertical-align:-2px;stroke:currentColor"')} Verified result</span><span>rgpvconnect.in</span></div>
+  </div>`;
+}
+
+/* ── Screens ────────────────────────────────────────────────────────────── */
+const sparkline = (vals, { w = 300, h = 44, stroke = 'var(--success)', fill = 'var(--success-soft)' } = {}) => {
+  const min = Math.min(...vals) - 0.3, max = Math.max(...vals) + 0.3;
+  const x = (i) => 6 + i * ((w - 12) / (vals.length - 1));
+  const y = (v) => 6 + (max - v) * ((h - 12) / (max - min));
+  const pts = vals.map((v, i) => [x(i), y(v)]);
+  const d = pts.map(([a, b], i) => `${i ? 'L' : 'M'}${a.toFixed(1)} ${b.toFixed(1)}`).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><path d="${d} L${x(vals.length - 1)} ${h} L${x(0)} ${h} Z" fill="${fill}"/><path d="${d}" fill="none" stroke="${stroke}" stroke-width="2"/><circle cx="${pts[pts.length - 1][0]}" cy="${pts[pts.length - 1][1]}" r="3.5" fill="var(--surface)" stroke="${stroke}" stroke-width="2"/></svg>`;
+};
+
+const lookupForm = (enr = '', sem = '', { compact = false } = {}) => `
+  <div class="lookup">
+    <div class="lk-head"><b>Check a result</b><span class="pill"><span class="dot">${ICON.check}</span>Live from result.rgpv.ac.in</span></div>
+    <div class="row" style="align-items:flex-end;gap:10px">
+      <div class="field" style="flex:1"><label>Enrollment number</label><div class="input lg ${enr ? 'filled' : ''}">${ICON.cap}<span>${enr || '0151CS23042'}</span></div></div>
+      <div class="field" style="width:160px"><label>Semester</label><div class="input lg ${sem ? 'filled' : ''}"><span>${sem || 'Latest'}</span><span style="margin-left:auto">${ICON.chevDown}</span></div></div>
+    </div>
+    <span class="btn btn-primary lg btn-block">${ICON.search}Check result</span>
+    ${compact ? '' : `<div class="row between" style="font-size:12px;color:var(--text-2)"><span>No sign-up. About 10 seconds.</span><span class="link">How this works</span></div>`}
+  </div>`;
+
+const resultCard = ({ saved = false } = {}) => `
+  <div class="card" style="box-shadow:var(--shadow-2)">
+    <div class="card-b" style="display:flex;flex-direction:column;gap:16px;padding:20px 22px">
+      <div class="result-head">
+        <div><div class="row" style="gap:10px"><h2>${ME.name}</h2>${badge('Pass', 'success', 'check')}</div><div class="line">${ME.enr} · Semester 4 · Jun 2025 · ${ME.branch}</div></div>
+        <div class="row"><span class="btn btn-outline sm">${ICON.share}Share card</span>${saved ? `<span class="btn btn-secondary sm">${ICON.checkCircle}Saved</span>` : `<span class="btn btn-primary sm">${ICON.cap}Save to My results</span>`}</div>
+      </div>
+      <div class="tiles">
+        <div class="tile accent"><span class="label">SGPA</span><span class="v">8.41</span><span class="s">Best semester so far</span></div>
+        <div class="tile"><span class="label">CGPA</span><span class="v">7.95</span><span class="s up">${ICON.trendUp.replace('<svg', '<svg width="12" height="12" style="vertical-align:-2px;stroke:currentColor"')} Up 0.16 after 4 semesters</span></div>
+        <div class="tile"><span class="label">Credits</span><span class="v">17</span><span class="s">6 subjects · all passed</span></div>
+      </div>
+      ${subjectTable()}
+      <div class="row between wrap"><span class="hint">Fetched just now · <span class="link">Fetch again</span></span><span class="hint">Grades on RGPV's 10-point scale · A+ 10 · A 9 · B+ 8 · B 7</span></div>
+    </div>
+  </div>`;
+
+const sitePage = (inner) => `<div class="pagewrap">${inner}</div><div class="footer"><span>RGPV Connect · free and open source · MIT</span><div><span>Privacy</span><span>Delete my data</span><span>GitHub</span><span>Built by RGPV students</span></div></div>`;
+
+const SCREENS = [
+  /* ─────────────────────────── Public · the front door ─────────────────── */
+  {
+    group: 'Public · Results', title: 'Landing: check a result without signing up',
+    render: () => siteShell(`
+      <section class="hero">
+        <div>
+          <span class="pill"><span class="dot">${ICON.check}</span>1,284 results checked today · 214 verified at UIT-RGPV</span>
+          <h1 style="margin-top:18px">Your RGPV result, in ten seconds. <em>Then your whole batch.</em></h1>
+          <p class="lead">Check any semester result without signing up. Verify your enrollment once and keep every semester, your CGPA trend, and a network where every student is real.</p>
+          <div class="row" style="margin-top:22px;gap:10px"><span class="btn btn-ink lg">${ICON.cap}Join with your enrollment</span><span class="btn btn-outline lg">See how verification works</span></div>
+          <div class="proof" style="padding:18px 0 0"><span class="avs"><span class="avatar">AJ</span><span class="avatar">SP</span><span class="avatar">RV</span><span class="avatar">KM</span></span><span><b>214</b> verified at UIT-RGPV</span><span><b>38</b> in CS 2027</span><span><b>Free</b>, no ads, open source</span></div>
+        </div>
+        ${lookupForm()}
+      </section>
+      <div class="bento">
+        <div class="feature"><div class="row between"><div class="ico">${ICON.trendUp}</div>${badge('Example', 'gray')}</div><b>Every semester, one trend</b><p>SGPA 7.42 → 7.85 → 8.10 → 8.41. CGPA 7.95 and what you need next semester for the CGPA you want.</p>${sparkline([7.42, 7.85, 8.10, 8.41])}</div>
+        <div class="feature dark"><div class="ico">${ICON.shield}</div><b>Verified by enrollment</b><p>We fetch a real result to prove the number is yours. College, branch and batch come from the number, never from a form.</p></div>
+        <div class="feature"><div class="ico">${ICON.share}</div><b>A card for your batch group</b><p>Your SGPA on a verified card with your name, one tap to WhatsApp. Nobody can fake it.</p></div>
+      </div>
+      <div class="footer"><span>RGPV Connect · free and open source · MIT</span><div><span>Notes</span><span>Papers</span><span>Privacy</span><span>GitHub</span><span>Built by RGPV students</span></div></div>`),
+    notes: [
+      ['Layout', ['Hero: promise left, a working lookup right in an elevated card. Proof strip under the headline uses real counts (verified at UIT, in the viewer\'s batch) so the page states facts, not slogans.', 'Bento row: one wide card with a sparkline of the example trend, one dark card for the moat (verification), one for the share loop. Footer carries privacy, delete-my-data and GitHub.']],
+      ['Behaviour', ['Lookup runs without an account (today /results is behind sign-in; the middleware guard moves to /results/me and the network pages).', 'Semester defaults to the latest declared one for the admission year in the number; a dropdown lets the person go back.', 'Counts in the proof strip come from the database and update hourly; below 50 verified at a college the strip shows "Open to all RGPV students" instead of numbers.']],
+      ['Data', ['Each lookup costs one live portal fetch and one captcha solve (about 10 s). Cache the parsed result for 6 hours per enrollment and semester so repeat lookups on results day are free. Not built yet.']],
+    ],
+  },
+  {
+    group: 'Public · Results', title: 'Result found (signed out)',
+    render: () => siteShell(sitePage(`
+      <div class="row between" style="align-items:flex-end"><div><div class="label">Result</div><h1 style="margin:4px 0 0;font-size:28px;letter-spacing:-0.025em">0151CS23042 · Semester 4</h1></div><span class="btn btn-outline">${ICON.search}Check another</span></div>
+      ${resultCard()}
+      <div class="grid2" style="grid-template-columns:1fr 1fr">
+        <div class="feature"><div class="row between"><div class="ico">${ICON.cap}</div><span class="link">Join</span></div><b>Keep all four semesters</b><p>Join with this number and we fetch semesters 1 to 3 as well, chart the CGPA, and tell you what you need next semester. About a minute.</p></div>
+        <div class="feature"><div class="row between"><div class="ico">${ICON.bell}</div><span class="link">Turn on</span></div><b>Hear first on results day</b><p>One notification when semester 5 is declared, with your result already fetched. Nothing else, ever.</p></div>
+      </div>`), { active: 'results' }),
+    notes: [
+      ['Layout', ['A page, not a dialog: title row with the number and semester, the result card, then two next-step cards. The card is the same component in My results and on the phone.', 'The SGPA tile is the dark accent tile because it is the one number people came for; CGPA and credits stay white.']],
+      ['Behaviour', ['"Share card" works signed out, but the card then carries only the enrollment number and grade; the name version needs a verified account.', '"Save to My results" is the sign-up gate: it opens the join flow with the enrollment pre-filled and, after verification, lands on My results with this semester already saved.']],
+      ['Data', ['Credits per subject are not in the portal response today; they come from the academic catalogue (Subject.code → credits). Until the catalogue has credits for every branch and semester, show the SGPA from the portal and hide the Credits and Points columns.']],
+    ],
+  },
+  {
+    group: 'Public · Results', title: 'No result for that semester',
+    render: () => siteShell(sitePage(`
+      <div class="row between" style="align-items:flex-end"><div><div class="label">Result</div><h1 style="margin:4px 0 0;font-size:28px;letter-spacing:-0.025em">0151CS23042 · Semester 5</h1></div><span class="btn btn-outline">${ICON.search}Check another</span></div>
+      <div class="card" style="box-shadow:var(--shadow-2)"><div class="card-b" style="display:flex;flex-direction:column;gap:14px;padding:28px 22px">
+        <div class="empty" style="padding:8px 20px 4px"><div class="ico">${ICON.clock}</div><b>Semester 5 is not declared yet for the 2023 batch</b><span>RGPV holds no semester 5 result for 0151CS23042. Exams for this batch are in Nov to Dec 2026, so the result usually appears in January or February.</span></div>
+        <div class="row" style="justify-content:center;gap:8px"><span class="btn btn-ink">${ICON.back}Show semester 4 instead</span><span class="btn btn-outline">${ICON.bell}Tell me when it's out</span></div>
+      </div></div>
+      <div class="steps3">
+        <div class="step"><span class="no">LAST DECLARED</span><b>Semester 4 · Jun 2025</b><p>SGPA 8.41 · CGPA 7.95 · Pass</p></div>
+        <div class="step"><span class="no">EXPECTED</span><b>Semester 5 · Jan to Feb 2027</b><p>Odd semesters are declared after the Nov to Dec exams.</p></div>
+        <div class="step"><span class="no">THEN</span><b>Semester 6 · Jul to Aug 2027</b><p>Even semesters are declared after the May to Jun exams.</p></div>
+      </div>`), { active: 'results' }),
+    notes: [
+      ['Empty is not an error', ['The portal says "not found"; we say why it is probably not out yet, using the exam cycle rule from the knowledge doc (odd semesters declared Jan to Feb, even ones Jul to Aug), and show the calendar as three steps.', 'Two ways forward: open the latest declared semester, or get a notification when this one appears.']],
+      ['Behaviour', ['"Tell me when it\'s out" needs an account and a push subscription; signed out it opens the join flow. The results-day blast (admin frame) is what fires it.']],
+      ['Open question', ['Should a wrong-format number ("0151CS2304") be caught before the fetch with an inline hint, rather than reaching this screen? Proposed: yes, inline under the field, using the shared parser.']],
+    ],
+  },
+  {
+    group: 'Public · Results', title: 'RGPV portal not responding',
+    render: () => siteShell(sitePage(`
+      <div class="row between" style="align-items:flex-end"><div><div class="label">Result</div><h1 style="margin:4px 0 0;font-size:28px;letter-spacing:-0.025em">0151CS23042 · Semester 4</h1></div><span class="btn btn-outline">${ICON.search}Check another</span></div>
+      <div class="callout warn" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center"><div><b>RGPV's result portal is not answering right now</b>We tried three times over 45 seconds. This happens on results day when everyone loads it at once. Your number is correct; the portal is the problem. We retry every minute while this page is open.</div><span class="btn btn-ink">${ICON.refresh}Try again now</span></div>
+      <div class="card"><div class="card-h"><h4>Last known result for 0151CS23042</h4><span class="hint">Fetched 14 Aug 2026</span></div><div class="card-b" style="display:flex;flex-direction:column;gap:12px">
+        <div class="semrow" style="box-shadow:none"><b>Semester 3</b><span class="s">Dec 2024 · 6 subjects</span>${badge('Pass', 'success')}<span class="g">8.10<small>SGPA</small></span><span class="g">7.79<small>CGPA</small></span></div>
+        <div class="row"><span class="btn btn-outline">${ICON.bell}Notify me when the portal is back</span><span class="hint">You will get one message, then the result opens here.</span></div>
+      </div></div>`), { active: 'results' }),
+    notes: [
+      ['Why blocked / Way forward', ['The worker returns a 502 after its retries. The screen says what was tried, that the number is fine, and shows the last cached result so the person leaves with something.', 'Auto-retry every minute while the tab is open; the button is for impatient people.']],
+      ['Data', ['"Last known result" comes from the 6-hour public cache or the person\'s saved ResultRecord. Needs the cache (not built yet).', 'Never show the worker\'s error text ("captcha", "session", "502") to students.']],
+    ],
+  },
+  /* ─────────────────────────── Joining ─────────────────────────────────── */
+  {
+    group: 'Joining', title: 'Sign in: email link first, Google second',
+    render: () => siteShell(`<div class="auth"><div class="authcard">
+      <div class="mark">${ICON.cap}</div>
+      <h2>Join RGPV Connect</h2>
+      <p>Sign in, then verify your enrollment number. Your college, branch and batch are filled in from it.</p>
+      <div class="steps"><i class="done"></i><i></i><i></i></div>
+      <div class="field"><label>College or personal email</label><div class="input lg filled">${ICON.mail}<span>priyanshi.r@gmail.com</span></div></div>
+      <span class="btn btn-primary lg btn-block">Email me a sign-in link</span>
+      <div class="row" style="gap:10px;color:var(--text-2);font-size:12px"><span style="flex:1;height:1px;background:var(--border)"></span>or<span style="flex:1;height:1px;background:var(--border)"></span></div>
+      <span class="btn btn-outline lg btn-block">Continue with Google</span>
+      <span class="btn btn-disabled lg btn-block" title="Phone sign-in comes after launch">Continue with phone · later</span>
+      <p class="hint">No password. The link works once and expires in 15 minutes. By continuing you agree to the terms and the privacy policy.</p>
+    </div></div>`),
+    notes: [
+      ['Layout', ['Same centred card as today\'s login, with a three-step progress strip (sign in → verify → done) so people know it is short.']],
+      ['Behaviour', ['Email magic link is primary because most RGPV students do not have a college Google account (strategy doc). Google stays as the one-tap option. Phone OTP is shown disabled with its reason rather than hidden, so nobody files a bug.', 'After sign-in: unverified people go to Verify; verified people go to My results (today: /feed).']],
+      ['Data', ['Needs Auth.js Email provider plus a mail sender (Resend free tier in the launch plan). Not built yet. Google OAuth credentials are also missing in production today.']],
+    ],
+  },
+  {
+    group: 'Joining', title: 'Verify: enter the enrollment number',
+    render: () => siteShell(`<div class="auth"><div class="authcard" style="width:440px">
+      <div class="mark" style="background:var(--primary-soft)">${ICON.shield.replace('<svg', '<svg style="stroke:var(--primary-soft-fg)"')}</div>
+      <h2>Verify your enrollment</h2>
+      <p>We fetch one of your results from RGPV to prove the number is yours. That also fills in your college, branch and batch.</p>
+      <div class="steps"><i class="done"></i><i class="done"></i><i></i></div>
+      <div class="field"><label>Enrollment number</label><div class="input lg filled">${ICON.cap}<span>0151CS23042</span></div>
+        <div class="row wrap" style="gap:6px"><span class="chip on">${ICON.building}UIT-RGPV</span><span class="chip on">Computer Science</span><span class="chip on">Admitted 2023 · batch 2027</span></div>
+        <span class="hint">Read from the number as you type. If these look wrong, check the number.</span></div>
+      <div class="field"><label>A semester you already have a result for</label><div class="input lg filled"><span>Semester 4 · Jun 2025</span><span style="margin-left:auto">${ICON.chevDown}</span></div><span class="hint">Picked from your admission year. Any declared semester works.</span></div>
+      <span class="btn btn-primary lg btn-block">${ICON.search}Find my result</span>
+      <p class="hint">Takes about 10 seconds. We only read the result; nothing is saved until you confirm it is you.</p>
+    </div></div>`),
+    notes: [
+      ['Behaviour', ['The decode happens live client-side with the shared parser: college, branch and batch appear as chips under the field before any network call. Wrong numbers are caught here.', 'Semester defaults to the latest plausible one from the admission year, replacing today\'s free-text "1".']],
+      ['Data', ['College name comes from the College table by code; unknown codes show "College 0151" and get a row created on confirm (as the action does today).']],
+    ],
+  },
+  {
+    group: 'Joining', title: 'Verify: is this you?',
+    render: () => siteShell(`<div class="auth"><div class="authcard" style="width:440px">
+      <h2>Is this you?</h2>
+      <p>This is the semester 4 result RGPV holds for 0151CS23042.</p>
+      <div class="steps"><i class="done"></i><i class="done"></i><i></i></div>
+      <div class="card" style="background:var(--surface-subtle)"><div class="card-b" style="display:flex;flex-direction:column;gap:10px">
+        <div class="check ok">${ICON.checkCircle}<span>Result found on RGPV's portal just now</span></div>
+        <div style="font-size:20px;font-weight:700">${ME.name}</div>
+        <dl class="kv"><dt>College</dt><dd>UIT-RGPV, Bhopal</dd><dt>Branch</dt><dd>Computer Science & Engineering</dd><dt>Batch</dt><dd>2023 to 2027</dd><dt>Semester 4</dt><dd>SGPA 8.41 · Pass</dd></dl>
+      </div></div>
+      <div class="callout info"><b>Confirming links this number to your account</b>Your name becomes "${ME.name}" and you join the CS 2027 and UIT-RGPV groups. One enrollment number can belong to one account.</div>
+      <div class="row" style="gap:8px"><span class="btn btn-outline lg" style="flex:1">Not me</span><span class="btn btn-primary lg" style="flex:1.4">${ICON.check}Yes, that's me</span></div>
+    </div></div>`),
+    notes: [
+      ['Behaviour', ['The name comes from RGPV, never typed by the person. Confirm = User.verificationStatus VERIFIED, enrollment bound, grouping fields set, this ResultRecord saved, auto-join of the branch+batch cohort (cohort auto-join not built yet).', '"Not me" clears the preview and returns to the number field with it still filled.']],
+      ['Privacy', ['Say plainly what is stored: name, enrollment number, the results. Link to the privacy policy. A data-deletion request lives in Settings (admin frame).']],
+    ],
+  },
+  {
+    group: 'Joining', title: 'Verify blocked: number already linked',
+    render: () => siteShell(`<div class="auth"><div class="authcard" style="width:440px">
+      <h2>This number is already linked to another account</h2>
+      <p>0151CS23042 was verified on 2 Sep 2026 by an account signed in with Google.</p>
+      <div class="steps"><i class="done"></i><i class="done"></i><i></i></div>
+      <div class="callout warn"><b>Only one account per enrollment number</b>If that account is yours, sign in with it instead. If someone else claimed your number, tell us and we will check with RGPV's record and release it.</div>
+      <span class="btn btn-primary lg btn-block">Sign in with Google instead</span>
+      <span class="btn btn-outline lg btn-block">This is my number, someone else used it</span>
+      <span class="btn btn-ghost lg btn-block">Try a different number</span>
+      <p class="hint">Reports are checked within two days. Until then neither account can post as this student.</p>
+    </div></div>`),
+    notes: [
+      ['Why blocked / Way forward', ['The existing check (enrollmentNumber unique, other user id) returns a toast today. The screen instead names when and how the other account was verified, and offers the three real exits.', 'Dispute = a Privacy/identity request in the admin queue; while open, both accounts get a "Verification under review" badge instead of Verified.']],
+      ['Data', ['Needs an IdentityDispute record (claimant, holder, status, resolvedBy). Not built yet.']],
+    ],
+  },
+  {
+    group: 'Joining', title: 'Verified: what just unlocked',
+    render: () => appShell(`
+      <div class="callout success"><b>Verified. Welcome, Priyanshi.</b>Your semester 4 result is saved. You are in the CS 2027 and UIT-RGPV groups.</div>
+      <div class="page-head"><div><h1>You're set up</h1><p>Three things worth doing in the next minute.</p></div></div>
+      <div class="card"><div class="card-b" style="display:flex;flex-direction:column;gap:14px">
+        <div class="lrow"><span class="avatar">1</span><div><div class="t">Fetch your other semesters</div><div class="s">Semesters 1 to 3 from RGPV, about 30 seconds. Then your CGPA trend appears.</div></div><span class="btn btn-primary sm">${ICON.refresh}Fetch 3 semesters</span></div>
+        <div class="lrow"><span class="avatar">2</span><div><div class="t">Share your semester 4 card</div><div class="s">SGPA 8.41 on a verified card with your name. Drop it in your batch group.</div></div><span class="btn btn-outline sm">${ICON.share}Share card</span></div>
+        <div class="lrow"><span class="avatar">3</span><div><div class="t">Add RGPV Connect to your home screen</div><div class="s">Results open offline and you get told the moment a semester is declared.</div></div><span class="btn btn-outline sm">${ICON.download}Add to home screen</span></div>
+      </div></div>
+      <div class="card"><div class="card-h"><h4>Your groups</h4><span class="hint">Joined automatically from your enrollment number</span></div><div class="card-b"><div class="cohorts">
+        <span class="cohort">${ICON.group}<span><b>CS 2027 · UIT-RGPV</b><br><span class="n">38 verified of about 120</span></span></span>
+        <span class="cohort">${ICON.building}<span><b>UIT-RGPV, Bhopal</b><br><span class="n">214 verified</span></span></span>
+      </div></div></div>`, { active: 'results' }),
+    notes: [
+      ['Layout', ['First signed-in screen. A success callout, then a numbered list because these really are in order of value: history, share, install.', 'The app shell shows the launch nav (Results, Notes, Papers, Messages, My profile) and lists Home feed, Network, Groups, Jobs and Market under "After launch", greyed with a Later tag.']],
+      ['Behaviour', ['"Fetch 3 semesters" calls the existing sync with the already-saved semester skipped.', 'The home-screen prompt uses the browser install prompt where available; elsewhere it shows the two-step instructions. PWA manifest and service worker not built yet.']],
+      ['Data', ['Group counts need member counts per cohort and a college headcount (seeded by hand per college for the density target). Not built yet.']],
+    ],
+  },
+
+  /* ─────────────────────────── My results ──────────────────────────────── */
+  {
+    group: 'My results', title: 'My results: history, trend, where you stand',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>My results</h1><p>${ME.enr} · ${ME.branch} · batch 2027</p></div><div class="row"><span class="btn btn-outline">${ICON.share}Share card</span><span class="btn btn-secondary">${ICON.refresh}Check for new results</span></div></div>
+      ${resultsTabs('me')}
+      <div class="tiles four">
+        <div class="tile"><span class="label">CGPA</span><span class="v">7.95</span><span class="s up">+0.16 this semester</span></div>
+        <div class="tile"><span class="label">Latest SGPA</span><span class="v">8.41</span><span class="s">Semester 4 · Jun 2025</span></div>
+        <div class="tile"><span class="label">Semesters</span><span class="v">4 <small style="font-size:13px;color:var(--text-2);font-weight:500">of 8</small></span><span class="s">All passed · 68 credits</span></div>
+        <div class="tile"><span class="label">In CS 2027 at UIT</span><span class="v">Top 18%</span><span class="s">Of 38 verified batchmates</span></div>
+      </div>
+      <div class="card"><div class="card-h"><h4>Semester by semester</h4><span class="hint">Solid: SGPA · dashed: CGPA</span></div><div class="card-b trend">${trendChart()}</div></div>
+      <div class="semlist">
+        ${[...SEMS].reverse().map((s) => `<div class="semrow"><b>Semester ${s.n}</b><span class="s">${s.session} · ${s.n === 4 ? '6 subjects · 17 credits' : '6 subjects'}</span>${badge('Pass', 'success')}<span class="g">${s.sgpa.toFixed(2)}<small>SGPA</small></span><span class="g">${s.cgpa.toFixed(2)}<small>CGPA</small></span></div>`).join('')}
+        <div class="semrow wait"><b>Semester 5</b><span class="s">Exams Nov to Dec 2026 · result expected Jan to Feb</span>${badge('Not declared', 'gray', 'clock')}<span class="g" style="color:var(--text-2)">—</span><span class="btn btn-outline sm">${ICON.bell}Tell me</span></div>
+      </div>`, { active: 'results', wide: true }),
+    notes: [
+      ['Layout', ['Summary first (four tiles), then the trend, then one row per semester with the newest on top. Rows open the full subject table in place.', 'Tabs under the title keep Look up, My results and SGPA calculator as one Results area, like the current ResultsNav.']],
+      ['Data', ['Tiles and rows come from ResultRecord (sgpa, cgpa, status, payload). The chart is an inline SVG on one 6 to 10 scale with room for semesters 5 to 8.', '"Top 18%" is a branch-and-batch percentile over verified batchmates\' latest CGPA. It is opt-in and only shown when the cohort has at least 20 verified members, so a small cohort cannot identify anyone. Not built yet.']],
+      ['Behaviour', ['"Check for new results" runs the existing sync: semesters already marked Pass or Fail are skipped, so a repeat check costs nothing. "Tell me" subscribes to the semester 5 results-day push.']],
+    ],
+  },
+  {
+    group: 'My results', title: 'Fetching semesters: progress and a partial failure',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>My results</h1><p>${ME.enr} · ${ME.branch} · batch 2027</p></div><span class="btn btn-disabled" title="A check is already running">${ICON.refresh}Checking…</span></div>
+      ${resultsTabs('me')}
+      <div class="card"><div class="card-h"><h4>Fetching from RGPV's portal</h4><span class="hint">2 of 3 done · about 15 s left</span></div><div class="card-b" style="display:flex;flex-direction:column;gap:12px">
+        <div class="progress"><i style="width:66%"></i></div>
+        <div class="checklist">
+          <div class="check ok">${ICON.checkCircle}<span><b>Semester 4</b> · already saved, skipped</span></div>
+          <div class="check ok">${ICON.checkCircle}<span><b>Semester 3</b> · SGPA 8.10 · saved</span></div>
+          <div class="check ok">${ICON.checkCircle}<span><b>Semester 2</b> · SGPA 7.85 · saved</span></div>
+          <div class="check wait">${ICON.clock}<span><b>Semester 1</b> · asking the portal (captcha, second try)</span></div>
+        </div>
+        <p class="hint" style="margin:0">Each semester is a separate fetch and takes 5 to 15 seconds. You can leave this page; what is saved stays saved.</p>
+      </div></div>
+      <div class="callout warn"><b>Semester 1 could not be fetched this time</b>RGPV's portal rejected three attempts in 45 seconds. Semesters 2 to 4 are saved. <span class="link">Try semester 1 again</span> or come back later; nothing else is affected.</div>
+      <div class="tiles four">
+        <div class="tile"><span class="label">CGPA</span><span class="v">7.95</span><span class="s">From 3 of 4 semesters so far</span></div>
+        <div class="tile"><span class="label">Latest SGPA</span><span class="v">8.41</span><span class="s">Semester 4</span></div>
+        <div class="tile"><span class="label">Semesters</span><span class="v">3 <small style="font-size:13px;color:var(--text-2);font-weight:500">of 8</small></span><span class="s">1 still to fetch</span></div>
+        <div class="tile"><span class="label">In CS 2027 at UIT</span><span class="v">—</span><span class="s">Needs all declared semesters</span></div>
+      </div>`, { active: 'results', wide: true }),
+    notes: [
+      ['Behaviour', ['The sync already fetches four semesters at once and keeps whatever succeeded. The screen shows that honestly: one line per semester with saved, skipped, in progress or failed, and the button disabled while it runs.', 'A failed semester gets its own retry link; nothing re-fetches the ones that worked.']],
+      ['Data', ['Progress needs per-semester events from the Server Action (today it returns one summary at the end). Either stream it or poll a sync-status row. Not built yet.', 'The CGPA tile says how many semesters it is based on while some are missing, and the percentile hides until all declared semesters are in.']],
+    ],
+  },
+  {
+    group: 'My results', title: 'Share card',
+    render: () => `<div class="rel">${appShell(`
+      <div class="page-head"><div><h1>My results</h1><p>${ME.enr} · ${ME.branch} · batch 2027</p></div></div>
+      ${resultsTabs('me')}
+      <div class="tiles four"><div class="tile"><span class="label">CGPA</span><span class="v">7.95</span></div><div class="tile"><span class="label">Latest SGPA</span><span class="v">8.41</span></div><div class="tile"><span class="label">Semesters</span><span class="v">4</span></div><div class="tile"><span class="label">In CS 2027</span><span class="v">Top 18%</span></div></div>`, { active: 'results', wide: true })}
+      <div class="overlay"><div class="dialog" style="width:720px"><div class="grid2" style="grid-template-columns:auto 1fr;gap:24px">
+        ${shareCard()}
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div><h3>Share your semester 4 card</h3><p>Your name, SGPA and CGPA, marked as verified. The card links to rgpvconnect.in so friends can check their own result.</p></div>
+          <div class="field"><label>What's on the card</label>
+            <div class="row"><span class="checkbox on">${ICON.check}</span><span>SGPA 8.41</span></div>
+            <div class="row"><span class="checkbox on">${ICON.check}</span><span>CGPA 7.95 and the change</span></div>
+            <div class="row"><span class="checkbox">&nbsp;</span><span>Rank in batch (Top 18%)</span></div>
+          </div>
+          <span class="btn btn-primary lg btn-block">${ICON.share}Share to WhatsApp</span>
+          <div class="row"><span class="btn btn-outline" style="flex:1">${ICON.download}Save image</span><span class="btn btn-outline" style="flex:1">${ICON.copy}Copy link</span></div>
+          <p class="hint">Anyone with the link sees the card and a "check your result" button. Your subject grades are never on it.</p>
+        </div>
+      </div></div></div>
+    </div>`,
+    notes: [
+      ['Layout', ['A dialog with the live card on the left and the choices on the right. The card is 360 wide with a brand gradient, big SGPA, name, cohort line, "Verified result" and the domain, so it reads at WhatsApp thumbnail size.']],
+      ['Behaviour', ['"Share to WhatsApp" opens the WhatsApp share link with the card image URL and one line of text. The link opens a public page that shows the card and the lookup form: this is the acquisition loop in the launch doc.', 'Rank is off by default; it only becomes available once the cohort has 20 or more verified members.']],
+      ['Data', ['Card image is generated server-side (an OG image route keyed by a share token, not by enrollment number, so it cannot be enumerated). Not built yet.']],
+    ],
+  },
+  {
+    group: 'My results', title: 'SGPA calculator and what you need next',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>Results</h1><p>Plan the next semester from where you are.</p></div></div>
+      ${resultsTabs('calc')}
+      <div class="grid2">
+        <div class="card"><div class="card-h"><h4>Semester 5 · what-if</h4><span class="hint">RGPV 10-point scale</span></div><div class="card-b" style="display:flex;flex-direction:column;gap:10px">
+          <div class="table-wrap"><table class="table"><thead><tr><th>Subject</th><th class="r">Credits</th><th class="r">Grade</th></tr></thead><tbody>
+            ${[['CS501', 'Theory of Computation', 4, 'A'], ['CS502', 'Database Management Systems', 3, 'A'], ['CS503', 'Computer Networks', 3, 'B+'], ['CS504', 'Machine Learning (elective)', 3, 'A+'], ['CS505', 'DBMS Lab', 2, 'A'], ['CS506', 'Minor project', 2, 'A']].map(([c, n, cr, g]) => `<tr><td><b>${c}</b> <span class="hint">· ${n}</span></td><td class="r"><span class="input sm filled" style="height:30px;width:56px;display:inline-flex;justify-content:flex-end">${cr}</span></td><td class="r"><span class="input filled" style="height:30px;width:76px;display:inline-flex;justify-content:space-between">${g} ${ICON.chevDown}</span></td></tr>`).join('')}
+          </tbody></table></div>
+          <div class="row between"><span class="btn btn-outline sm">${ICON.plus}Add subject</span><span class="hint">17 credits · subjects pre-filled from the CS semester 5 syllabus</span></div>
+        </div></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card"><div class="card-b" style="display:flex;flex-direction:column;gap:6px"><span class="label">If you get these grades</span><div class="row" style="align-items:baseline;gap:10px"><span style="font-size:34px;font-weight:700" class="num">8.82</span><span class="hint">SGPA semester 5</span></div><div class="hint">CGPA would move from <b>7.95</b> to <b>8.12</b> after 5 semesters.</div></div></div>
+          <div class="card"><div class="card-h"><h4>Target</h4></div><div class="card-b" style="display:flex;flex-direction:column;gap:10px">
+            <div class="whatif"><div class="field"><label>CGPA you want</label><div class="input filled">8.25</div></div><div class="field"><label>By the end of</label><div class="input filled">Semester 6 ${ICON.chevDown}</div></div></div>
+            <div class="callout brand"><b>You need an average SGPA of 8.86 in semesters 5 and 6</b>That is about an A in every subject with one A+. Your best so far is 8.41.</div>
+          </div></div>
+        </div>
+      </div>`, { active: 'results', wide: true }),
+    notes: [
+      ['Layout', ['Replaces the bare credits-and-grade rows with the real next-semester subjects pre-filled from the catalogue, so the calculator starts useful instead of empty.', 'Right column answers the two questions people actually have: what SGPA these grades give, and what they need for a target CGPA.']],
+      ['Data', ['Arithmetic: 8.86 = (8.25 × 6 − 31.78) ÷ 2, where 31.78 is the sum of the four known SGPAs. Uses equal semester weights until credits per semester are in the catalogue.', 'Subject rows need credits in the Subject table for every branch and semester. Not built yet; until then the calculator starts with blank rows as today.']],
+    ],
+  },
+  {
+    group: 'My results', title: 'Results day: told the moment it is out',
+    render: () => appShell(`
+      <div class="callout brand" style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><div><b>Semester 4 results are out</b>Declared by RGPV at 11:20 am today. Your result was fetched at 11:24 am.</div><span class="btn btn-primary">${ICON.share}Share your card</span></div>
+      <div class="page-head"><div><h1>My results</h1><p>${ME.enr} · ${ME.branch} · batch 2027</p></div></div>
+      ${resultsTabs('me')}
+      <div class="tiles four">
+        <div class="tile"><span class="label">CGPA</span><span class="v">7.95</span><span class="s up">+0.16 this semester</span></div>
+        <div class="tile"><span class="label">Semester 4 SGPA</span><span class="v">8.41</span><span class="s up">Your best so far</span></div>
+        <div class="tile"><span class="label">Batch so far</span><span class="v">31 <small style="font-size:13px;color:var(--text-2);font-weight:500">of 38</small></span><span class="s">Batchmates with results fetched</span></div>
+        <div class="tile"><span class="label">In CS 2027 at UIT</span><span class="v">Top 18%</span><span class="s">Updates as batchmates fetch</span></div>
+      </div>
+      <div class="card"><div class="card-h"><h4>CS 2027 · UIT-RGPV · semester 4</h4><span class="hint">Only people who turned on "show me on the board"</span></div><div class="card-b tight">
+        <div class="table-wrap"><table class="table"><thead><tr><th>#</th><th>Student</th><th class="r">SGPA</th><th class="r">CGPA</th></tr></thead><tbody>
+          ${[[1, 'Aditya Jain', 9.24, 8.90], [2, 'Sneha Patel', 9.06, 8.71], [3, 'Kunal Mishra', 8.88, 8.40], [7, 'Priyanshi Rathore (you)', 8.41, 7.95]].map(([r, n, s, c]) => `<tr ${r === 7 ? 'style="background:var(--primary-soft)"' : ''}><td class="num">${r}</td><td><b>${n}</b></td><td class="r">${s.toFixed(2)}</td><td class="r">${c.toFixed(2)}</td></tr>`).join('')}
+        </tbody></table></div>
+        <div class="row between" style="margin-top:10px"><span class="hint">Showing 4 of 22 on the board</span><span class="row"><span class="checkbox on">${ICON.check}</span><span class="hint">Show me on the board</span></span></div>
+      </div></div>`, { active: 'results', wide: true }),
+    notes: [
+      ['Behaviour', ['When the admin triggers the results-day blast (admin frame), every subscribed student in that semester gets a push; opening it lands here with the result already fetched in the background.', 'The board is opt-in per person and per semester. Off by default; the checkbox is the only switch and it says exactly what it does.']],
+      ['Data', ['Board rows come from ResultRecord joined to users with the opt-in flag, scoped to branch + batch + college. Needs a showOnBoard flag and the push subscription table. Not built yet.']],
+      ['Open question', ['Should the board exist at all at launch? The strategy doc lists leaderboards as a results-day engagement loop; the risk is people feeling exposed. Proposed: ship opt-in only, review after the first results day.']],
+    ],
+  },
+
+  /* ─────────────────────────── Notes & papers ──────────────────────────── */
+  {
+    group: 'Notes & papers', title: 'Browse notes by subject',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>Notes</h1><p>Shared by verified RGPV students. Your branch and semester are picked for you.</p></div><span class="btn btn-primary">${ICON.upload}Upload notes</span></div>
+      <div class="crumbs"><span>B.Tech</span>${ICON.chevRight.replace('<svg', '<svg width="12" height="12" style="stroke:var(--rule)"')}<span>Computer Science</span>${ICON.chevRight.replace('<svg', '<svg width="12" height="12" style="stroke:var(--rule)"')}<b>Semester 5</b><span class="link" style="margin-left:8px">Change</span></div>
+      <div class="hscroll"><span class="tab on">All subjects</span><span class="tab">CS501 Theory of Computation</span><span class="tab">CS502 DBMS</span><span class="tab">CS503 Networks</span><span class="tab">CS504 Machine Learning</span></div>
+      <div class="resgrid">
+        ${[
+          ['CS502 · Unit 1 to 3 · ER model, normalisation, SQL', 'Rohan Verma', 'CS 2026', '4.8', 64, 312, 'PDF · 42 pages'],
+          ['CS501 · Full syllabus · automata, grammars, Turing machines', 'Aditya Jain', 'CS 2027', '4.6', 38, 212, 'PDF · 61 pages'],
+          ['CS503 · Unit 2 · data link layer, with solved numericals', 'Sneha Patel', 'CS 2027', '4.5', 21, 140, 'PDF · 18 pages'],
+          ['CS504 · Unit 1 · regression and gradient descent, handwritten', 'Kunal Mishra', 'CS 2027', '4.1', 12, 88, 'PDF · 24 pages'],
+        ].map(([t, who, c, r, n, d, f]) => `<div class="res"><div class="t">${t}</div><div class="m"><span class="stars"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></span><span class="num">${r} (${n})</span><span class="sep">·</span><span>${ICON.download}${d}</span><span class="sep">·</span><span>${f}</span></div><div class="row between"><span class="row" style="gap:6px"><span class="avatar sm">${who.split(' ').map((w) => w[0]).join('')}</span><span class="hint">${who} · ${c} ${badge('Verified', 'verified')}</span></span><span class="btn btn-outline sm">Open</span></div></div>`).join('')}
+      </div>
+      <div class="row between"><span class="hint">Showing 4 of 17 for semester 5</span><span class="link">Show more</span></div>`, { active: 'notes', wide: true }),
+    notes: [
+      ['Layout', ['Breadcrumb states the course, branch and semester that were picked from the enrollment number; "Change" opens the catalogue picker. Subject filters scroll sideways.', 'Each card: what it covers in one line, rating with count, downloads, file size, and who shared it with their verified badge.']],
+      ['Behaviour', ['Only approved resources are listed (ModStatus APPROVED, as today). Open shows the PDF in a viewer with Download and Rate; rating is one tap, one per person.', 'Signed-out people can browse and open; upload and rating need a verified account.']],
+      ['Data', ['Download counts are new (Resource.downloadCount). Files go to object storage with signed URLs; today pdfUrl is a bare string. Not built yet.']],
+    ],
+  },
+  {
+    group: 'Notes & papers', title: 'Previous-year papers',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>Papers</h1><p>End-semester question papers, by subject and year.</p></div><span class="btn btn-primary">${ICON.upload}Upload a paper</span></div>
+      <div class="crumbs"><span>B.Tech</span>${ICON.chevRight.replace('<svg', '<svg width="12" height="12" style="stroke:var(--rule)"')}<span>Computer Science</span>${ICON.chevRight.replace('<svg', '<svg width="12" height="12" style="stroke:var(--rule)"')}<b>Semester 5</b><span class="link" style="margin-left:8px">Change</span></div>
+      <div class="card"><div class="card-h"><h4>CS502 · Database Management Systems</h4><span class="hint">5 papers</span></div><div class="card-b tight"><div class="table-wrap"><table class="table"><thead><tr><th>Exam</th><th>Shared by</th><th class="r">Pages</th><th class="r"></th></tr></thead><tbody>
+        ${[['Jun 2026 · end semester', 'Rohan Verma', 4], ['Dec 2025 · end semester', 'Rohan Verma', 4], ['Jun 2025 · end semester', 'Sneha Patel', 3], ['Dec 2024 · end semester', 'Admin', 4], ['Jun 2024 · end semester', 'Admin', 4]].map(([e, w, p]) => `<tr><td><b>${e}</b></td><td><span class="hint">${w}</span></td><td class="r">${p}</td><td class="r"><span class="link">Open</span></td></tr>`).join('')}
+      </tbody></table></div></div></div>
+      <div class="card"><div class="card-h"><h4>CS501 · Theory of Computation</h4><span class="hint">3 papers</span></div><div class="card-b tight"><div class="table-wrap"><table class="table"><tbody>
+        ${[['Jun 2026 · end semester', 'Aditya Jain', 4], ['Dec 2025 · end semester', 'Admin', 4], ['Jun 2025 · end semester', 'Admin', 3]].map(([e, w, p]) => `<tr><td><b>${e}</b></td><td><span class="hint">${w}</span></td><td class="r">${p}</td><td class="r"><span class="link">Open</span></td></tr>`).join('')}
+      </tbody></table></div></div></div>
+      <div class="empty"><div class="ico">${ICON.paper}</div><b>No papers for CS504 Machine Learning yet</b><span>It is a new elective. If you sat it, you can upload the paper from the exam.</span></div>`, { active: 'papers', wide: true }),
+    notes: [
+      ['Layout', ['Papers are a table per subject, newest exam first, because the year is what people scan for. Notes stay as cards because the description matters there.', 'A subject with nothing shows its own empty line, not an error, with the upload prompt.']],
+      ['Data', ['Papers need an exam session field (Resource.session, e.g. "Jun 2026") and the paper itself is a scan or photo set. Seed the first batch from the maintainers so week-one browsing is not empty (launch doc).']],
+    ],
+  },
+  {
+    group: 'Notes & papers', title: 'Upload and review status',
+    render: () => `<div class="rel">${appShell(`
+      <div class="page-head"><div><h1>My uploads</h1><p>What you shared and where it is in review.</p></div><span class="btn btn-primary">${ICON.upload}Upload notes</span></div>
+      <div class="list">
+        <div class="lrow"><span class="avatar">${ICON.notes.replace('<svg', '<svg width="16" height="16" style="stroke:var(--primary-soft-fg)"')}</span><div><div class="t">CS503 · Unit 2 · data link layer, with solved numericals ${badge('Published', 'success', 'check')}</div><div class="s">Approved by a reviewer on 3 Oct · 140 downloads · 4.5 (21)</div></div><span class="btn btn-outline sm">Open</span></div>
+        <div class="lrow"><span class="avatar">${ICON.notes.replace('<svg', '<svg width="16" height="16" style="stroke:var(--primary-soft-fg)"')}</span><div><div class="t">CS504 · Unit 2 · classification notes ${badge('Waiting for review', 'warn', 'clock')}</div><div class="s">Uploaded today, 2:10 pm · reviews usually take under two days · only you can see it until then</div></div><span class="btn btn-ghost sm">${ICON.trash}Remove</span></div>
+        <div class="lrow"><span class="avatar">${ICON.paper.replace('<svg', '<svg width="16" height="16" style="stroke:var(--primary-soft-fg)"')}</span><div><div class="t">CS502 · Jun 2026 paper ${badge('Not published', 'danger', 'x')}</div><div class="s">A reviewer said: "This is the Dec 2025 paper, already on the site." You can fix the exam session and send it again.</div></div><span class="btn btn-outline sm">Edit and resend</span></div>
+      </div>`, { active: 'notes', wide: true })}
+      <div class="overlay"><div class="dialog" style="width:520px">
+        <h3>Upload notes</h3>
+        <p>PDF or photos, up to 25 MB. Other verified students see them after a quick review.</p>
+        <div class="field"><label>Subject</label><div class="input filled">CS504 · Machine Learning · Semester 5 ${ICON.chevDown}</div><span class="hint">Picked from your branch and semester. Change if these are for another subject.</span></div>
+        <div class="field"><label>What they cover</label><div class="input filled">Unit 2 · classification, decision trees, k-NN</div></div>
+        <div class="field"><label>File</label><div class="input" style="height:72px;border-style:dashed;justify-content:center">${ICON.upload}<span>Drop a PDF here or choose files · ml-unit2.pdf chosen (3.1 MB)</span></div></div>
+        <div class="row"><span class="checkbox on">${ICON.check}</span><span class="hint">These are my own notes or I have permission to share them. Shared with my name on them.</span></div>
+        <div class="row end"><span class="btn btn-outline">Cancel</span><span class="btn btn-primary">${ICON.upload}Send for review</span></div>
+      </div></div>
+    </div>`,
+    notes: [
+      ['Behaviour', ['Upload creates a Resource with status Pending; the person sees it in My uploads with "Waiting for review" and can remove it. Approve publishes; reject stores a reason the uploader sees, and lets them edit and resend.', 'The copyright line is a real checkbox, kept with the upload record and the uploader\'s name.']],
+      ['Data', ['Needs Resource.reviewNote, reviewedById, reviewedAt and file upload to object storage. Not built yet. The review side is the admin "Review queue" frame.']],
+    ],
+  },
+
+  /* ─────────────────────────── Network (after launch) ──────────────────── */
+  {
+    group: 'Network (after launch)', title: 'Profile',
+    render: () => appShell(`
+      <div class="card"><div class="card-b" style="display:flex;flex-direction:column;gap:14px">
+        <div class="row" style="align-items:flex-start;gap:16px">
+          <span class="avatar lg">RV</span>
+          <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+            <div class="row wrap" style="gap:8px"><span style="font-size:22px;font-weight:700">Rohan Verma</span>${verified()}${badge('CS 2026', 'gray')}</div>
+            <span class="hint">UIT-RGPV, Bhopal · Computer Science & Engineering · final year</span>
+            <div class="row" style="gap:16px;margin-top:4px;font-size:13px"><span><b class="num">142</b> <span class="hint">followers</span></span><span><b class="num">38</b> <span class="hint">following</span></span><span><b class="num">6</b> <span class="hint">notes shared</span></span></div>
+          </div>
+          <div class="row"><span class="btn btn-primary sm">${ICON.plus}Follow</span><span class="btn btn-outline sm">${ICON.chat}Message</span></div>
+        </div>
+        <p style="margin:0;font-size:13px;line-height:20px">Final year CSE. Shared DBMS and networks notes; happy to help juniors with placement prep. Placed at a Bhopal startup, joining July 2026.</p>
+      </div></div>
+      <div class="subtabs"><span class="tab on">Notes · 6</span><span class="tab">Posts · 12</span><span class="tab">Groups · 3</span></div>
+      <div class="list">
+        ${[['CS502 · Unit 1 to 3 · ER model, normalisation, SQL', '4.8 (64) · 312 downloads'], ['CS503 · Full syllabus · computer networks', '4.7 (41) · 260 downloads']].map(([t, s]) => `<div class="lrow"><span class="avatar">${ICON.notes.replace('<svg', '<svg width="16" height="16" style="stroke:var(--primary-soft-fg)"')}</span><div><div class="t">${t}</div><div class="s">${s}</div></div><span class="btn btn-outline sm">Open</span></div>`).join('')}
+      </div>`, { active: 'profile' }),
+    notes: [
+      ['Layout', ['Identity first: name, the verified badge, the branch-and-batch tag derived from the enrollment number, the college line. Counts in one row. Tabs for what the person contributed.', 'Notes come before posts on a profile because at launch notes are what makes a senior worth following.']],
+      ['Privacy', ['Enrollment number and results are never on a public profile. The owner sees a "Your results are private" line in their own view.']],
+      ['Data', ['Everything here exists in the schema except "notes shared" count (count of approved Resources by uploader).']],
+    ],
+  },
+  {
+    group: 'Network (after launch)', title: 'Directory: your batch, with density honest',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>Network</h1><p>Verified students, grouped from their enrollment numbers.</p></div></div>
+      <div class="row wrap"><div class="input" style="width:280px">${ICON.search}<span>Search by name</span></div><span class="tab on">CS 2027 · my batch</span><span class="tab">All of UIT-RGPV</span><span class="tab">Seniors</span><span class="tab">Juniors</span></div>
+      <div class="callout brand" style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px"><div><b>38 of about 120 in CS 2027 are here</b>Groups get useful at about a third of the batch. Share your result card in the batch WhatsApp group and they join from there.</div><span class="btn btn-primary sm">${ICON.share}Invite my batch</span></div>
+      <div class="list">
+        ${[['Aditya Jain', 'AJ', 'CS 2027 · UIT-RGPV · shared 2 notes', true], ['Sneha Patel', 'SP', 'CS 2027 · UIT-RGPV · shared 1 note', true], ['Kunal Mishra', 'KM', 'CS 2027 · UIT-RGPV', false], ['Ananya Soni', 'AS', 'CS 2027 · UIT-RGPV', false], ['Harsh Tomar', 'HT', 'CS 2027 · UIT-RGPV', false]].map(([n, i, s, f]) => `<div class="person"><span class="avatar">${i}</span><div><b>${n} ${verified()}</b><span>${s}</span></div>${f ? `<span class="btn btn-secondary sm">${ICON.check}Following</span>` : `<span class="btn btn-outline sm">${ICON.plus}Follow</span>`}</div>`).join('')}
+      </div>
+      <div class="row between"><span class="hint">Showing 5 of 38</span><span class="link">Show more</span></div>`, { active: 'profile' }),
+    notes: [
+      ['Layout', ['Default scope is the person\'s own branch and batch, the group most likely to be useful. Scope chips: my batch, whole college, seniors, juniors. University-wide scope is dropped (strategy doc: never reaches density).']],
+      ['Behaviour', ['The density callout is the growth tactic in the product: it shows verified count against the batch size and the one action that grows it. Hidden once the batch passes a third.']],
+      ['Data', ['Batch size is seeded by hand per college, branch and year (no official source). Needs a CohortSize table. Not built yet.']],
+    ],
+  },
+  {
+    group: 'Network (after launch)', title: 'College feed with a composer and reporting',
+    render: () => `<div class="rel">${appShell(`
+      <div class="page-head"><div><h1>Home</h1><p>Posts from UIT-RGPV. Only verified students can post.</p></div></div>
+      <div class="composer"><span class="avatar">${ME.initials}</span><div style="flex:1;display:flex;flex-direction:column;gap:8px"><div class="textarea">Ask your college something, or share what you found…</div><div class="row between"><span class="row"><span class="chip">${ICON.image}Photo</span><span class="chip on">${ICON.building}UIT-RGPV</span><span class="chip">CS 2027 only</span></span><span class="btn btn-primary sm">Post</span></div></div></div>
+      <div class="post"><div class="who"><span class="avatar">RV</span><div><b>Rohan Verma ${verified()}</b><span>CS 2026 · UIT-RGPV · 2 h ago</span></div><span class="iconbtn" style="margin-left:auto">${ICON.more}</span></div><p>Uploaded my full DBMS notes (units 1 to 5) under CS502. If something is unclear, DM me, I will add a page.</p><div class="acts"><span>${ICON.heart}24</span><span>${ICON.comment}6</span><span>${ICON.share}Share</span></div></div>
+      <div class="post"><div class="who"><span class="avatar">SP</span><div><b>Sneha Patel ${verified()}</b><span>CS 2027 · UIT-RGPV · 5 h ago</span></div><span class="iconbtn" style="margin-left:auto">${ICON.more}</span></div><p>Anyone from CS 2027 doing the TCS NQT this month? Looking for 2 people to practise with on Sundays.</p><div class="acts"><span>${ICON.heart}11</span><span>${ICON.comment}9</span><span>${ICON.share}Share</span></div></div>`, { active: 'profile' })}
+      <div class="overlay"><div class="dialog"><h3>Report Sneha Patel's post?</h3><p>A reviewer looks at it within a day. Sneha is not told who reported it.</p>
+        <div class="radio-list"><div><span class="radio on"></span>Not about college or studies</div><div><span class="radio"></span>Spam or selling something</div><div><span class="radio"></span>Harassment or abuse</div><div><span class="radio"></span>Someone's personal information</div></div>
+        <div class="textarea">Anything else the reviewer should know (optional)</div>
+        <div class="row end"><span class="btn btn-outline">Back</span><span class="btn btn-danger">${ICON.flag}Report</span></div></div></div>
+    </div>`,
+    notes: [
+      ['Layout', ['Scope is college by default, with a "CS 2027 only" chip for the batch cohort. Posts carry the verified badge and the batch tag so a reader knows who is talking.']],
+      ['Behaviour', ['Report is the one moderation path. It creates a Report with a reason; three reports hide the post until a reviewer decides (hidden posts say "Hidden while a reviewer looks at it" to the author). Not built yet, and the strategy doc wants it before the feed goes wide.']],
+      ['Open question', ['Launch with the feed hidden (launch doc) or show it to the first college only? Proposed: hidden until UIT-RGPV passes 30% verified, then college scope only.']],
+    ],
+  },
+  {
+    group: 'Network (after launch)', title: 'Messages',
+    render: () => appShell(`<div class="two">
+      <div class="threads">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border)"><div class="input">${ICON.search}<span>Search messages</span></div></div>
+        ${[['RV', 'Rohan Verma', 'Sure, I will add a page on indexing tonight.', '2:14 pm', true, true], ['SP', 'Sneha Patel', 'Sunday 10 am at the library works?', 'Yesterday', false, false], ['AJ', 'Aditya Jain', 'Thanks for the TOC notes!', 'Mon', false, false]].map(([i, n, m, t, on, unread]) => `<div class="thread ${on ? 'on' : ''}"><span class="avatar">${i}</span><div><b>${n}</b><span>${m}</span></div><div style="text-align:right"><span class="hint">${t}</span>${unread ? '<span class="dot" style="margin:4px 0 0 auto;display:block"></span>' : ''}</div></div>`).join('')}
+      </div>
+      <div class="convo">
+        <div class="head"><span class="avatar">RV</span><div><b>Rohan Verma</b> ${verified()}<div class="hint">CS 2026 · UIT-RGPV</div></div><span class="btn btn-ghost sm" style="margin-left:auto">${ICON.user}Profile</span></div>
+        <div class="msgs">
+          <div class="msg me">Hi Rohan, your DBMS notes are great. Unit 4 on indexing is a bit thin though, do you have more?<span class="ts">1:58 pm</span></div>
+          <div class="msg them">Hey! Yes, I skipped B+ trees because I ran out of time. Will add a page.<span class="ts">2:10 pm</span></div>
+          <div class="msg them">Sure, I will add a page on indexing tonight.<span class="ts">2:14 pm · read</span></div>
+        </div>
+        <div class="foot"><div class="input" style="flex:1">Write a message…</div><span class="btn btn-primary">${ICON.send}Send</span></div>
+      </div>
+    </div>`, { active: 'messages', full: true }),
+    notes: [
+      ['Layout', ['Two panes on desktop (thread list and the conversation), the same list-then-thread on phones. The read receipt is a word under the last message, as the schema\'s lastReadAt allows.']],
+      ['Behaviour', ['Only verified students can start a conversation; anyone can reply. Messages are kept in the launch MVP because "DM me on RGPV Connect" is the invite line (launch doc).', 'Block and report from the header menu; a blocked person cannot start a new thread. Not built yet.']],
+    ],
+  },
+  {
+    group: 'Network (after launch)', title: 'Notifications',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>Notifications</h1></div><span class="btn btn-outline sm">Mark all read</span></div>
+      <div class="list">
+        <div class="lrow unread"><span class="avatar" style="background:var(--primary);color:var(--surface)">${ICON.zap.replace('<svg', '<svg width="16" height="16" style="stroke:currentColor"')}</span><div><div class="t">Semester 4 results are out</div><div class="s">Your result was fetched. SGPA 8.41. Today, 11:24 am</div></div><span class="btn btn-primary sm">${ICON.share}Share card</span></div>
+        <div class="lrow unread"><span class="avatar">RV</span><div><div class="t">Rohan Verma sent you a message</div><div class="s">"Sure, I will add a page on indexing tonight." · 2:14 pm</div></div><span class="btn btn-outline sm">Reply</span></div>
+        <div class="lrow"><span class="avatar" style="background:var(--success-soft)">${ICON.checkCircle.replace('<svg', '<svg width="16" height="16" style="stroke:var(--badge-success-fg)"')}</span><div><div class="t">Your CS503 notes were published</div><div class="s">Approved by a reviewer · 3 Oct</div></div><span class="btn btn-outline sm">Open</span></div>
+        <div class="lrow"><span class="avatar">AJ</span><div><div class="t">Aditya Jain started following you</div><div class="s">CS 2027 · UIT-RGPV · Mon</div></div><span class="btn btn-outline sm">Follow back</span></div>
+      </div>
+      <div class="card"><div class="card-h"><h4>Tell me when</h4></div><div class="card-b" style="display:flex;flex-direction:column;gap:10px">
+        <div class="row between"><span>A new semester result is declared for my batch</span><span class="checkbox on">${ICON.check}</span></div>
+        <div class="row between"><span>Someone messages me</span><span class="checkbox on">${ICON.check}</span></div>
+        <div class="row between"><span>My notes are reviewed</span><span class="checkbox on">${ICON.check}</span></div>
+        <div class="row between"><span>Likes and follows</span><span class="checkbox"></span></div>
+        <p class="hint" style="margin:0">Notifications arrive on this device once you allow them. Nothing is sent by SMS.</p>
+      </div></div>`, { active: 'profile' }),
+    notes: [
+      ['Layout', ['Unread rows are tinted (as today). Each row has one action that fits the event, so the list is a to-do, not a log.']],
+      ['Data', ['Two new notification types: RESULT_DECLARED and RESOURCE_REVIEWED. Push delivery needs a PushSubscription table and web push with a self-hosted key pair. Not built yet.']],
+    ],
+  },
+
+  /* ─────────────────────────── Campus (after launch) ───────────────────── */
+  {
+    group: 'Campus (after launch)', title: 'Jobs and internships',
+    render: () => appShell(`
+      <div class="page-head"><div><h1>Jobs and internships</h1><p>Posted by verified recruiters and placement cells. Free to post, free to apply.</p></div><span class="btn btn-disabled" title="Only verified recruiters and placement cells can post">${ICON.plus}Post a job</span></div>
+      <div class="row wrap"><span class="tab on">All</span><span class="tab">Internships</span><span class="tab">Full time</span><span class="tab">Part time</span><span class="sep">|</span><span class="tab on">CS</span><span class="tab">Final year only</span><span class="tab">Remote</span></div>
+      <div class="list">
+        ${[['IS', 'Software engineer intern', 'Infosys Springboard · Bhopal · Internship · ₹15,000 a month · CS, IT · 2027 batch', 'Closes 24 Oct', 'Posted by UIT placement cell'], ['ZE', 'Junior backend developer', 'Zestify · Indore · Full time · ₹4.2 LPA · CS, IT, EC · 2026 batch', 'Closes 31 Oct', 'Posted by a verified recruiter'], ['CT', 'Data analyst trainee', 'Capital Trade · Remote · Part time · ₹8,000 a month · any branch', 'Closes 15 Oct', 'Posted by a verified recruiter']].map(([l, t, m, c, by]) => `<div class="jobcard"><span class="logo">${l}</span><div><b>${t}</b><div class="m"><span>${m}</span></div><div class="m"><span>${by}</span><span class="sep">·</span><span>${c}</span></div></div><span class="btn btn-primary sm">${ICON.ext}Apply</span></div>`).join('')}
+      </div>`, { active: 'profile', wide: true }),
+    notes: [
+      ['Behaviour', ['Posting is gated to the RECRUITER and ADMIN roles (as today) and the button says so instead of disappearing. Apply opens the recruiter\'s link in a new tab; we record the click, nothing else.', 'Filters default to the person\'s branch and show "Final year only" for a last-year student.']],
+      ['Data', ['Needs JobPost.closesAt, branches and batches arrays, and a "posted by" label that distinguishes placement cell from recruiter. Not built yet. No payment, no featured posts.']],
+    ],
+  },
+  {
+    group: 'Campus (after launch)', title: 'Campus market: a listing',
+    render: () => `<div class="rel">${appShell(`
+      <div class="page-head"><div><h1>Market</h1><p>Buy and sell inside UIT-RGPV. Everyone here is a verified student.</p></div><span class="btn btn-primary">${ICON.plus}Sell something</span></div>
+      <div class="hscroll"><span class="tab on">All</span><span class="tab">Books</span><span class="tab">Electronics</span><span class="tab">Hostel</span><span class="tab">Notes</span><span class="tab">Other</span></div>
+      <div class="grid3">
+        ${[['Introduction to Algorithms (CLRS), 3rd ed.', '₹650', 'Books · Sneha Patel · Hostel 4'], ['Casio fx-991EX calculator', '₹900', 'Electronics · Kunal Mishra · Hostel 2'], ['Study table and chair', '₹1,200', 'Hostel · Ananya Soni · Hostel 3'], ['Arduino Uno kit with sensors', '₹1,500', 'Electronics · Harsh Tomar · Day scholar'], ['Operating Systems (Galvin), 9th ed.', '₹400', 'Books · Aditya Jain · Hostel 4'], ['Mattress, single, 6 months old', '₹700', 'Hostel · Rohan Verma · Hostel 1']].map(([t, p, m]) => `<div class="listing"><div class="img">${ICON.image}</div><div class="bd"><b>${t}</b><span class="price">${p}</span><span class="m">${m}</span></div></div>`).join('')}
+      </div>`, { active: 'profile', wide: true })}
+      <div class="overlay"><div class="dialog" style="width:640px"><div class="grid2" style="grid-template-columns:240px 1fr;gap:20px">
+        <div class="listing"><div class="img" style="height:200px">${ICON.image}</div></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div><h3>Introduction to Algorithms (CLRS), 3rd ed.</h3><div class="price" style="font-size:22px;font-weight:700" class="num">₹650</div></div>
+          <p>Hardcover, a few pencil marks in chapters 2 to 4. Used for CS401. Pick up from Hostel 4.</p>
+          <div class="person" style="padding:10px 12px"><span class="avatar">SP</span><div><b>Sneha Patel ${verified()}</b><span>CS 2027 · UIT-RGPV · on RGPV Connect since Aug 2026 · 2 items sold</span></div></div>
+          <span class="btn btn-primary lg btn-block">${ICON.chat}Message Sneha</span>
+          <div class="row"><span class="btn btn-outline" style="flex:1">${ICON.flag}Report</span><span class="btn btn-ghost" style="flex:1">Close</span></div>
+          <p class="hint">Pay in person. RGPV Connect does not take payments or a cut, so never pay online before you have the item.</p>
+        </div>
+      </div></div></div>
+    </div>`,
+    notes: [
+      ['Behaviour', ['A listing opens as a dialog with one action: message the seller. The seller marks it sold from their own listing, which greys it in the grid for a week then hides it.', 'Trust line on the seller: verified, time on the platform, items sold. The strategy doc calls this the trust score; this is the plain version.']],
+      ['Data', ['Prices are stored as integer paise (priceCents) and shown with Indian grouping. Needs soldCount per user and a photo upload. Not built yet.']],
+    ],
+  },
+
+  /* ─────────────────────────── Phone ───────────────────────────────────── */
+  {
+    group: 'Phone', title: 'Phone: look up, result, share',
+    phone: true,
+    render: () => {
+      const p1 = phone(ptop('Results', 'RGPV Connect'), `
+        <div class="hscroll"><span class="tab on">Look up</span><span class="tab">My results</span><span class="tab">Calculator</span></div>
+        <div class="pcard"><div class="field"><label>Enrollment number</label><div class="input lg filled">${ICON.cap}<span>0151CS23042</span></div></div><div class="field"><label>Semester</label><div class="input lg filled"><span>Latest · semester 4</span><span style="margin-left:auto">${ICON.chevDown}</span></div></div><span class="btn btn-primary lg btn-block">${ICON.search}Check result</span><span class="hint">About 10 seconds. No sign-up needed.</span></div>
+        <div class="pcard" style="background:var(--surface-subtle)"><b>Recent</b><div class="row between"><span class="hint">0151CS23042 · semester 3</span><span class="link">Open</span></div><div class="row between"><span class="hint">0151CS23041 · semester 4</span><span class="link">Open</span></div></div>`, { tabs: 'results' });
+      const p2 = phone(ptop('Semester 4', '0151CS23042 · Jun 2025', { back: true, right: badge('Pass', 'success', 'check') }), `
+        <div class="summary"><div><span class="label">${ME.name}</span><div class="big">8.41 <small>SGPA</small></div></div><div class="facts"><div><span>CGPA</span><b>7.95 · up 0.16</b></div><div><span>Credits</span><b>17 · all passed</b></div></div></div>
+        <div class="acc"><div class="acc-h"><span>Subjects (6)</span>${ICON.chevDown}</div><div class="acc-b">${SEM4.slice(0, 4).map(([c, n, cr, g]) => `<div class="row between"><span><b>${c}</b> <span class="hint">${n.length > 26 ? n.slice(0, 24) + '…' : n}</span></span><span class="grade ${g === 'A+' ? 'top' : ''}">${g}</span></div>`).join('')}<span class="link">Show all 6</span></div></div>
+        <div class="hint">Fetched from result.rgpv.ac.in just now</div>`, { foot: `<div class="btns"><span class="btn btn-outline">${ICON.share}Share</span><span class="btn btn-primary">${ICON.cap}Save to my results</span></div>`, tabs: 'results' });
+      const p3 = phone(ptop('Semester 4', '0151CS23042 · Jun 2025', { back: true }), `
+        <div class="summary"><div><span class="label">${ME.name}</span><div class="big">8.41 <small>SGPA</small></div></div></div>`, {
+        extra: `<div class="sheet-scrim"></div><div class="sheet"><div class="grab"></div><h3>Share your card</h3>
+          <div style="display:flex;justify-content:center;transform:scale(0.86);transform-origin:top center;height:190px">${shareCard()}</div>
+          <span class="btn btn-primary lg btn-block">${ICON.share}Share to WhatsApp</span>
+          <div class="row"><span class="btn btn-outline lg" style="flex:1">${ICON.download}Save image</span><span class="btn btn-outline lg" style="flex:1">${ICON.copy}Copy link</span></div>
+          <p>Sign in to put your name on it. Signed out, the card shows only the enrollment number.</p></div>` });
+      return p1 + p2 + p3;
+    },
+    notes: [
+      ['Layout', ['Bottom tabs are Results, Notes, Messages, Me, replacing today\'s Home, Network, Results, Market. Results is the first tab because it is the reason people open the app.', 'The result phone puts the SGPA summary first, subjects folded in an accordion, and two 44 px actions pinned at the bottom.']],
+      ['Behaviour', ['Recent lookups are kept on the device only (last five), so results day repeat checks are one tap.', 'Share opens a bottom sheet with the card preview and the WhatsApp action first.']],
+    ],
+  },
+  {
+    group: 'Phone', title: 'Phone: joining and verification',
+    phone: true,
+    render: () => {
+      const p1 = phone(ptop('Join RGPV Connect', ''), `
+        <div style="text-align:center;padding:8px 0 0"><div class="authcard" style="width:auto;border:0;padding:0"><div class="mark">${ICON.cap}</div><h2>Join RGPV Connect</h2><p>Sign in, then verify your enrollment number.</p></div></div>
+        <div class="steps"><i class="done"></i><i></i><i></i></div>
+        <div class="field"><label>Email</label><div class="input lg filled">${ICON.mail}<span>priyanshi.r@gmail.com</span></div></div>
+        <span class="btn btn-primary lg btn-block">Email me a sign-in link</span>
+        <span class="btn btn-outline lg btn-block">Continue with Google</span>
+        <span class="btn btn-disabled lg btn-block">Continue with phone · later</span>
+        <p class="hint" style="text-align:center">No password. The link works once and expires in 15 minutes.</p>`);
+      const p2 = phone(ptop('Verify your enrollment', 'Step 2 of 3', { back: true }), `
+        <div class="steps"><i class="done"></i><i class="done"></i><i></i></div>
+        <p class="hint" style="margin:0">We fetch one of your results from RGPV to prove the number is yours.</p>
+        <div class="field"><label>Enrollment number</label><div class="input lg filled">${ICON.cap}<span>0151CS23042</span></div></div>
+        <div class="row wrap" style="gap:6px"><span class="chip on">${ICON.building}UIT-RGPV</span><span class="chip on">Computer Science</span><span class="chip on">Batch 2027</span></div>
+        <div class="field"><label>A semester you have a result for</label><div class="input lg filled"><span>Semester 4 · Jun 2025</span><span style="margin-left:auto">${ICON.chevDown}</span></div></div>`, { foot: `<div class="btns" style="grid-template-columns:1fr"><span class="btn btn-primary">${ICON.search}Find my result</span></div><span class="hint" style="text-align:center">About 10 seconds. Nothing is saved until you confirm.</span>` });
+      const p3 = phone(ptop('Is this you?', 'Step 3 of 3', { back: true }), `
+        <div class="steps"><i class="done"></i><i class="done"></i><i class="done"></i></div>
+        <div class="check ok">${ICON.checkCircle}<span>Result found on RGPV's portal just now</span></div>
+        <div class="summary"><div><span class="label">Semester 4 · Jun 2025</span><div style="font-size:20px;font-weight:700">${ME.name}</div></div><div class="facts"><div><span>College</span><b>UIT-RGPV</b></div><div><span>Branch</span><b>CS · 2023 to 2027</b></div><div><span>SGPA</span><b>8.41</b></div><div><span>Status</span><b>Pass</b></div></div></div>
+        <div class="callout info"><b>Confirming links this number to your account</b>Your name becomes "${ME.name}" and you join the CS 2027 and UIT-RGPV groups.</div>`, { foot: `<div class="btns"><span class="btn btn-outline">Not me</span><span class="btn btn-primary">${ICON.check}Yes, that's me</span></div>` });
+      return p1 + p2 + p3;
+    },
+    notes: [
+      ['Layout', ['Three screens, one decision each. The step strip shows how far along the person is. Decoded chips appear under the number as it is typed.', 'The confirm screen uses the summary block (name, college, branch, SGPA) and the pinned Not me / Yes pair, destructive-looking action on the left.']],
+    ],
+  },
+  {
+    group: 'Phone', title: 'Phone: my results, fetching, install',
+    phone: true,
+    render: () => {
+      const p1 = phone(ptop('My results', '0151CS23042 · CS 2027', { right: `<span class="iconbtn">${ICON.share}</span>` }), `
+        <div class="install"><span class="ic">${ICON.download}</span><div><b>Add to home screen</b>Results open offline and you hear first when a semester is out.</div><span class="btn btn-primary sm">Add</span></div>
+        <div class="summary"><div><span class="label">CGPA after 4 semesters</span><div class="big">7.95 <small>up 0.16</small></div></div><div class="facts"><div><span>Latest SGPA</span><b>8.41 · sem 4</b></div><div><span>In CS 2027</span><b>Top 18%</b></div></div></div>
+        <div class="trend">${trendChart({ w: 340, h: 130 })}</div>
+        ${[...SEMS].reverse().slice(0, 2).map((s) => `<div class="pcard"><div class="row between"><b>Semester ${s.n}</b>${badge('Pass', 'success')}</div><div class="row between"><span class="hint">${s.session}</span><span class="num"><b>${s.sgpa.toFixed(2)}</b> <span class="hint">SGPA</span> · <b>${s.cgpa.toFixed(2)}</b> <span class="hint">CGPA</span></span></div></div>`).join('')}`, { tabs: 'results' });
+      const p2 = phone(ptop('My results', 'Checking RGPV\'s portal…'), `
+        <div class="pcard"><div class="row between"><b>Fetching 3 semesters</b><span class="hint">2 of 3 · 15 s left</span></div><div class="progress"><i style="width:66%"></i></div>
+          <div class="check ok">${ICON.checkCircle}<span>Semester 3 · 8.10 · saved</span></div>
+          <div class="check ok">${ICON.checkCircle}<span>Semester 2 · 7.85 · saved</span></div>
+          <div class="check wait">${ICON.clock}<span>Semester 1 · asking the portal</span></div>
+          <span class="hint">You can leave this screen. Saved semesters stay saved.</span></div>
+        <div class="callout warn"><b>Semester 1 did not come through</b>RGPV's portal rejected three attempts. Semesters 2 to 4 are saved. <span class="link">Try semester 1 again</span></div>
+        <div class="summary"><div><span class="label">CGPA from 3 of 4 semesters</span><div class="big">7.95</div></div></div>`, { tabs: 'results' });
+      const p3 = phone(ptop('My results', '0151CS23042 · CS 2027'), `
+        <div class="summary"><div><span class="label">CGPA after 4 semesters</span><div class="big">7.95 <small>up 0.16</small></div></div></div>
+        <div class="pcard"><div class="row between"><b>Semester 4</b>${badge('Pass', 'success')}</div><div class="row between"><span class="hint">Jun 2025</span><span class="num"><b>8.41</b> <span class="hint">SGPA</span></span></div></div>`, {
+        tabs: 'results',
+        extra: `<div class="toast">${ICON.checkCircle}<span>Added to your home screen. Results now open offline.</span></div>` });
+      return p1 + p2 + p3;
+    },
+    notes: [
+      ['Layout', ['The install prompt is a card at the top of My results, shown once after the first saved result (the value moment in the launch doc), never on the lookup page.', 'The trend chart is the same SVG at phone width; the semester rows are compact cards.']],
+      ['Behaviour', ['Fetch progress and the partial failure use the same words as desktop. The toast after install is past tense and says what changed.']],
+    ],
+  },
+  {
+    group: 'Phone', title: 'Phone: notes, a senior, a message',
+    phone: true,
+    render: () => {
+      const p1 = phone(ptop('Notes', 'CS · Semester 5', { right: `<span class="iconbtn">${ICON.upload}</span>` }), `
+        <div class="hscroll"><span class="tab on">All</span><span class="tab">CS501</span><span class="tab">CS502</span><span class="tab">CS503</span><span class="tab">CS504</span></div>
+        ${[['CS502 · Unit 1 to 3 · ER model, normalisation, SQL', '4.8 (64) · 312 downloads · 42 pages', 'Rohan Verma · CS 2026'], ['CS501 · Full syllabus · automata to Turing machines', '4.6 (38) · 212 downloads · 61 pages', 'Aditya Jain · CS 2027'], ['CS503 · Unit 2 · data link layer, solved numericals', '4.5 (21) · 140 downloads · 18 pages', 'Sneha Patel · CS 2027']].map(([t, m, w]) => `<div class="pcard"><b style="line-height:18px">${t}</b><span class="hint"><span class="stars"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></span> ${m}</span><div class="row between"><span class="hint">${w} ${badge('Verified', 'verified')}</span><span class="btn btn-outline sm">Open</span></div></div>`).join('')}`, { tabs: 'notes' });
+      const p2 = phone(ptop('Rohan Verma', 'CS 2026 · UIT-RGPV', { back: true }), `
+        <div class="row" style="gap:12px;align-items:center"><span class="avatar lg">RV</span><div><div class="row wrap" style="gap:6px"><b style="font-size:17px">Rohan Verma</b>${verified()}</div><span class="hint">Final year · 142 followers · 6 notes shared</span></div></div>
+        <p style="margin:0;font-size:13px;line-height:19px">Final year CSE. Shared DBMS and networks notes; happy to help juniors with placement prep.</p>
+        <div class="hscroll"><span class="tab on">Notes · 6</span><span class="tab">Posts · 12</span><span class="tab">Groups · 3</span></div>
+        <div class="pcard"><b>CS502 · Unit 1 to 3 · DBMS</b><span class="hint">4.8 (64) · 312 downloads</span></div>
+        <div class="pcard"><b>CS503 · Full syllabus · Networks</b><span class="hint">4.7 (41) · 260 downloads</span></div>`, { foot: `<div class="btns"><span class="btn btn-outline">${ICON.chat}Message</span><span class="btn btn-primary">${ICON.plus}Follow</span></div>`, tabs: 'me' });
+      const p3 = phone(ptop('Rohan Verma', 'CS 2026 · read 2:14 pm', { back: true }), `
+        <div class="msg me">Hi Rohan, your DBMS notes are great. Unit 4 on indexing is a bit thin though, do you have more?<span class="ts">1:58 pm</span></div>
+        <div class="msg them">Hey! Yes, I skipped B+ trees because I ran out of time. Will add a page.<span class="ts">2:10 pm</span></div>
+        <div class="msg them">Sure, I will add a page on indexing tonight.<span class="ts">2:14 pm</span></div>`, { foot: `<div class="row"><div class="input lg" style="flex:1">Write a message…</div><span class="btn btn-primary" style="height:44px;width:44px;padding:0">${ICON.send}</span></div>`, tabs: 'messages' });
+      return p1 + p2 + p3;
+    },
+    notes: [
+      ['Layout', ['Notes list, a senior\'s profile reached from a note, and the conversation that follows: the "DM me on RGPV Connect" loop from the launch doc in three screens.', 'Profile actions are pinned (Message left, Follow right). The message composer is pinned with a square send button.']],
+    ],
+  },
+
+  /* ─────────────────────────── Admin ───────────────────────────────────── */
+  {
+    group: 'Admin', title: 'Review queue: notes, papers and reported posts',
+    render: () => adminShell(`
+      <div class="page-head"><div><h1>Review queue</h1><p>7 waiting · oldest 2 days</p></div><div class="row"><span class="tab on">All (7)</span><span class="tab">Notes and papers (5)</span><span class="tab">Reported posts (2)</span></div></div>
+      <div class="grid2" style="grid-template-columns:1fr 1.3fr">
+        <div class="list">
+          ${[['CS504 · Unit 2 · classification notes', 'Priyanshi Rathore · CS 2027 · UIT · 3.1 MB · today 2:10 pm', 'warn', true], ['CS502 · Jun 2026 paper (resent)', 'Priyanshi Rathore · CS 2027 · UIT · 4 photos · today 2:40 pm', 'warn', false], ['Reported post · "Selling exam answers DM"', 'By Harsh Tomar · 3 reports: spam · yesterday', 'danger', false], ['CS501 · Unit 4 · pushdown automata', 'Aditya Jain · CS 2027 · UIT · 2 days ago', 'warn', false]].map(([t, s, tone, on]) => `<div class="lrow ${on ? 'unread' : ''}" style="grid-template-columns:1fr auto"><div><div class="t">${t}</div><div class="s">${s}</div></div>${badge(tone === 'danger' ? 'Reported' : 'Waiting', tone)}</div>`).join('')}
+        </div>
+        <div class="card"><div class="card-h"><h4>CS504 · Unit 2 · classification notes</h4><span class="hint">Uploaded today, 2:10 pm</span></div><div class="card-b" style="display:flex;flex-direction:column;gap:12px">
+          <div class="listing"><div class="img" style="height:180px">${ICON.notes.replace('<svg', '<svg width="28" height="28" style="stroke:var(--rule)"')}<span style="margin-left:8px">ml-unit2.pdf · 24 pages · preview</span></div></div>
+          <dl class="kv"><dt>Uploader</dt><dd>Priyanshi Rathore ${verified()} · CS 2027 · UIT-RGPV · 1 published before</dd><dt>Subject</dt><dd>CS504 Machine Learning · semester 5</dd><dt>Declared</dt><dd>Own notes, permission to share</dd></dl>
+          <div class="checklist"><div class="check ok">${ICON.checkCircle}<span>Not a duplicate of an existing CS504 upload</span></div><div class="check ok">${ICON.checkCircle}<span>No personal information found in the text</span></div><div class="check wait">${ICON.clock}<span>Matches the subject: check the first pages</span></div></div>
+          <div class="field"><label>Note to the uploader (shown if you don't publish)</label><div class="textarea">Why it was not published and what would fix it</div></div>
+          <div class="row end"><span class="btn btn-danger-outline">Don't publish</span><span class="btn btn-primary">${ICON.check}Publish</span></div>
+        </div></div>
+      </div>`, { active: 'review' }),
+    notes: [
+      ['Layout', ['Queue on the left, the item on the right, decision at the bottom: the same shape as the PMS consoles so it is familiar to build.', 'Automatic checks are listed as facts, not verdicts; the reviewer still opens the file.']],
+      ['Behaviour', ['Publish = Resource.status APPROVED and a notification to the uploader. Don\'t publish = REJECTED with the note, which the uploader sees in My uploads.', 'A reported post is hidden once it has three reports; the reviewer either restores it or removes it with a reason sent to the author. Repeat removals suspend posting for 30 days.']],
+      ['Data', ['Needs Report, review notes and reviewer stamps on Resource and Post, plus an ADMIN-only route group. Not built yet. Duplicate and PII checks are simple text matches at first.']],
+    ],
+  },
+  {
+    group: 'Admin', title: 'Results day: declare and send the blast',
+    render: () => `<div class="rel">${adminShell(`
+      <div class="page-head"><div><h1>Results day</h1><p>When RGPV declares a semester, fetch for everyone subscribed and tell them.</p></div></div>
+      <div class="grid2">
+        <div class="card"><div class="card-h"><h4>Declare a result</h4><span class="hint">Checked against the portal before sending</span></div><div class="card-b" style="display:flex;flex-direction:column;gap:12px">
+          <div class="row"><div class="field" style="flex:1"><label>Semester</label><div class="input filled">Semester 4 ${ICON.chevDown}</div></div><div class="field" style="flex:1"><label>Batch</label><div class="input filled">Admitted 2023 (batch 2027) ${ICON.chevDown}</div></div></div>
+          <div class="checklist"><div class="check ok">${ICON.checkCircle}<span>Portal returns semester 4 for 5 of 5 sample numbers from this batch</span></div><div class="check ok">${ICON.checkCircle}<span>Result worker healthy · captcha balance for about 8,000 fetches</span></div><div class="check ok">${ICON.checkCircle}<span>412 verified students in this batch · 388 subscribed to this alert</span></div></div>
+          <div class="callout info"><b>Sending fetches 412 results over about 25 minutes, then notifies 388 people</b>Fetches are spread out so RGPV's portal is not hammered. People whose fetch fails get the notification with "tap to try again" instead of a number.</div>
+          <span class="btn btn-primary">${ICON.zap}Fetch and notify…</span>
+        </div></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card"><div class="card-h"><h4>Earlier</h4></div><div class="card-b tight"><div class="plain-tl">
+            ${[['14 Aug', 'zap', 'good', 'Semester 4 · batch 2026 declared', '380 fetched, 12 failed and retried, 371 notified · by VM'], ['3 Feb', 'zap', 'good', 'Semester 3 · batch 2027 declared', '214 fetched, 214 notified · by VM'], ['3 Feb', 'alert', 'bad', 'Semester 5 · batch 2026: sent too early', 'Portal had 2 of 5 samples. Stopped after 40 fetches, re-sent next day']].map(([t, ic, tone, title, sub]) => `<div class="ptl ${tone}"><span class="t">${t}</span><span class="dotcol"><span>${ICON[ic]}</span><i></i></span><span class="txt"><b>${title}</b><span class="hint">${sub}</span></span></div>`).join('')}
+          </div></div></div>
+        </div>
+      </div>`, { active: 'blast' })}
+      <div class="overlay"><div class="dialog"><h3>Fetch semester 4 for batch 2027 and notify 388 students?</h3><p>412 fetches start now and finish in about 25 minutes. Notifications go out as each result is saved. This cannot be unsent.</p>
+        <div class="row"><span class="checkbox on">${ICON.check}</span><span class="hint">I checked the portal myself for at least one number from this batch</span></div>
+        <div class="row end"><span class="btn btn-outline">Back</span><span class="btn btn-primary">${ICON.zap}Fetch and notify</span></div></div></div>
+    </div>`,
+    notes: [
+      ['Behaviour', ['Manual trigger (strategy doc: automate later). Pre-checks sample five enrollment numbers from the batch against the portal; if fewer than five return, the button is disabled with that reason.', 'The job fetches with the existing worker at a steady rate, saves ResultRecord rows, and sends the push per student as their row lands. Failures retry twice, then notify with a tap-to-retry.']],
+      ['Data', ['Needs a ResultsDeclaration record (semester, batch, startedBy, counts) and a background job. The timeline shows the one time it was sent too early so the sample check is understood as a rule, not a formality.']],
+    ],
+  },
+  {
+    group: 'Admin', title: 'Result worker health and a deletion request',
+    render: () => adminShell(`
+      <div class="page-head"><div><h1>Result worker</h1><p>The service that reads result.rgpv.ac.in for every lookup.</p></div><span class="chip-live" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--border);border-radius:8px"><i style="width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block"></i>Healthy · last result 40 s ago</span></div>
+      <div class="tiles four">
+        <div class="tile"><span class="label">Results today</span><span class="v">1,284</span><span class="s">96% on first try</span></div>
+        <div class="tile"><span class="label">Time per result</span><span class="v">6.8 s</span><span class="s">Median · 11.9 s at the 90th</span></div>
+        <div class="tile"><span class="label">Captcha balance</span><span class="v">$3.20</span><span class="s">About 8,000 solves · top up below $1</span></div>
+        <div class="tile"><span class="label">Warm sessions</span><span class="v">18 <small style="font-size:13px;color:var(--text-2);font-weight:500">of 20</small></span><span class="s">Pool refilling normally</span></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="card-h"><h4>Last 20 fetches</h4><span class="hint">Enrollment numbers shortened on purpose</span></div><div class="card-b tight"><div class="table-wrap"><table class="table"><thead><tr><th>When</th><th>Who</th><th>Semester</th><th class="r">Took</th><th>Outcome</th></tr></thead><tbody>
+          ${[['2:41:10 pm', '0151CS23…', 4, '5.9 s', 'Found', 'success'], ['2:41:02 pm', '0247IT24…', 2, '7.1 s', 'Found', 'success'], ['2:40:48 pm', '0151CS23…', 5, '6.2 s', 'Not declared', 'gray'], ['2:40:31 pm', '0701EC22…', 8, '14.8 s', 'Found · captcha retried', 'warn'], ['2:39:55 pm', '0151ME21…', 8, '45.0 s', 'Portal rejected 3 tries', 'danger']].map(([t, w, s, d, o, tone]) => `<tr><td class="num">${t}</td><td class="num">${w}</td><td class="num">${s}</td><td class="r">${d}</td><td>${badge(o, tone)}</td></tr>`).join('')}
+        </tbody></table></div></div></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card"><div class="card-h"><h4>If the portal changes</h4></div><div class="card-b" style="display:flex;flex-direction:column;gap:8px"><div class="check ok">${ICON.checkCircle}<span>Parser test against the live page passed at 2:00 pm</span></div><div class="check ok">${ICON.checkCircle}<span>Submit wait is 6 s (the portal rejects anything under about 5 s)</span></div><span class="link">Run the live check now</span></div></div>
+          <div class="card"><div class="card-h"><h4>Deletion request</h4>${badge('1 open', 'warn')}</div><div class="card-b" style="display:flex;flex-direction:column;gap:10px">
+            <div><b>Kunal Mishra</b> · 0151CS23…<div class="hint">Asked on 8 Oct from Settings: "delete my account and results"</div></div>
+            <div class="checklist"><div class="check ok">${ICON.checkCircle}<span>Identity confirmed by signed-in request</span></div><div class="check wait">${ICON.clock}<span>7-day cooling period ends 15 Oct</span></div></div>
+            <p class="hint" style="margin:0">Deleting removes the account, results, messages and notes they uploaded. Notes others rated are kept without a name for 30 days, then removed. Recorded with your name and the time.</p>
+            <span class="btn btn-danger-outline" style="align-self:flex-start">${ICON.trash}Delete on 15 Oct…</span>
+          </div></div>
+        </div>
+      </div>`, { active: 'worker' }),
+    notes: [
+      ['Ops', ['The four tiles answer the questions that matter on results day: is it working, how fast, can we pay for captchas, is the pool warm. The fetch table shows outcomes in words, with enrollment numbers shortened.', 'The parser live check is the early warning for a portal markup change (knowledge doc: the single biggest operational risk).']],
+      ['Privacy', ['Deletion is the DPDP requirement from the strategy doc. The request comes from Settings, waits seven days in case it was a mistake, then an admin confirms. The dialog repeats what is removed and what is kept, and the action is logged with the admin\'s name.']],
+      ['Data', ['Worker health comes from the worker\'s own health endpoint plus a fetch log table (not built yet; today only process logs). Captcha balance from the AZCaptcha balance call.']],
+    ],
+  },
+];
+
+/* ── Gallery behaviour ──────────────────────────────────────────────────── */
+const frame = document.getElementById('frame');
+const fit = document.getElementById('fit');
+let current = 0;
+
+function buildIndex() {
+  const groups = [];
+  SCREENS.forEach((s, i) => {
+    let g = groups.find((x) => x.name === s.group);
+    if (!g) groups.push((g = { name: s.group, items: [] }));
+    g.items.push([i, s.title]);
+  });
+  document.getElementById('index-groups').innerHTML = groups.map((g) => `
+    <div><div class="group-label">${esc(g.name)}</div><ol>
+      ${g.items.map(([i, t]) => `<li><button type="button" data-i="${i}"><span class="code">${String(i + 1).padStart(2, '0')}</span><span>${esc(t)}</span></button></li>`).join('')}
+    </ol></div>`).join('<div style="height:12px"></div>');
+  document.querySelectorAll('.index button').forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.i))));
+}
+
+function scaleFrame() {
+  const natural = 1280;
+  const s = Math.min(1, fit.clientWidth / natural);
+  frame.style.transform = `scale(${s})`;
+  fit.style.height = `${frame.offsetHeight * s}px`;
+}
+
+function show(i) {
+  current = (i + SCREENS.length) % SCREENS.length;
+  const s = SCREENS[current];
+  frame.className = 'frame' + (s.phone ? ' phone-pair' : '');
+  frame.innerHTML = s.render();
+  document.getElementById('screen-eyebrow').textContent = `${s.group} · ${current + 1} of ${SCREENS.length}`;
+  document.getElementById('screen-title').textContent = s.title;
+  document.getElementById('notes').innerHTML = (s.notes || []).map(([h, items]) => `
+    <div class="note"><h3>${esc(h)}</h3><ul>${items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('');
+  document.querySelectorAll('.index button').forEach((b) => b.setAttribute('aria-current', String(Number(b.dataset.i) === current)));
+  try { localStorage.setItem('rgpv-wireframe', String(current)); } catch (e) {}
+  requestAnimationFrame(scaleFrame);
+}
+
+document.getElementById('prev').addEventListener('click', () => show(current - 1));
+document.getElementById('next').addEventListener('click', () => show(current + 1));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') show(current + 1);
+  if (e.key === 'ArrowLeft') show(current - 1);
+});
+new ResizeObserver(scaleFrame).observe(fit);
+
+buildIndex();
+let start = 0;
+try { start = Number(localStorage.getItem('rgpv-wireframe')) || 0; } catch (e) {}
+show(start);
+</script>

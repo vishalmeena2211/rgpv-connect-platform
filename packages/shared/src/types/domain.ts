@@ -21,4 +21,14 @@ export type ListingCategory = 'BOOKS' | 'ELECTRONICS' | 'NOTES' | 'HOSTEL' | 'OT
 
 export type ListingStatus = 'ACTIVE' | 'SOLD';
 
-export type NotificationType = 'FOLLOW' | 'POST_LIKE' | 'POST_COMMENT' | 'MESSAGE';
+export type NotificationType =
+  | 'FOLLOW'
+  | 'POST_LIKE'
+  | 'POST_COMMENT'
+  | 'MESSAGE'
+  | 'RESULT_DECLARED'
+  | 'RESOURCE_REVIEWED';
+
+export type JobSource = 'PLACEMENT_CELL' | 'RECRUITER';
+
+export type ReportReason = 'OFF_TOPIC' | 'SPAM' | 'HARASSMENT' | 'PERSONAL_INFO' | 'OTHER';

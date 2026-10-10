@@ -29,6 +29,17 @@ describe('parseEnrollment', () => {
     });
   });
 
+  it('parses a current 12-character enrollment with a 4-digit serial', () => {
+    expect(parseEnrollment('0198CS231019', 2026)).toMatchObject({
+      raw: '0198CS231019',
+      collegeCode: '0198',
+      branchCode: 'CS',
+      admissionYear: 2023,
+      graduatingBatch: 2027,
+      serial: '1019',
+    });
+  });
+
   it('tolerates lowercase and spacing', () => {
     expect(parseEnrollment('0151 cs 21 001', 2024)?.branchCode).toBe('CS');
   });
@@ -47,6 +58,7 @@ describe('parseEnrollment', () => {
   it('returns null for malformed input', () => {
     expect(parseEnrollment('not-an-enrollment')).toBeNull();
     expect(parseEnrollment('0751BT16')).toBeNull();
+    expect(parseEnrollment('0198CS2310190')).toBeNull();
   });
 });
 
@@ -72,6 +84,14 @@ describe('expandEnrollmentRange', () => {
 
   it('returns empty for a reversed range', () => {
     expect(expandEnrollmentRange('0751BT16005', '0751BT16001')).toEqual([]);
+  });
+
+  it('keeps the 4-digit serial width', () => {
+    expect(expandEnrollmentRange('0198CS231008', '0198CS231010')).toEqual([
+      '0198CS231008',
+      '0198CS231009',
+      '0198CS231010',
+    ]);
   });
 
   it('enforces the max-count safety cap', () => {

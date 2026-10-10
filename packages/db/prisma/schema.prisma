@@ -2,11 +2,16 @@
 //
 // Organised top-down by product layer:
 //   1. Enums
-//   2. Identity      — User, College, Connection
+//   2. Identity      — User, College, Connection, Auth.js accounts and tokens
 //   3. Academics     — Course → Year → Branch → Semester → Subject (catalogue)
 //   4. Resources     — student-contributed Notes / Papers, ratings
-//   5. Results       — cached exam results tied to a user
-//   6. Network        — Post, Comment, Group, GroupMember
+//   5. Results       — saved results per user, the public lookup cache, share cards
+//   6. Network       — Post, Comment, Like, Group, GroupMember, cohort sizes
+//   7. Marketplace   — jobs board and campus buy/sell
+//   8. Messages
+//   9. Notifications — in-app notifications and web push subscriptions
+//  10. Trust & ops   — reports, identity disputes, deletion requests,
+//                      results-day declarations, rate limits, audit log
 //
 // Run `pnpm db:generate` after editing.
 
@@ -72,6 +77,12 @@ enum JobType {
   PART_TIME
 }
 
+/// Who posted a job: the college placement cell or an outside recruiter.
+enum JobSource {
+  PLACEMENT_CELL
+  RECRUITER
+}
+
 enum ListingCategory {
   BOOKS
   ELECTRONICS
@@ -90,6 +101,41 @@ enum NotificationType {
   POST_LIKE
   POST_COMMENT
   MESSAGE
+  RESULT_DECLARED
+  RESOURCE_REVIEWED
+}
+
+enum ReportReason {
+  OFF_TOPIC
+  SPAM
+  HARASSMENT
+  PERSONAL_INFO
+  OTHER
+}
+
+enum ReportStatus {
+  OPEN
+  UPHELD
+  DISMISSED
+}
+
+/// Outcome of a claim that someone else verified the claimant's enrollment.
+enum DisputeStatus {
+  OPEN
+  RELEASED // the number was taken from the holder and freed for the claimant
+  KEPT // the holder keeps the number
+}
+
+enum DeletionStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum DeclarationStatus {
+  RUNNING
+  COMPLETED
+  STOPPED
 }
 
 // ---------------------------------------------------------------------------
@@ -100,16 +146,18 @@ enum NotificationType {
 /// Grouping fields (collegeId, branchCode, batches) are derived from the
 /// enrollment number during verification — never entered manually.
 model User {
-  id     String  @id @default(cuid())
-  phone  String? @unique
-  email  String? @unique
-  name   String
-  avatarUrl String?
-  bio       String?
+  id            String    @id @default(cuid())
+  phone         String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
+  name          String
+  avatarUrl     String?
+  bio           String?
 
   // Hybrid identity
   enrollmentNumber     String?            @unique
   verificationStatus   VerificationStatus @default(PENDING)
+  verifiedAt           DateTime?
   collegeEmail         String?            @unique
   collegeEmailVerified Boolean            @default(false)
 
@@ -120,23 +168,45 @@ model User {
   admissionYear   Int?
   graduatingBatch Int?
 
-  role      Role    @default(STUDENT)
+  role Role @default(STUDENT)
+
+  // Preferences
+  /// Appear on the opt-in semester board for the branch + batch cohort.
+  showOnBoard    Boolean @default(false)
+  notifyResults  Boolean @default(true)
+  notifyMessages Boolean @default(true)
+  notifyReviews  Boolean @default(true)
+  notifySocial   Boolean @default(false)
+
+  /// Set by a reviewer after repeated removals; blocks posting until then.
+  postingSuspendedUntil DateTime?
 
   // Relations
-  posts        Post[]
-  comments     Comment[]
-  resources    Resource[]     @relation("ResourceUploader")
-  ratings      ResourceRating[]
-  resultRecords ResultRecord[]
-  groupMemberships GroupMember[]
-  following    Connection[]   @relation("Follower")
-  followers    Connection[]   @relation("Following")
-  jobPosts     JobPost[]
-  listings     MarketListing[]
-  conversations     ConversationMember[]
-  messages          Message[]
-  notifications     Notification[]      @relation("NotificationRecipient")
-  actorNotifications Notification[]     @relation("NotificationActor")
+  accounts           Account[]
+  posts              Post[]
+  comments           Comment[]
+  postLikes          PostLike[]
+  resources          Resource[]           @relation("ResourceUploader")
+  reviewedResources  Resource[]           @relation("ResourceReviewer")
+  ratings            ResourceRating[]
+  resultRecords      ResultRecord[]
+  shareCards         ShareCard[]
+  groupMemberships   GroupMember[]
+  following          Connection[]         @relation("Follower")
+  followers          Connection[]         @relation("Following")
+  jobPosts           JobPost[]
+  listings           MarketListing[]
+  conversations      ConversationMember[]
+  messages           Message[]
+  notifications      Notification[]       @relation("NotificationRecipient")
+  actorNotifications Notification[]       @relation("NotificationActor")
+  pushSubscriptions  PushSubscription[]
+  reports            Report[]             @relation("Reporter")
+  disputesFiled      IdentityDispute[]    @relation("DisputeClaimant")
+  disputesAgainst    IdentityDispute[]    @relation("DisputeHolder")
+  deletionRequests   DeletionRequest[]
+  declarations       ResultsDeclaration[]
+  auditEntries       AuditLog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -145,15 +215,51 @@ model User {
   @@index([graduatingBatch])
   @@index([branchCode])
   @@index([verificationStatus])
+  @@index([admissionYear, verificationStatus])
+}
+
+/// An OAuth account linked to a user (Auth.js adapter contract).
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+/// One-time email sign-in tokens (Auth.js adapter contract). Stored hashed.
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 /// An RGPV-affiliated college, keyed by the 4-digit enrollment college code.
 model College {
-  id          String  @id @default(cuid())
-  code        String  @unique // e.g. "0751"
-  name        String
-  city        String  @default("Bhopal")
-  emailDomain String? // for the optional college-email badge
+  id           String  @id @default(cuid())
+  code         String  @unique // e.g. "0151"
+  name         String
+  shortName    String? // e.g. "UIT-RGPV"
+  city         String  @default("Bhopal")
+  emailDomain  String? // for the optional college-email badge
+  /// Approximate enrolled students, seeded by hand for the density target.
+  studentCount Int?
 
   users    User[]
   groups   Group[]
@@ -201,10 +307,14 @@ model Year {
 model Branch {
   id        Int        @id @default(autoincrement())
   name      String
+  /// Two-letter enrollment branch code (CS, IT, …) used to pick the
+  /// catalogue for a verified student.
+  code      String?
   yearId    Int
   year      Year       @relation(fields: [yearId], references: [id], onDelete: Cascade)
   semesters Semester[]
 
+  @@unique([yearId, code])
   @@index([yearId])
 }
 
@@ -222,10 +332,13 @@ model Subject {
   id         Int        @id @default(autoincrement())
   name       String
   code       String?
+  /// Credits on RGPV's scheme; drives credit-weighted SGPA in the calculator.
+  credits    Int?
   semesterId Int
   semester   Semester   @relation(fields: [semesterId], references: [id], onDelete: Cascade)
   resources  Resource[]
 
+  @@unique([semesterId, code])
   @@index([semesterId])
 }
 
@@ -238,22 +351,38 @@ model Resource {
   type      ResourceType
   title     String
   unitName  String?
+  /// Exam session for papers, e.g. "Jun 2026".
+  session   String?
   pdfUrl    String
+  /// Storage key when the file was uploaded through the app.
+  fileKey   String?
+  fileSize  Int?
+  pageCount Int?
   subjectId Int
   subject   Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
-  uploaderId String
-  uploader   User   @relation("ResourceUploader", fields: [uploaderId], references: [id])
+  uploaderId      String
+  uploader        User    @relation("ResourceUploader", fields: [uploaderId], references: [id], onDelete: Cascade)
+  /// The uploader confirmed these are their own notes or they may share them.
+  declaredOwnWork Boolean @default(false)
 
-  rating      Float            @default(0)
-  ratingCount Int              @default(0)
-  ratings     ResourceRating[]
-  status      ModStatus        @default(PENDING)
+  rating        Float            @default(0)
+  ratingCount   Int              @default(0)
+  downloadCount Int              @default(0)
+  ratings       ResourceRating[]
+
+  status       ModStatus @default(PENDING)
+  reviewNote   String?
+  reviewedById String?
+  reviewedBy   User?     @relation("ResourceReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt   DateTime?
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([subjectId, status])
   @@index([uploaderId])
+  @@index([status, createdAt])
 }
 
 /// One user's star rating of a resource. Aggregated onto Resource.rating.
@@ -271,10 +400,10 @@ model ResourceRating {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Cached exam results
+// 5. Results
 // ---------------------------------------------------------------------------
 
-/// A cached semester result for a user. `payload` stores the full parsed
+/// A saved semester result for a user. `payload` stores the full parsed
 /// result (SemesterResult shape from @rgpv/shared) for rich rendering, while
 /// sgpa/cgpa are denormalised for analytics queries.
 model ResultRecord {
@@ -291,6 +420,45 @@ model ResultRecord {
 
   @@unique([userId, semester])
   @@index([userId])
+  @@index([semester, cgpa])
+}
+
+/// Public lookup cache, keyed by enrollment + semester. Saves a paid captcha
+/// solve per repeat lookup. `found = false` caches "not declared yet" briefly.
+model ResultCache {
+  id         String        @id @default(cuid())
+  enrollment String
+  semester   Int
+  found      Boolean       @default(true)
+  status     ResultStatus?
+  sgpa       Float?
+  cgpa       Float?
+  payload    Json?
+
+  fetchedAt DateTime @default(now())
+
+  @@unique([enrollment, semester])
+  @@index([fetchedAt])
+}
+
+/// A shareable result card. `data` is a snapshot so the card never changes
+/// after it is shared, and the token (not the enrollment) is in the URL.
+model ShareCard {
+  id         String  @id @default(cuid())
+  token      String  @unique
+  userId     String?
+  user       User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollment String
+  semester   Int
+  showName   Boolean @default(false)
+  showCgpa   Boolean @default(true)
+  showRank   Boolean @default(false)
+  data       Json
+  views      Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 // ---------------------------------------------------------------------------
@@ -298,23 +466,43 @@ model ResultRecord {
 // ---------------------------------------------------------------------------
 
 model Post {
-  id       String    @id @default(cuid())
-  authorId String
-  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  body     String
-  imageUrl String?
-  scope    PostScope @default(COLLEGE)
-  collegeId String?
-  groupId  String?
-  group    Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  comments Comment[]
-  likeCount Int      @default(0)
+  id            String     @id @default(cuid())
+  authorId      String
+  author        User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  body          String
+  imageUrl      String?
+  scope         PostScope  @default(COLLEGE)
+  collegeId     String?
+  groupId       String?
+  group         Group?     @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  comments      Comment[]
+  likes         PostLike[]
+  reports       Report[]
+  likeCount     Int        @default(0)
+  /// Hidden automatically once enough reports arrive, until a reviewer acts.
+  hiddenAt      DateTime?
+  /// Removed by a reviewer; kept for the audit trail but never shown.
+  removedAt     DateTime?
+  removalReason String?
 
   createdAt DateTime @default(now())
 
   @@index([scope, createdAt])
   @@index([collegeId, createdAt])
   @@index([groupId])
+}
+
+/// One like per user per post (likeCount is the denormalised total).
+model PostLike {
+  postId String
+  userId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([postId, userId])
+  @@index([userId])
 }
 
 model Comment {
@@ -331,11 +519,15 @@ model Comment {
 }
 
 model Group {
-  id        String    @id @default(cuid())
-  name      String
-  type      GroupType
-  collegeId String?
-  college   College?  @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  id              String    @id @default(cuid())
+  /// Stable key for auto-created groups, e.g. "college:0151" or "cohort:0151:CS:2028".
+  slug            String?   @unique
+  name            String
+  type            GroupType
+  collegeId       String?
+  college         College?  @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  branchCode      String?
+  graduatingBatch Int?
 
   members GroupMember[]
   posts   Post[]
@@ -358,20 +550,43 @@ model GroupMember {
   @@index([userId])
 }
 
+/// Approximate size of a branch + batch at a college. There is no official
+/// source, so this is entered by hand; it powers the density callout.
+model CohortSize {
+  id              String @id @default(cuid())
+  collegeCode     String
+  branchCode      String
+  graduatingBatch Int
+  size            Int
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([collegeCode, branchCode, graduatingBatch])
+}
+
 // ---------------------------------------------------------------------------
 // 7. Marketplace (jobs board + campus buy/sell)
 // ---------------------------------------------------------------------------
 
-/// A job or internship posted by a recruiter/mentor for RGPV students.
+/// A job or internship posted by a recruiter or placement cell.
 model JobPost {
-  id          String  @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   company     String
   location    String?
-  type        JobType @default(FULL_TIME)
+  type        JobType   @default(FULL_TIME)
+  source      JobSource @default(RECRUITER)
   description String
   applyUrl    String
-  isRemote    Boolean @default(false)
+  isRemote    Boolean   @default(false)
+  /// Stipend or salary as written, e.g. "₹15,000 a month" or "₹4.2 LPA".
+  pay         String?
+  /// Branch codes this is open to; empty means any branch.
+  branches    String[]
+  /// Graduating batches this is open to; empty means any batch.
+  batches     Int[]
+  closesAt    DateTime?
+  applyClicks Int       @default(0)
 
   postedById String
   postedBy   User   @relation(fields: [postedById], references: [id], onDelete: Cascade)
@@ -380,6 +595,7 @@ model JobPost {
 
   @@index([type, createdAt])
   @@index([postedById])
+  @@index([closesAt])
 }
 
 /// A campus buy/sell listing (books, electronics, hostel goods). Scoped to a
@@ -388,15 +604,19 @@ model MarketListing {
   id          String          @id @default(cuid())
   title       String
   description String
-  priceCents  Int             // store money as integer paise/cents to avoid float drift
+  priceCents  Int // store money as integer paise to avoid float drift
   category    ListingCategory @default(OTHER)
   imageUrl    String?
+  /// Where to pick it up, e.g. "Hostel 4".
+  pickup      String?
   status      ListingStatus   @default(ACTIVE)
+  soldAt      DateTime?
 
   sellerId  String
-  seller    User    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  seller    User     @relation(fields: [sellerId], references: [id], onDelete: Cascade)
   collegeId String?
   college   College? @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  reports   Report[]
 
   createdAt DateTime @default(now())
 
@@ -455,20 +675,154 @@ model Message {
 // 9. Notifications
 // ---------------------------------------------------------------------------
 
-/// An activity notification for a recipient. `actor` is who triggered it and
-/// `entityId` points at the relevant post/conversation for deep-linking.
+/// An activity notification for a recipient. `actor` is who triggered it (null
+/// for system notifications such as a declared result), `entityId` points at
+/// the relevant post/conversation/resource, and `data` carries extra display
+/// fields (semester, SGPA, review note).
 model Notification {
   id          String           @id @default(cuid())
   recipientId String
   recipient   User             @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
-  actorId     String
-  actor       User             @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+  actorId     String?
+  actor       User?            @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
   type        NotificationType
   entityId    String?
+  data        Json?
   readAt      DateTime?
 
   createdAt DateTime @default(now())
 
   @@index([recipientId, readAt])
   @@index([recipientId, createdAt])
+}
+
+/// A browser push subscription (Web Push with VAPID).
+model PushSubscription {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint String @unique
+  p256dh   String
+  auth     String
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// 10. Trust & operations
+// ---------------------------------------------------------------------------
+
+/// A report of a post or listing. Three open reports hide a post until a
+/// reviewer decides.
+model Report {
+  id           String         @id @default(cuid())
+  reporterId   String
+  reporter     User           @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  postId       String?
+  post         Post?          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  listingId    String?
+  listing      MarketListing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  reason       ReportReason
+  note         String?
+  status       ReportStatus   @default(OPEN)
+  resolvedById String?
+  resolvedAt   DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([reporterId, postId])
+  @@unique([reporterId, listingId])
+  @@index([status, createdAt])
+}
+
+/// A claim that someone else verified the claimant's enrollment number.
+model IdentityDispute {
+  id               String        @id @default(cuid())
+  enrollmentNumber String
+  claimantId       String
+  claimant         User          @relation("DisputeClaimant", fields: [claimantId], references: [id], onDelete: Cascade)
+  holderId         String
+  holder           User          @relation("DisputeHolder", fields: [holderId], references: [id], onDelete: Cascade)
+  note             String?
+  status           DisputeStatus @default(OPEN)
+  resolutionNote   String?
+  resolvedById     String?
+  resolvedAt       DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([status, createdAt])
+  @@index([enrollmentNumber])
+}
+
+/// A user's request to delete their account and data (DPDP). Waits seven days
+/// in case it was a mistake, then an admin completes it. The row outlives the
+/// user (userId is cleared) so the audit trail stays.
+model DeletionRequest {
+  id            String         @id @default(cuid())
+  userId        String?
+  user          User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  /// Snapshot shown to admins after the user is gone, e.g. "Kunal Mishra · 0151CS23•••".
+  userLabel     String
+  reason        String?
+  status        DeletionStatus @default(PENDING)
+  eligibleAt    DateTime
+  completedAt   DateTime?
+  completedById String?
+
+  requestedAt DateTime @default(now())
+
+  @@index([status, eligibleAt])
+}
+
+/// One results-day run: fetch a declared semester for every verified student
+/// of a batch, then notify them. Processed in small steps from `cursor`.
+model ResultsDeclaration {
+  id            String            @id @default(cuid())
+  semester      Int
+  admissionYear Int
+  status        DeclarationStatus @default(RUNNING)
+  totalStudents Int               @default(0)
+  processed     Int               @default(0)
+  fetched       Int               @default(0)
+  failed        Int               @default(0)
+  notified      Int               @default(0)
+  /// The last user id processed; the next step continues after it.
+  cursor        String?
+  sampleCheck   Json?
+  startedById   String
+  startedBy     User              @relation(fields: [startedById], references: [id], onDelete: Cascade)
+
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  @@index([status])
+  @@index([admissionYear, semester])
+}
+
+/// Fixed-window rate limit counters (public lookups, uploads, reports).
+model RateLimit {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
+}
+
+/// Every admin decision, recorded with who made it and when.
+model AuditLog {
+  id         String  @id @default(cuid())
+  actorId    String?
+  actor      User?   @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String
+  targetType String
+  targetId   String?
+  data       Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([targetType, targetId])
 }
