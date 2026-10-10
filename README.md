@@ -121,39 +121,34 @@ The web app reads from Postgres in Server Components and writes through Server A
 
 You need Node.js 20 or newer, pnpm 9, Python 3.11 or newer, Docker for Postgres and Redis, and an [AZCaptcha](https://azcaptcha.com) API key if you want real results. Tesseract is only needed if you set `CAPTCHA_PROVIDER=tesseract`.
 
+### Once
+
 ```bash
 git clone https://github.com/vishalmeena2211/rgpv-connect-platform.git && cd rgpv-connect-platform
 ```
 
 ```bash
-pnpm install
+pnpm install && pnpm worker:setup
 ```
 
 ```bash
-docker compose -f infra/docker-compose.yml up -d postgres redis
+cp packages/db/.env.example packages/db/.env && cp apps/web/.env.example apps/web/.env.local && cp services/result-worker/.env.example services/result-worker/.env
 ```
+
+Open `services/result-worker/.env` and set `AZCAPTCHA_API_KEY`. Without it, lookups fall back to slow local OCR or fail, and the app shows "RGPV's portal is not answering".
+
+### Every time
+
+One command starts Docker, waits for Postgres and Redis, applies migrations, loads the demo data and runs the web app and the worker together:
 
 ```bash
-cp packages/db/.env.example packages/db/.env && pnpm db:generate && pnpm db:migrate && pnpm db:seed
+open -a Docker && until docker info >/dev/null 2>&1; do sleep 2; done && docker compose -f infra/docker-compose.yml up -d --wait postgres redis && pnpm db:migrate:deploy && pnpm db:seed && pnpm dev
 ```
 
-```bash
-pnpm worker:setup
-```
+`open -a Docker` is for macOS; on Linux start Docker your usual way and drop that part.
 
-```bash
-cp services/result-worker/.env.example services/result-worker/.env
-```
-
-Open `services/result-worker/.env` and set `AZCAPTCHA_API_KEY`. Then:
-
-```bash
-cp apps/web/.env.example apps/web/.env.local
-```
-
-```bash
-pnpm dev
-```
+> [!WARNING]
+> `db:migrate:deploy` and `db:seed` write to whatever `DATABASE_URL` says in `packages/db/.env`. Keep it pointing at `localhost`. The seed only recreates `@rgpvconnect.dev` accounts, but it has no business on a real database.
 
 The web app is at http://localhost:3000 and the worker's API docs at http://localhost:8000/docs. The seed builds a demo world at UIT-RGPV: 38 verified CS 2028 students with four semesters each, two seniors, notes, papers, posts, jobs and listings. Sign in with any demo email; the sign-in link is printed in the terminal running `pnpm dev`:
 
@@ -165,13 +160,35 @@ The web app is at http://localhost:3000 and the worker's API docs at http://loca
 
 Set `ENABLED_FEATURES=network,campus` in `apps/web/.env.local` to open the feed, directory, groups, jobs and market for students. Every setting is listed in [`docs/configuration.md`](docs/configuration.md).
 
-To call the worker directly:
+### If Postgres is already installed on your machine
+
+A Postgres installed with Homebrew or an installer usually listens on `localhost:5432` too, and answers before the Docker one. Migrations then fail with `P1010: User rgpv was denied access`. Check with:
 
 ```bash
-curl -s -X POST http://localhost:8000/api/v1/result -H 'content-type: application/json' -d '{"enrollment":"0151CS21001","semester":1}'
+lsof -nP -iTCP:5432 -sTCP:LISTEN
 ```
 
-Every setting, the worker's endpoints and the troubleshooting list are in [`docs/knowledge.md`](docs/knowledge.md).
+If you see a `postgres` process as well as Docker, either stop it while you work (`brew services stop postgresql@16`), or use it instead of Docker by giving it the same user and database:
+
+```bash
+psql -h 127.0.0.1 -d postgres -c "create role rgpv with login password 'rgpv'" -c "create database rgpv_connect owner rgpv"
+```
+
+Then run the start command without the Docker Postgres:
+
+```bash
+docker compose -f infra/docker-compose.yml up -d --wait redis && pnpm db:migrate:deploy && pnpm db:seed && pnpm dev
+```
+
+To remove that database later: `psql -h 127.0.0.1 -d postgres -c "drop database rgpv_connect" -c "drop role rgpv"`.
+
+### Calling the worker directly
+
+```bash
+curl -s -X POST http://localhost:8000/api/v1/result -H 'content-type: application/json' -H "x-worker-key: $WORKER_API_KEY" -d '{"enrollment":"0198CS231019","semester":4}'
+```
+
+The key header is only needed once `WORKER_API_KEY` is set. The worker's endpoints and the troubleshooting list are in [`docs/knowledge.md`](docs/knowledge.md).
 
 ## Repository layout
 
