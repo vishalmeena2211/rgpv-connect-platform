@@ -49,6 +49,7 @@ services:
       CAPTCHA_PROVIDER: azcaptcha
       AZCAPTCHA_API_KEY: ${AZCAPTCHA_API_KEY:-}
       AZCAPTCHA_BASE_URL: https://azcaptcha.com
+      WORKER_API_KEY: ${WORKER_API_KEY:-}
     ports:
       - '8000:8000'
     depends_on:
@@ -66,6 +67,7 @@ services:
       AUTH_GOOGLE_ID: ${AUTH_GOOGLE_ID:-}
       AUTH_GOOGLE_SECRET: ${AUTH_GOOGLE_SECRET:-}
       RESULT_WORKER_URL: http://worker:8000
+      WORKER_API_KEY: ${WORKER_API_KEY:-}
     ports:
       - '3000:3000'
     depends_on:

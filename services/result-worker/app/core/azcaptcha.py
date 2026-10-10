@@ -123,3 +123,23 @@ def solve_image_via_azcaptcha(image_bytes: bytes, *, timeout: int = 30) -> str:
     raise CaptchaFailed(
         f"AZCaptcha timed out after {MAX_POLL_SECONDS:.0f}s / {poll} polls (task {task_id})"
     )
+
+
+def get_balance(*, timeout: int = 10) -> float:
+    """Current AZCaptcha account balance in USD.
+
+    :raises CaptchaFailed: the key is missing or the API reports an error.
+    """
+    settings = get_settings()
+    if not settings.azcaptcha_api_key:
+        raise CaptchaFailed("AZCAPTCHA_API_KEY is not configured")
+    response = requests.post(
+        f"{settings.azcaptcha_base_url.rstrip('/')}/getBalance",
+        json={"clientKey": settings.azcaptcha_api_key},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    data = response.json()
+    if data.get("errorId"):
+        raise CaptchaFailed(f"AZCaptcha getBalance failed: {data.get('errorCode')}")
+    return float(data.get("balance", 0.0))

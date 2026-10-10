@@ -1,7 +1,8 @@
 """Enrollment-number parsing — the Python mirror of ``@rgpv/shared/enrollment``.
 
 Kept in sync with the TypeScript implementation so both sides agree on the
-``CCCCBBYYNNN`` layout (e.g. ``0751BT16012``).
+``CCCCBBYYNNNN`` layout (e.g. ``0198CS231019``). Older numbers carry a 3-digit
+serial (``0751BT16012``), so both widths are accepted.
 """
 
 from __future__ import annotations
@@ -9,7 +10,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-_PATTERN = re.compile(r"^(\d{4})([A-Z]{2})(\d{2})(\d{3})$")
+_PATTERN = re.compile(r"^(\d{4})([A-Z]{2})(\d{2})(\d{3,4})$")
 _COURSE_YEARS = 4
 
 
@@ -66,10 +67,11 @@ def expand_range(first: str, last: str, max_count: int = 500) -> list[str]:
     end = parse_enrollment(last)
     if not start or not end:
         return []
-    if (start.college_code, start.branch_code, start.admission_year) != (
+    if (start.college_code, start.branch_code, start.admission_year, len(start.serial)) != (
         end.college_code,
         end.branch_code,
         end.admission_year,
+        len(end.serial),
     ):
         return []
 

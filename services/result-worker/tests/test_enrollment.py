@@ -19,6 +19,23 @@ def test_parse_canonical() -> None:
     assert parsed.serial == "012"
 
 
+def test_parse_current_twelve_character_number() -> None:
+    parsed = parse_enrollment("0198CS231019", reference_year=2026)
+    assert parsed is not None
+    assert parsed.college_code == "0198"
+    assert parsed.admission_year == 2023
+    assert parsed.graduating_batch == 2027
+    assert parsed.serial == "1019"
+
+
+def test_expand_range_keeps_four_digit_width() -> None:
+    assert expand_range("0198CS231008", "0198CS231010") == [
+        "0198CS231008",
+        "0198CS231009",
+        "0198CS231010",
+    ]
+
+
 def test_parse_future_year_rolls_back_a_century() -> None:
     parsed = parse_enrollment("0101CS99001", reference_year=2024)
     assert parsed is not None
@@ -28,6 +45,7 @@ def test_parse_future_year_rolls_back_a_century() -> None:
 def test_parse_invalid_returns_none() -> None:
     assert parse_enrollment("nope") is None
     assert parse_enrollment("0751BT16") is None
+    assert parse_enrollment("0198CS2310190") is None
 
 
 def test_expand_range_inclusive() -> None:

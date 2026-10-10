@@ -26,6 +26,13 @@ class Settings(BaseSettings):
     # Redis connection string for the session pool.
     redis_url: str = "redis://localhost:6379"
 
+    # Shared secret the web app sends as X-Worker-Key. Empty = open (local dev only).
+    worker_api_key: str = ""
+
+    # Known-good result used by the admin "live parser check".
+    check_enrollment: str = "0198CS231019"
+    check_semester: int = 4
+
     log_level: str = "INFO"
     bulk_rate_limit: str = "5/minute"
 

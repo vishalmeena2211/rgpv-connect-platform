@@ -9,7 +9,7 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from starlette.middleware.cors import CORSMiddleware
@@ -17,7 +17,8 @@ from starlette.middleware.cors import CORSMiddleware
 from app.config import get_settings
 from app.logging_config import configure_logging, get_logger
 from app.rate_limit import limiter
-from app.routers import bulk, health, queue, single
+from app.routers import bulk, health, ops, queue, single
+from app.security import require_worker_key
 from app.services.session_pool import get_session_pool
 
 logger = get_logger(__name__)
@@ -29,6 +30,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
     configure_logging(settings.log_level)
     app.state.session_pool = get_session_pool()
+    if not settings.worker_api_key:
+        logger.warning("WORKER_API_KEY is not set: the API is open. Set it in production.")
     logger.info("RGPV result worker ready (origins=%s)", settings.cors_origins)
     try:
         yield
@@ -58,10 +61,13 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # /health stays open for uptime checks; everything else needs the worker key.
+    guarded = [Depends(require_worker_key)]
     app.include_router(health.router)
-    app.include_router(single.router)
-    app.include_router(bulk.router)
-    app.include_router(queue.router)
+    app.include_router(single.router, dependencies=guarded)
+    app.include_router(bulk.router, dependencies=guarded)
+    app.include_router(queue.router, dependencies=guarded)
+    app.include_router(ops.router, dependencies=guarded)
     return app
 
 

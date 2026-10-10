@@ -20,6 +20,7 @@ from app.core.parser import parse_result
 from app.core.session import RGPVSession, establish_session
 from app.core.timing import StageTimings, timed
 from app.logging_config import get_logger
+from app.services.metrics import Outcome, record_fetch
 from app.services.session_pool import get_session_pool
 
 logger = get_logger(__name__)
@@ -82,9 +83,13 @@ def fetch_single(
 
     last_error: RGPVError | None = None
     timings = StageTimings()
+    started = time.monotonic()
+    outcome = Outcome.FAILED
+    attempts = 0
 
     try:
         for attempt in range(1, max_retries + 1):
+            attempts = attempt
             if attempt > 1 and time.monotonic() >= deadline:
                 logger.warning(
                     "Deadline reached for %s after %d attempt(s)", enrollment, attempt - 1
@@ -107,13 +112,16 @@ def fetch_single(
                         html = fetch_result_html(rgpv, enrollment, semester, captcha)
                     try:
                         with timed("parse", timings):
-                            return parse_result(html)
+                            parsed = parse_result(html)
+                        outcome = Outcome.FOUND
+                        return parsed
                     except CaptchaFailed:
                         logger.info("Captcha candidate rejected for %s: %s", enrollment, captcha)
                         continue
 
                 raise CaptchaFailed(f"All captcha candidates rejected for {enrollment}")
             except ResultNotFound:
+                outcome = Outcome.NOT_FOUND
                 raise
             except CaptchaFailed as exc:
                 last_error = exc
@@ -124,6 +132,7 @@ def fetch_single(
 
         raise last_error or RGPVError(f"Failed to fetch result for {enrollment}")
     finally:
+        record_fetch(enrollment, semester, outcome, started, attempts)
         logger.info("fetch_single %s sem %d — %s", enrollment, semester, timings.summary())
 
 
