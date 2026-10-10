@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@rgpv/db';
 
-import { getCurrentUser } from '@/lib/session';
+import { getCurrentUser, isVerified } from '@/lib/session';
 import { notify } from '@/features/notifications/notify';
 
 /** Result of sending a message: success, or a human-readable error. */
@@ -21,6 +21,8 @@ export async function startConversation(targetUserId: string): Promise<void> {
   const user = await getCurrentUser();
   if (!user) redirect('/login');
   if (user.id === targetUserId) redirect('/messages');
+  // Only verified students start conversations; anyone can reply.
+  if (!isVerified(user)) redirect('/onboarding');
 
   const existing = await prisma.conversation.findFirst({
     where: {
@@ -96,6 +98,7 @@ export async function sendMessage(
         actorId: user.id,
         type: 'MESSAGE',
         entityId: conversationId,
+        push: { title: user.name, body: trimmed.slice(0, 140), url: `/messages/${conversationId}`, tag: `thread-${conversationId}` },
       }),
     ),
   );

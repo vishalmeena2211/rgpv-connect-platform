@@ -1,17 +1,27 @@
-import { SgpaCalculator } from '@/features/results/cgpa-calculator';
-import { ResultsNav } from '@/features/results/results-nav';
+import type { Metadata } from 'next';
+import { currentSemester } from '@rgpv/shared';
 
-export const metadata = { title: 'SGPA Calculator' };
+import { PageHeader } from '@/components/ui/page-header';
+import { Calculator } from '@/features/results/calculator';
+import { getSavedResults, getSemesterSubjects } from '@/features/results/queries';
+import { ResultsTabs } from '@/features/results/results-tabs';
+import { requireUser } from '@/lib/session';
 
-/** Standalone SGPA calculator on RGPV's 10-point grading scale. */
-export default function CalculatorPage() {
+export const metadata: Metadata = { title: 'SGPA calculator' };
+
+/** What-if for the semester being studied, pre-filled from the syllabus. */
+export default async function CalculatorPage() {
+  const user = await requireUser('/results/calculator');
+  const saved = await getSavedResults(user.id);
+  const sgpas = saved.filter((r) => r.sgpa != null).map((r) => r.sgpa as number);
+  const semester = user.admissionYear ? currentSemester(user.admissionYear) : Math.min(8, sgpas.length + 1);
+  const subjects = await getSemesterSubjects(user.branchCode, semester);
+
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <header className="space-y-3">
-        <h1 className="text-2xl font-bold">Calculator</h1>
-        <ResultsNav />
-      </header>
-      <SgpaCalculator />
+    <div className="mx-auto flex max-w-[960px] flex-col gap-5">
+      <PageHeader title="Results" description="Plan the next semester from where you are." />
+      <ResultsTabs active="/results/calculator" />
+      <Calculator semester={semester} subjects={subjects} sgpas={sgpas} />
     </div>
   );
 }

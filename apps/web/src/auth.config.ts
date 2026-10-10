@@ -1,33 +1,54 @@
 import type { NextAuthConfig } from 'next-auth';
-import Google from 'next-auth/providers/google';
 
 /**
- * Edge-safe Auth.js configuration.
- *
- * Contains only what the middleware needs (providers list + the `authorized`
- * guard). Anything requiring Node APIs (Prisma, bcrypt) lives in `auth.ts`.
+ * Paths anyone can open signed out. Everything else needs a session.
+ * Prefix matches, so '/notes' also covers '/notes/abc'.
+ */
+const PUBLIC_PREFIXES = [
+  '/login',
+  '/api/auth',
+  '/api/share',
+  '/api/files',
+  '/api/health',
+  '/api/cron',
+  '/api/resources',
+  '/result/',
+  '/s/',
+  '/how-it-works',
+  '/privacy',
+  '/terms',
+  '/notes',
+  '/papers',
+  '/resources',
+  '/manifest.webmanifest',
+  '/sw.js',
+  '/samples',
+  '/icon',
+  '/apple-icon',
+  '/icons',
+];
+
+export function isPublicPath(pathname: string): boolean {
+  return pathname === '/' || PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+}
+
+/**
+ * Edge-safe Auth.js configuration used by the middleware. It only reads the
+ * JWT, so providers and the database adapter live in `auth.ts` (Node runtime).
  */
 export const authConfig = {
-  providers: [Google],
+  providers: [],
+  trustHost: true,
   pages: {
     signIn: '/login',
+    verifyRequest: '/login/check-email',
+    error: '/login',
   },
   callbacks: {
-    /**
-     * Route guard used by middleware. Signed-in users may proceed; everyone
-     * else is redirected to the sign-in page for protected routes.
-     */
+    /** Signed-in users may go anywhere; others only to public paths. */
     authorized({ auth, request }) {
-      const isLoggedIn = Boolean(auth?.user);
-      const { pathname } = request.nextUrl;
-
-      const isPublic =
-        pathname === '/' ||
-        pathname.startsWith('/login') ||
-        pathname.startsWith('/api/auth');
-
-      if (isPublic) return true;
-      return isLoggedIn;
+      if (isPublicPath(request.nextUrl.pathname)) return true;
+      return Boolean(auth?.user);
     },
   },
 } satisfies NextAuthConfig;

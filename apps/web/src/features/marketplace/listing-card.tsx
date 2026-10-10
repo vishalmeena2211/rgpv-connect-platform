@@ -1,50 +1,34 @@
 import Link from 'next/link';
+import { ImageIcon } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatPrice, relativeTime } from '@/lib/utils';
+import { cn, formatPrice } from '@/lib/utils';
 
-import { type ListingItem } from './listing-queries';
+import type { ListingItem } from './listing-queries';
 
-const CATEGORY_LABEL = {
-  BOOKS: 'Books',
-  ELECTRONICS: 'Electronics',
-  NOTES: 'Notes',
-  HOSTEL: 'Hostel',
-  OTHER: 'Other',
-} as const;
+const CATEGORY = { BOOKS: 'Books', ELECTRONICS: 'Electronics', NOTES: 'Notes', HOSTEL: 'Hostel', OTHER: 'Other' } as const;
 
-/** A marketplace listing card: optional image, price, category, and seller. */
 export function ListingCard({ listing }: { listing: ListingItem }) {
   return (
-    <Card className="flex flex-col overflow-hidden">
-      {listing.imageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element -- listing images are arbitrary user-supplied URLs, unsuitable for next/image optimisation
-        <img
-          src={listing.imageUrl}
-          alt=""
-          className="aspect-video w-full object-cover"
-          loading="lazy"
-        />
-      ) : null}
-      <CardHeader className="space-y-1">
-        <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-base leading-snug">{listing.title}</CardTitle>
-          <Badge variant="secondary" className="shrink-0">
-            {CATEGORY_LABEL[listing.category]}
-          </Badge>
-        </div>
-        <p className="text-lg font-bold tabular-nums">{formatPrice(listing.priceCents)}</p>
-      </CardHeader>
-      <CardContent className="mt-auto space-y-2">
-        <p className="line-clamp-2 text-sm text-muted-foreground">{listing.description}</p>
-        <p className="text-xs text-muted-foreground">
-          <Link href={`/u/${listing.seller.id}`} className="hover:underline">
-            {listing.seller.name}
-          </Link>{' '}
-          · {relativeTime(listing.createdAt)}
+    <Link href={`/market/${listing.id}`} className={cn('flex flex-col overflow-hidden rounded-lg border bg-card shadow-card transition-colors hover:border-input', listing.isSold && 'opacity-60')}>
+      <div className="grid h-[132px] place-items-center bg-gradient-to-br from-muted to-subtle">
+        {listing.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={listing.imageUrl} alt="" className="size-full object-cover" />
+        ) : (
+          <ImageIcon className="size-6 text-faint" />
+        )}
+      </div>
+      <div className="flex flex-col gap-1 px-3.5 py-3">
+        <p className="line-clamp-2 text-[13px] font-semibold">{listing.title}</p>
+        <p className="flex items-center gap-2 font-display text-[15px] font-bold tabular">
+          {formatPrice(listing.priceCents)}
+          {listing.isSold ? <Badge>Sold</Badge> : null}
         </p>
-      </CardContent>
-    </Card>
+        <p className="truncate text-xs text-muted-foreground">
+          {[CATEGORY[listing.category], listing.seller.name, listing.pickup].filter(Boolean).join(' · ')}
+        </p>
+      </div>
+    </Link>
   );
 }

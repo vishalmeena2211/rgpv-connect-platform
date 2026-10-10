@@ -3,27 +3,27 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { PRIMARY_NAV_ITEMS } from '@/config/nav';
+import { MOBILE_TABS } from '@/config/nav';
 import { cn } from '@/lib/utils';
 
-/** Mobile bottom tab bar. Hidden at `md` and up (sidebar takes over). */
+/** Phone tab bar: Results, Notes, Messages, Me. Hidden at `md` and up. */
 export function BottomNav() {
   const pathname = usePathname();
-
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t bg-background/95 backdrop-blur md:hidden">
-      {PRIMARY_NAV_ITEMS.map(({ label, href, icon: Icon }) => {
-        const active = pathname === href || pathname.startsWith(`${href}/`);
+    <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 gap-1 border-t bg-card/90 px-2 pb-[calc(8px+env(safe-area-inset-bottom,0px))] pt-2 backdrop-blur-md md:hidden">
+      {MOBILE_TABS.map(({ label, href, icon: Icon }) => {
+        const active = pathname === href || pathname.startsWith(`${href}/`) || (href === '/me' && (pathname.startsWith('/u/') || pathname === '/settings'));
         return (
           <Link
             key={href}
             href={href}
+            aria-current={active ? 'page' : undefined}
             className={cn(
-              'flex flex-col items-center gap-1 py-2 text-xs',
-              active ? 'text-primary' : 'text-muted-foreground',
+              'flex flex-col items-center gap-0.5 rounded-xl py-1 text-[11px] font-medium',
+              active ? 'bg-accent text-accent-foreground' : 'text-faint',
             )}
           >
-            <Icon className="size-5" />
+            <Icon className="size-[22px]" />
             {label}
           </Link>
         );

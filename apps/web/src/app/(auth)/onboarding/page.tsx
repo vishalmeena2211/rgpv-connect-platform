@@ -1,26 +1,46 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
+import { Clock } from 'lucide-react';
 
-import { auth } from '@/auth';
-import { EnrollmentVerification } from '@/features/auth/enrollment-verification';
+import { Callout } from '@/components/ui/callout';
+import { VerifyFlow } from '@/features/auth/verify-flow';
+import { getCollegeNames } from '@/lib/public-stats';
+import { getCurrentUser } from '@/lib/session';
 
-export const metadata = { title: 'Get verified' };
+export const metadata: Metadata = { title: 'Verify your enrollment' };
 
-/**
- * Onboarding gate. Signed-in but unverified users land here to verify their
- * enrollment; already-verified users skip straight to the feed.
- */
-export default async function OnboardingPage() {
-  const session = await auth();
-  if (!session?.user) redirect('/login');
-  if (session.user.verificationStatus === 'VERIFIED') redirect('/feed');
+/** Signed-in but unverified users verify here; verified users go straight to My results. */
+export default async function OnboardingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ enrollment?: string; semester?: string; claimed?: string }>;
+}) {
+  const user = await getCurrentUser();
+  if (!user) redirect('/login');
+  if (user.verificationStatus === 'VERIFIED') redirect('/results/me');
 
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 py-10">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold">One step to go</h1>
-        <p className="text-muted-foreground">Verify your enrollment to join your college network.</p>
+  const { enrollment, semester, claimed } = await searchParams;
+  if (claimed) {
+    return (
+      <div className="flex flex-col items-center gap-3 text-center">
+        <span className="grid size-11 place-items-center rounded-[13px] bg-warning-soft">
+          <Clock className="size-5 text-warning-foreground" />
+        </span>
+        <h1 className="font-display text-[22px] font-bold tracking-[-0.02em]">We are checking {claimed}</h1>
+        <Callout tone="info" title="Your claim is with the reviewers">
+          They check RGPV’s record and decide within two days. You will get a notification either way. Until then, you can
+          still check results and browse notes.
+        </Callout>
       </div>
-      <EnrollmentVerification />
-    </div>
+    );
+  }
+
+  const semesterNumber = Number(semester);
+  return (
+    <VerifyFlow
+      initialEnrollment={enrollment?.toUpperCase() ?? ''}
+      initialSemester={Number.isInteger(semesterNumber) && semesterNumber >= 1 && semesterNumber <= 8 ? semesterNumber : undefined}
+      collegeNames={await getCollegeNames()}
+    />
   );
 }

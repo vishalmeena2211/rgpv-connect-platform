@@ -1,73 +1,88 @@
+import 'server-only';
+
 import { prisma } from '@rgpv/db';
+import { density, type Density } from '@rgpv/shared';
 
-import { type CurrentUser } from '@/lib/session';
+import type { CurrentUser } from '@/lib/session';
 
-/** A directory entry: a verified student plus the viewer's follow state. */
+export type DirectoryScope = 'batch' | 'college' | 'seniors' | 'juniors';
+
 export interface DirectoryUser {
   id: string;
   name: string;
   avatarUrl: string | null;
-  bio: string | null;
   branchCode: string | null;
   graduatingBatch: number | null;
-  collegeName: string | null;
+  collegeShortName: string | null;
+  notesShared: number;
   isFollowing: boolean;
 }
 
-/** Filters for narrowing the directory; all optional. */
-export interface DirectoryFilters {
-  /** "college" restricts to the viewer's own college; "all" spans the university. */
-  scope?: 'college' | 'all';
-  branchCode?: string;
-  batch?: number;
-  search?: string;
-}
-
 /**
- * List verified students for the directory, excluding the viewer. Defaults to
- * the viewer's own college; supports branch / batch / name filters. Returns a
- * follow flag per user so cards can render the right button without an extra
- * round-trip.
+ * Verified students, defaulting to the viewer's own branch + batch. University
+ * scope is dropped on purpose (strategy doc: never reaches density).
  */
 export async function getDirectory(
   viewer: CurrentUser,
-  filters: DirectoryFilters,
-): Promise<DirectoryUser[]> {
-  const scope = filters.scope ?? 'college';
+  scope: DirectoryScope,
+  search?: string,
+): Promise<{ users: DirectoryUser[]; total: number }> {
+  const where = {
+    verificationStatus: 'VERIFIED' as const,
+    id: { not: viewer.id },
+    role: { not: 'ADMIN' as const },
+    collegeId: viewer.collegeId ?? '__none__',
+    ...(scope === 'batch' ? { branchCode: viewer.branchCode, graduatingBatch: viewer.graduatingBatch } : {}),
+    ...(scope === 'seniors' && viewer.graduatingBatch ? { graduatingBatch: { lt: viewer.graduatingBatch } } : {}),
+    ...(scope === 'juniors' && viewer.graduatingBatch ? { graduatingBatch: { gt: viewer.graduatingBatch } } : {}),
+    ...(search ? { name: { contains: search, mode: 'insensitive' as const } } : {}),
+  };
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      orderBy: [{ resources: { _count: 'desc' } }, { name: 'asc' }],
+      take: 30,
+      select: {
+        id: true,
+        name: true,
+        avatarUrl: true,
+        branchCode: true,
+        graduatingBatch: true,
+        college: { select: { shortName: true } },
+        _count: { select: { resources: { where: { status: 'APPROVED' } } } },
+        followers: { where: { followerId: viewer.id }, select: { id: true } },
+      },
+    }),
+    prisma.user.count({ where }),
+  ]);
+  return {
+    total,
+    users: users.map((u) => ({
+      id: u.id,
+      name: u.name,
+      avatarUrl: u.avatarUrl,
+      branchCode: u.branchCode,
+      graduatingBatch: u.graduatingBatch,
+      collegeShortName: u.college?.shortName ?? null,
+      notesShared: u._count.resources,
+      isFollowing: u.followers.length > 0,
+    })),
+  };
+}
 
-  const users = await prisma.user.findMany({
-    where: {
-      verificationStatus: 'VERIFIED',
-      id: { not: viewer.id },
-      ...(scope === 'college' && viewer.collegeId ? { collegeId: viewer.collegeId } : {}),
-      ...(filters.branchCode ? { branchCode: filters.branchCode } : {}),
-      ...(filters.batch ? { graduatingBatch: filters.batch } : {}),
-      ...(filters.search
-        ? { name: { contains: filters.search, mode: 'insensitive' as const } }
-        : {}),
-    },
-    orderBy: { name: 'asc' },
-    take: 60,
-    select: {
-      id: true,
-      name: true,
-      avatarUrl: true,
-      bio: true,
-      branchCode: true,
-      graduatingBatch: true,
-      college: { select: { name: true } },
-      followers: { where: { followerId: viewer.id }, select: { id: true } },
-    },
-  });
-
-  return users.map((user) => ({
-    id: user.id,
-    name: user.name,
-    avatarUrl: user.avatarUrl,
-    bio: user.bio,
-    branchCode: user.branchCode,
-    graduatingBatch: user.graduatingBatch,
-    collegeName: user.college?.name ?? null,
-    isFollowing: user.followers.length > 0,
-  }));
+/** How much of the viewer's batch is here, against the hand-entered batch size. */
+export async function getBatchDensity(viewer: CurrentUser): Promise<Density | null> {
+  if (!viewer.college || !viewer.branchCode || !viewer.graduatingBatch) return null;
+  const [verified, size] = await Promise.all([
+    prisma.user.count({
+      where: { verificationStatus: 'VERIFIED', collegeId: viewer.collegeId, branchCode: viewer.branchCode, graduatingBatch: viewer.graduatingBatch },
+    }),
+    prisma.cohortSize.findUnique({
+      where: {
+        collegeCode_branchCode_graduatingBatch: { collegeCode: viewer.college.code, branchCode: viewer.branchCode, graduatingBatch: viewer.graduatingBatch },
+      },
+      select: { size: true },
+    }),
+  ]);
+  return density(verified, size?.size);
 }

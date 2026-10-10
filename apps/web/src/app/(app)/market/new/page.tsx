@@ -1,24 +1,23 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { getCurrentUser, isVerified } from '@/lib/session';
+import { FeatureClosed } from '@/components/feature-closed';
+import { Card, CardContent } from '@/components/ui/card';
+import { PageHeader } from '@/components/ui/page-header';
 import { ListingForm } from '@/features/marketplace/listing-form';
+import { isFeatureOpen } from '@/lib/features';
+import { isVerified, requireUser } from '@/lib/session';
 
-export const metadata = { title: 'Sell an Item' };
+export const metadata: Metadata = { title: 'Sell something' };
 
-/** Verified-user screen for creating a marketplace listing. */
 export default async function NewListingPage() {
-  const user = await getCurrentUser();
-  if (!isVerified(user)) redirect('/market');
-
+  const user = await requireUser('/market/new');
+  if (!isFeatureOpen('campus', user.role)) return <FeatureClosed feature="campus" />;
+  if (!isVerified(user)) redirect('/onboarding');
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-bold">Sell an Item</h1>
-        <p className="text-sm text-muted-foreground">
-          Your listing is visible to students at your college.
-        </p>
-      </header>
-      <ListingForm />
+    <div className="mx-auto flex max-w-[680px] flex-col gap-4">
+      <PageHeader title="Sell something" description={`Shown to verified students at ${user.college?.shortName ?? 'your college'}.`} />
+      <Card><CardContent><ListingForm /></CardContent></Card>
     </div>
   );
 }

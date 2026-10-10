@@ -1,36 +1,49 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { DM_Sans, Plus_Jakarta_Sans } from 'next/font/google';
 import { Toaster } from 'sonner';
 
 import { ThemeProvider } from '@/components/theme-provider';
+import { RegisterServiceWorker } from '@/features/pwa/register-sw';
+import { appUrl } from '@/lib/app-url';
 
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const sans = DM_Sans({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
+const display = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
+  metadataBase: new URL(appUrl()),
   title: {
     default: 'RGPV Connect',
     template: '%s · RGPV Connect',
   },
   description:
-    'The verified student network and utility platform for RGPV University, Bhopal — results, notes, papers and your campus network in one place.',
+    'Check any RGPV semester result in seconds, keep your full history with CGPA trends, and join a network where every student is verified by their enrollment number.',
+  applicationName: 'RGPV Connect',
+  appleWebApp: { capable: true, title: 'RGPV Connect', statusBarStyle: 'default' },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0f1f' },
+    { media: '(prefers-color-scheme: light)', color: '#F6F6F3' },
+    { media: '(prefers-color-scheme: dark)', color: '#0C1311' },
   ],
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans`}>
+      <body className={`${sans.variable} ${display.variable} font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
-          <Toaster richColors position="top-center" />
+          <RegisterServiceWorker />
+          <Toaster position="top-center" toastOptions={{ className: 'font-sans' }} />
         </ThemeProvider>
       </body>
     </html>

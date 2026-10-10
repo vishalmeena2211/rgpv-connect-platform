@@ -1,82 +1,121 @@
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, Newspaper, ShieldCheck, Users } from 'lucide-react';
+import { Check, Share2, ShieldCheck, TrendingUp } from 'lucide-react';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { LookupForm } from '@/features/results/lookup-form';
+import { Sparkline } from '@/features/results/trend-chart';
+import { getCollegeNames, getPublicStats } from '@/lib/public-stats';
+import { formatCount } from '@/lib/utils';
 
-const FEATURES = [
-  {
-    icon: GraduationCap,
-    title: 'Results & analytics',
-    body: 'Instant result lookup, SGPA/CGPA trends, and "what-if" projections for next semester.',
-  },
-  {
-    icon: Newspaper,
-    title: 'Notes & papers',
-    body: 'Crowd-sourced, rated notes and previous-year papers — organised by branch and semester.',
-  },
-  {
-    icon: Users,
-    title: 'Verified network',
-    body: 'Connect with batchmates, seniors and juniors — auto-grouped by college and branch.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Real identities',
-    body: 'Every member is verified by their RGPV enrollment, so the network stays trustworthy.',
-  },
-];
+export const revalidate = 3600;
 
-/** Public landing page (marketing route group). */
-export default function LandingPage() {
+/** Public landing: the promise on the left, a working lookup on the right. */
+export default async function LandingPage() {
+  const [stats, collegeNames] = await Promise.all([getPublicStats(), getCollegeNames()]);
+  const showCounts = stats.flagshipVerified >= 50;
+
   return (
-    <div className="min-h-screen">
-      <header className="flex h-16 items-center justify-between px-6">
-        <span className="text-lg font-bold tracking-tight">
-          RGPV<span className="text-primary">Connect</span>
-        </span>
-        <Button asChild variant="ghost">
-          <Link href="/login">Sign in</Link>
-        </Button>
-      </header>
+    <div className="relative overflow-hidden">
+      <div className="hero-mesh pointer-events-none absolute inset-0" aria-hidden />
+      <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden />
 
-      <section className="mx-auto max-w-3xl px-6 pb-16 pt-20 text-center">
-        <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-sm font-medium text-accent-foreground">
-          <ShieldCheck className="size-4" /> For RGPV University students, Bhopal
-        </p>
-        <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-6xl">
-          The verified network for <span className="text-primary">RGPV students.</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg text-muted-foreground">
-          Results, notes, papers and your entire campus network — in one place. Join with your
-          enrollment number and connect with your college, branch and batch.
-        </p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button asChild size="lg">
-            <Link href="/login">
-              Join with your enrollment <ArrowRight className="size-4" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/results">Check a result</Link>
-          </Button>
+      <section className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-8 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:pt-14">
+        <div>
+          <span className="inline-flex h-[30px] items-center gap-2 rounded-full border bg-card py-0 pl-1.5 pr-3 text-xs font-medium shadow-card">
+            <span className="grid size-[18px] place-items-center rounded-full bg-success-soft">
+              <Check className="size-[11px] text-success-foreground" />
+            </span>
+            {showCounts
+              ? `${formatCount(stats.checkedToday)} results checked today · ${formatCount(stats.flagshipVerified)} verified at ${stats.flagshipName}`
+              : 'Free and open source · for every RGPV student'}
+          </span>
+          <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[44px] tracking-[-0.035em] sm:text-[52px] sm:leading-[56px]">
+            Your RGPV result, in ten seconds. <span className="text-primary">Then your whole batch.</span>
+          </h1>
+          <p className="mt-4 max-w-[46ch] text-[17px] leading-[27px] text-muted-foreground">
+            Check any semester result without signing up. Verify your enrollment once and keep every semester, your CGPA
+            trend, and a network where every student is real.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2.5">
+            <Button asChild size="lg">
+              <Link href="/login">Join with your enrollment</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href="/how-it-works">See how verification works</Link>
+            </Button>
+          </div>
+          <dl className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-2 text-xs text-muted-foreground">
+            {showCounts ? (
+              <div>
+                <dt className="sr-only">Verified students</dt>
+                <dd>
+                  <b className="font-display text-sm text-foreground tabular">{formatCount(stats.flagshipVerified)}</b> verified at{' '}
+                  {stats.flagshipName}
+                </dd>
+              </div>
+            ) : null}
+            <div>
+              <dd>
+                <b className="font-display text-sm text-foreground">Free</b>, no ads, open source
+              </dd>
+            </div>
+            <div>
+              <dd>
+                <b className="font-display text-sm text-foreground">Nothing stored</b> unless you save it
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div id="check" className="scroll-mt-24 rounded-xl border bg-card p-5 shadow-float sm:p-6">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="font-display text-[15px] font-bold">Check a result</h2>
+            <span className="inline-flex items-center gap-1.5 rounded-full border bg-card py-1 pl-1 pr-2.5 text-[11px] font-medium shadow-card">
+              <span className="grid size-4 place-items-center rounded-full bg-success-soft">
+                <Check className="size-2.5 text-success-foreground" />
+              </span>
+              Live from result.rgpv.ac.in
+            </span>
+          </div>
+          <LookupForm mode="public" collegeNames={collegeNames} />
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl gap-4 px-6 pb-24 sm:grid-cols-2">
-        {FEATURES.map(({ icon: Icon, title, body }) => (
-          <Card key={title}>
-            <CardContent className="flex gap-4 p-6">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-accent text-accent-foreground">
-                <Icon className="size-5" />
-              </div>
-              <div>
-                <h3 className="font-semibold">{title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{body}</p>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <section className="relative mx-auto grid max-w-6xl gap-3 px-4 pb-14 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+        <article className="flex min-h-[150px] flex-col gap-2 rounded-lg border bg-card p-5 shadow-card">
+          <div className="flex items-center justify-between">
+            <span className="grid size-[34px] place-items-center rounded-[10px] bg-accent">
+              <TrendingUp className="size-[17px] text-accent-foreground" />
+            </span>
+            <Badge>Example</Badge>
+          </div>
+          <h3 className="font-display text-sm font-bold">Every semester, one trend</h3>
+          <p className="text-[12.5px] leading-[18px] text-muted-foreground">
+            SGPA 7.42 → 7.85 → 8.10 → 8.41. CGPA 7.95, and what you need next semester for the CGPA you want.
+          </p>
+          <Sparkline values={[7.42, 7.85, 8.1, 8.41]} className="mt-auto h-11 w-full" />
+        </article>
+        <article className="bg-ink-gradient relative flex min-h-[150px] flex-col gap-2 overflow-hidden rounded-lg border border-ink p-5 text-ink-foreground shadow-card">
+          <div className="glow-primary pointer-events-none absolute inset-0" aria-hidden />
+          <span className="relative grid size-[34px] place-items-center rounded-[10px] bg-white/10">
+            <ShieldCheck className="size-[17px]" />
+          </span>
+          <h3 className="relative font-display text-sm font-bold">Verified by enrollment</h3>
+          <p className="relative text-[12.5px] leading-[18px] text-ink-foreground/75">
+            We fetch a real result to prove the number is yours. College, branch and batch come from the number, never from
+            a form.
+          </p>
+        </article>
+        <article className="flex min-h-[150px] flex-col gap-2 rounded-lg border bg-card p-5 shadow-card">
+          <span className="grid size-[34px] place-items-center rounded-[10px] bg-accent">
+            <Share2 className="size-[17px] text-accent-foreground" />
+          </span>
+          <h3 className="font-display text-sm font-bold">A card for your batch group</h3>
+          <p className="text-[12.5px] leading-[18px] text-muted-foreground">
+            Your SGPA on a verified card with your name, one tap to WhatsApp. Nobody can fake it.
+          </p>
+        </article>
       </section>
     </div>
   );

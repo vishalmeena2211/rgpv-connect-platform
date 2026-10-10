@@ -2,116 +2,85 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
+import { Loader2 } from 'lucide-react';
+import { BRANCH_CODES } from '@rgpv/shared';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ChipButton } from '@/components/ui/chip';
+import { Field, Input, Select, Textarea } from '@/components/ui/input';
 
 import { createJob } from './job-actions';
 
-const FIELD =
-  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2';
-
-/** Recruiter form for posting a new job opening; redirects to /jobs on success. */
 export function JobForm() {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [isRemote, setIsRemote] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [branches, setBranches] = useState<string[]>([]);
+  const [batches, setBatches] = useState<number[]>([]);
+  const year = new Date().getFullYear();
+  const batchOptions = [year, year + 1, year + 2, year + 3];
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const input = {
-      title: String(form.get('title') ?? ''),
-      company: String(form.get('company') ?? ''),
-      location: String(form.get('location') ?? '') || undefined,
-      type: String(form.get('type') ?? 'FULL_TIME'),
-      description: String(form.get('description') ?? ''),
-      applyUrl: String(form.get('applyUrl') ?? ''),
-      isRemote,
-    };
-
+  function submit(form: FormData) {
+    setError(null);
     startTransition(async () => {
-      const result = await createJob(input);
-      if (result.ok) {
-        toast.success('Job posted.');
-        router.push('/jobs');
-      } else {
-        toast.error(result.error);
-      }
+      const result = await createJob({
+        title: String(form.get('title') ?? ''),
+        company: String(form.get('company') ?? ''),
+        location: String(form.get('location') ?? ''),
+        type: form.get('type') as 'FULL_TIME' | 'INTERNSHIP' | 'PART_TIME',
+        pay: String(form.get('pay') ?? ''),
+        description: String(form.get('description') ?? ''),
+        applyUrl: String(form.get('applyUrl') ?? ''),
+        isRemote: form.get('isRemote') === 'on',
+        branches,
+        batches,
+        closesAt: String(form.get('closesAt') ?? '') || undefined,
+      });
+      if (!result.ok) return setError(result.error);
+      toast.success('Job posted.');
+      router.push('/jobs');
     });
   }
 
+  const toggle = <T,>(list: T[], value: T) => (list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
+
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
-            <label htmlFor="title" className="text-sm font-medium">
-              Job title
-            </label>
-            <Input id="title" name="title" required placeholder="Frontend Engineer" />
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <label htmlFor="company" className="text-sm font-medium">
-                Company
-              </label>
-              <Input id="company" name="company" required placeholder="Acme Inc." />
-            </div>
-            <div className="space-y-1.5">
-              <label htmlFor="type" className="text-sm font-medium">
-                Type
-              </label>
-              <select id="type" name="type" className={FIELD} defaultValue="FULL_TIME">
-                <option value="FULL_TIME">Full-time</option>
-                <option value="INTERNSHIP">Internship</option>
-                <option value="PART_TIME">Part-time</option>
-              </select>
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <label htmlFor="location" className="text-sm font-medium">
-                Location
-              </label>
-              <Input id="location" name="location" placeholder="Bhopal" disabled={isRemote} />
-            </div>
-            <label className="flex items-end gap-2 pb-2.5 text-sm">
-              <input
-                type="checkbox"
-                checked={isRemote}
-                onChange={(e) => setIsRemote(e.target.checked)}
-                className="size-4 rounded border-input"
-              />
-              Remote
-            </label>
-          </div>
-          <div className="space-y-1.5">
-            <label htmlFor="applyUrl" className="text-sm font-medium">
-              Application URL
-            </label>
-            <Input id="applyUrl" name="applyUrl" type="url" required placeholder="https://…" />
-          </div>
-          <div className="space-y-1.5">
-            <label htmlFor="description" className="text-sm font-medium">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              required
-              rows={6}
-              placeholder="Role, responsibilities, requirements…"
-              className="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            />
-          </div>
-          <Button type="submit" disabled={isPending}>
-            {isPending ? 'Posting…' : 'Post job'}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+    <form action={submit} className="flex flex-col gap-4">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Job title" htmlFor="title"><Input id="title" name="title" required maxLength={120} placeholder="Software engineer intern" /></Field>
+        <Field label="Company" htmlFor="company"><Input id="company" name="company" required maxLength={120} /></Field>
+        <Field label="Type" htmlFor="type">
+          <Select id="type" name="type" defaultValue="INTERNSHIP">
+            <option value="INTERNSHIP">Internship</option>
+            <option value="FULL_TIME">Full time</option>
+            <option value="PART_TIME">Part time</option>
+          </Select>
+        </Field>
+        <Field label="Stipend or salary" htmlFor="pay"><Input id="pay" name="pay" maxLength={60} placeholder="₹15,000 a month or ₹4.2 LPA" /></Field>
+        <Field label="Location" htmlFor="location"><Input id="location" name="location" maxLength={120} placeholder="Bhopal" /></Field>
+        <Field label="Applications close" htmlFor="closesAt" hint="The job disappears after this date."><Input id="closesAt" name="closesAt" type="date" /></Field>
+      </div>
+      <Checkbox id="isRemote" name="isRemote" label="Remote" />
+      <Field label="Open to branches" hint="Leave all off for any branch.">
+        <div className="flex flex-wrap gap-1.5">
+          {Object.keys(BRANCH_CODES).map((code) => (
+            <ChipButton key={code} on={branches.includes(code)} onClick={() => setBranches((b) => toggle(b, code))}>{code}</ChipButton>
+          ))}
+        </div>
+      </Field>
+      <Field label="Open to batches" hint="Leave all off for any batch.">
+        <div className="flex flex-wrap gap-1.5">
+          {batchOptions.map((b) => (
+            <ChipButton key={b} on={batches.includes(b)} onClick={() => setBatches((list) => toggle(list, b))}>{b} batch</ChipButton>
+          ))}
+        </div>
+      </Field>
+      <Field label="What the role is" htmlFor="description"><Textarea id="description" name="description" required maxLength={5000} className="min-h-[120px]" /></Field>
+      <Field label="Where students apply" htmlFor="applyUrl" hint="Applying happens on your site. RGPV Connect only counts the clicks."><Input id="applyUrl" name="applyUrl" type="url" required placeholder="https://" /></Field>
+      {error ? <p className="text-[13px] text-destructive" role="alert">{error}</p> : null}
+      <Button type="submit" className="self-start" disabled={pending}>{pending ? <Loader2 className="animate-spin" /> : null}Post job</Button>
+    </form>
   );
 }

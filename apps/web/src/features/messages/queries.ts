@@ -5,7 +5,19 @@ interface Participant {
   id: string;
   name: string;
   avatarUrl: string | null;
+  branchCode: string | null;
+  graduatingBatch: number | null;
+  verificationStatus: string;
 }
+
+const participantSelect = {
+  id: true,
+  name: true,
+  avatarUrl: true,
+  branchCode: true,
+  graduatingBatch: true,
+  verificationStatus: true,
+} as const;
 
 /** A conversation row for the inbox list. */
 export interface ConversationSummary {
@@ -28,6 +40,8 @@ export interface ThreadMessage {
 export interface ConversationThread {
   id: string;
   other: Participant;
+  /** When the other person last read the thread, for the read receipt. */
+  otherLastReadAt: string | null;
   messages: ThreadMessage[];
 }
 
@@ -52,7 +66,7 @@ export async function getConversations(userId: string): Promise<ConversationSumm
         select: {
           userId: true,
           lastReadAt: true,
-          user: { select: { id: true, name: true, avatarUrl: true } },
+          user: { select: participantSelect },
         },
       },
       messages: {
@@ -92,10 +106,11 @@ export async function getConversation(
       id: true,
       members: {
         where: { userId: { not: userId } },
-        select: { user: { select: { id: true, name: true, avatarUrl: true } } },
+        select: { lastReadAt: true, user: { select: participantSelect } },
       },
       messages: {
-        orderBy: { createdAt: 'asc' },
+        orderBy: { createdAt: 'desc' },
+        take: 200,
         select: { id: true, body: true, senderId: true, createdAt: true },
       },
     },
@@ -107,7 +122,8 @@ export async function getConversation(
   return {
     id: conversation.id,
     other,
-    messages: conversation.messages.map((message) => ({
+    otherLastReadAt: conversation.members[0]?.lastReadAt.toISOString() ?? null,
+    messages: [...conversation.messages].reverse().map((message) => ({
       id: message.id,
       body: message.body,
       senderId: message.senderId,

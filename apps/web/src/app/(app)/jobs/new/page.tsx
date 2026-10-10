@@ -1,26 +1,23 @@
-import { redirect } from 'next/navigation';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
-import { getCurrentUser } from '@/lib/session';
+import { FeatureClosed } from '@/components/feature-closed';
+import { Card, CardContent } from '@/components/ui/card';
+import { PageHeader } from '@/components/ui/page-header';
 import { JobForm } from '@/features/marketplace/job-form';
+import { isFeatureOpen } from '@/lib/features';
+import { requireUser } from '@/lib/session';
 
-export const metadata = { title: 'Post a Job' };
+export const metadata: Metadata = { title: 'Post a job' };
 
-/** Recruiter-only screen for posting a new opening. */
 export default async function NewJobPage() {
-  const user = await getCurrentUser();
-  if (user?.role !== 'RECRUITER' && user?.role !== 'ADMIN') {
-    redirect('/jobs');
-  }
-
+  const user = await requireUser('/jobs/new');
+  if (!isFeatureOpen('campus', user.role)) return <FeatureClosed feature="campus" />;
+  if (user.role !== 'RECRUITER' && user.role !== 'ADMIN') notFound();
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-bold">Post a Job</h1>
-        <p className="text-sm text-muted-foreground">
-          Reach verified RGPV students and alumni.
-        </p>
-      </header>
-      <JobForm />
+    <div className="mx-auto flex max-w-[760px] flex-col gap-4">
+      <PageHeader title="Post a job" description="Students see it under Jobs, filtered by branch and batch. No payment, no featured posts." />
+      <Card><CardContent><JobForm /></CardContent></Card>
     </div>
   );
 }

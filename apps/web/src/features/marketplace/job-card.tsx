@@ -1,55 +1,44 @@
-import { Briefcase, ExternalLink, MapPin } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { relativeTime } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
-import { type JobListItem } from './job-queries';
+import type { JobListItem } from './job-queries';
 
-const TYPE_LABEL = {
-  FULL_TIME: 'Full-time',
-  INTERNSHIP: 'Internship',
-  PART_TIME: 'Part-time',
-} as const;
+const TYPE = { FULL_TIME: 'Full time', INTERNSHIP: 'Internship', PART_TIME: 'Part time' } as const;
 
-/** A job-board card: title, employer, meta chips, and an apply link. */
 export function JobCard({ job }: { job: JobListItem }) {
+  const facts = [
+    job.company,
+    job.isRemote ? 'Remote' : job.location,
+    TYPE[job.type],
+    job.pay,
+    job.branches.length ? job.branches.join(', ') : 'any branch',
+    job.batches.length ? `${job.batches.join(', ')} batch` : null,
+  ].filter(Boolean);
+  const closesSoon = job.closesAt ? new Date(job.closesAt).getTime() - Date.now() < 3 * 86_400_000 : false;
   return (
-    <Card>
-      <CardHeader className="space-y-2">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 space-y-1">
-            <CardTitle className="text-base">{job.title}</CardTitle>
-            <p className="text-sm text-muted-foreground">{job.company}</p>
-          </div>
-          <Badge variant="secondary" className="shrink-0">
-            {TYPE_LABEL[job.type]}
-          </Badge>
-        </div>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1">
-            <MapPin className="size-3.5" />
-            {job.isRemote ? 'Remote' : (job.location ?? 'On-site')}
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Briefcase className="size-3.5" />
-            {job.postedBy}
-          </span>
-          <span>{relativeTime(job.createdAt)}</span>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <p className="line-clamp-3 whitespace-pre-wrap text-sm text-muted-foreground">
-          {job.description}
+    <article className="grid grid-cols-[44px_1fr] gap-3.5 rounded-lg border bg-card p-4 shadow-card sm:grid-cols-[44px_1fr_auto]">
+      <span className="grid size-11 place-items-center rounded-xl bg-muted font-display text-sm font-bold text-muted-foreground">
+        {job.company.split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase()}
+      </span>
+      <div className="min-w-0">
+        <h3 className="font-display text-sm font-bold">{job.title}</h3>
+        <p className="mt-0.5 text-xs text-muted-foreground">{facts.join(' · ')}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          {job.source === 'PLACEMENT_CELL' ? 'Posted by the placement cell' : 'Posted by a verified recruiter'}
+          {job.closesAt ? (
+            <span className={closesSoon ? 'font-semibold text-warning-foreground' : undefined}> · Closes {formatDate(job.closesAt)}</span>
+          ) : null}
         </p>
-        <Button asChild size="sm" variant="outline">
-          <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
-            Apply
-            <ExternalLink />
-          </a>
-        </Button>
-      </CardContent>
-    </Card>
+        <p className="mt-2 line-clamp-2 text-[13px] text-foreground/85">{job.description}</p>
+      </div>
+      <Button asChild size="sm" className="col-span-2 sm:col-span-1">
+        <a href={`/api/jobs/${job.id}/apply`} target="_blank" rel="noopener noreferrer">
+          <ExternalLink />
+          Apply
+        </a>
+      </Button>
+    </article>
   );
 }

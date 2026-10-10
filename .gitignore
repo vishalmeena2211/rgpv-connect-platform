@@ -43,3 +43,6 @@ packages/db/prisma/*.db
 # Re-assert the template exception: `.env*` above is matched last and would
 # otherwise swallow the committed .env.example files contributors rely on.
 !.env.example
+
+# Local file storage for uploads (STORAGE_DRIVER=local)
+.uploads/

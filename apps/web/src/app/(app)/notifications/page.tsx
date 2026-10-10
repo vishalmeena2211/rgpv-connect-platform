@@ -1,86 +1,112 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { type NotificationType } from '@rgpv/shared';
+import { Bell, CheckCircle2, MessageCircle, Share2, UserPlus, XCircle, Zap } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent } from '@/components/ui/card';
-import { auth } from '@/auth';
-import { cn, initials, relativeTime } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { EmptyState } from '@/components/ui/empty-state';
+import { PageHeader } from '@/components/ui/page-header';
 import { MarkReadButton } from '@/features/notifications/mark-read-button';
-import {
-  getNotifications,
-  type NotificationItem,
-} from '@/features/notifications/queries';
+import { getNotifications, type NotificationItem } from '@/features/notifications/queries';
+import { requireUser } from '@/lib/session';
+import { batchTag, cn, formatWhen, initials } from '@/lib/utils';
 
-export const metadata = { title: 'Notifications' };
+export const metadata: Metadata = { title: 'Notifications' };
 
-const VERB: Record<NotificationType, string> = {
-  FOLLOW: 'started following you',
-  POST_LIKE: 'liked your post',
-  POST_COMMENT: 'commented on your post',
-  MESSAGE: 'sent you a message',
-};
+type Row = { icon?: React.ReactNode; title: string; detail: string; action: { label: string; href: string; primary?: boolean } | null };
 
-/** Where clicking a notification takes you, by type. */
-function hrefFor(notification: NotificationItem): string {
-  switch (notification.type) {
-    case 'FOLLOW':
-      return `/u/${notification.actor.id}`;
+function describe(n: NotificationItem): Row {
+  const data = (n.data ?? {}) as Record<string, unknown>;
+  const actorName = n.actor?.name ?? 'Someone';
+  const cohort = n.actor ? batchTag(n.actor.branchCode, n.actor.graduatingBatch) : null;
+  switch (n.type) {
+    case 'RESULT_DECLARED':
+      return {
+        icon: <Zap className="size-4" />,
+        title: `Semester ${data.semester ?? n.entityId} results are out`,
+        detail: typeof data.sgpa === 'number' ? `Your result was fetched. SGPA ${data.sgpa.toFixed(2)}.` : 'Your result is waiting in My results.',
+        action: { label: 'Share card', href: '/results/me', primary: true },
+      };
     case 'MESSAGE':
-      return notification.entityId ? `/messages/${notification.entityId}` : '/messages';
-    default:
-      return '/feed';
+      return { title: `${actorName} sent you a message`, detail: cohort ?? 'Messages', action: { label: 'Reply', href: n.entityId ? `/messages/${n.entityId}` : '/messages' } };
+    case 'RESOURCE_REVIEWED':
+      return data.approved
+        ? { icon: <CheckCircle2 className="size-4 text-success-foreground" />, title: `Your notes were published: ${String(data.title ?? '')}`, detail: 'Approved by a reviewer', action: { label: 'Open', href: '/uploads' } }
+        : { icon: <XCircle className="size-4 text-destructive" />, title: `Not published: ${String(data.title ?? '')}`, detail: String(data.note ?? 'See the reviewer’s note in My uploads.'), action: { label: 'Edit and resend', href: '/uploads' } };
+    case 'FOLLOW':
+      return { title: `${actorName} started following you`, detail: cohort ?? '', action: n.actor ? { label: 'View profile', href: `/u/${n.actor.id}` } : null };
+    case 'POST_LIKE':
+      return { title: `${actorName} liked your post`, detail: cohort ?? '', action: { label: 'Open', href: '/feed' } };
+    case 'POST_COMMENT':
+      return { title: `${actorName} commented on your post`, detail: cohort ?? '', action: { label: 'Open', href: '/feed' } };
   }
 }
 
-/** Activity feed: follows, likes, comments, and message alerts. */
 export default async function NotificationsPage() {
-  const session = await auth();
-  const userId = session?.user?.id;
-  const notifications = userId ? await getNotifications(userId) : [];
-  const hasUnread = notifications.some((notification) => !notification.isRead);
+  const user = await requireUser('/notifications');
+  const notifications = await getNotifications(user.id);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Notifications</h1>
-        <MarkReadButton hasUnread={hasUnread} />
-      </header>
-
+    <div className="mx-auto flex max-w-[720px] flex-col gap-5">
+      <PageHeader
+        title="Notifications"
+        actions={
+          <>
+            <MarkReadButton hasUnread={notifications.some((n) => !n.isRead)} />
+            <Button asChild variant="outline" size="sm">
+              <Link href="/settings#notifications">Settings</Link>
+            </Button>
+          </>
+        }
+      />
       {notifications.length === 0 ? (
         <Card>
-          <CardContent className="pt-6 text-sm text-muted-foreground">
-            No notifications yet. Follows, likes, and messages will show up here.
-          </CardContent>
+          <EmptyState icon={Bell} title="Nothing yet">
+            Results-day alerts, messages and reviews of your uploads show up here.
+          </EmptyState>
         </Card>
       ) : (
-        <div className="space-y-2">
-          {notifications.map((notification) => (
-            <Link key={notification.id} href={hrefFor(notification)} className="block">
-              <Card
+        <ul className="flex flex-col gap-2.5">
+          {notifications.map((n) => {
+            const row = describe(n);
+            return (
+              <li
+                key={n.id}
                 className={cn(
-                  'transition-colors hover:bg-accent/50',
-                  !notification.isRead && 'border-primary/40 bg-primary/5',
+                  'grid grid-cols-[auto_1fr] items-center gap-3 rounded-md border bg-card px-4 py-3 shadow-card sm:grid-cols-[auto_1fr_auto]',
+                  !n.isRead && 'border-accent-strong bg-[rgb(var(--primary)/0.04)]',
                 )}
               >
-                <CardContent className="flex items-center gap-3 py-3">
-                  <Avatar className="size-9">
-                    {notification.actor.avatarUrl ? (
-                      <AvatarImage src={notification.actor.avatarUrl} alt="" />
-                    ) : null}
-                    <AvatarFallback>{initials(notification.actor.name)}</AvatarFallback>
-                  </Avatar>
-                  <p className="flex-1 text-sm">
-                    <span className="font-medium">{notification.actor.name}</span>{' '}
-                    <span className="text-muted-foreground">{VERB[notification.type]}</span>
-                  </p>
-                  <span className="text-xs text-muted-foreground">
-                    {relativeTime(notification.createdAt)}
+                {row.icon ? (
+                  <span className={cn('grid size-8 place-items-center rounded-full', n.type === 'RESULT_DECLARED' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
+                    {row.icon}
                   </span>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+                ) : (
+                  <Avatar>
+                    {n.actor?.avatarUrl ? <AvatarImage src={n.actor.avatarUrl} alt="" /> : null}
+                    <AvatarFallback>{n.actor ? initials(n.actor.name) : n.type === 'MESSAGE' ? <MessageCircle className="size-4" /> : <UserPlus className="size-4" />}</AvatarFallback>
+                  </Avatar>
+                )}
+                <div className="min-w-0">
+                  <p className="text-[13px] font-semibold">{row.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {row.detail ? `${row.detail} · ` : ''}
+                    {formatWhen(n.createdAt)}
+                  </p>
+                </div>
+                {row.action ? (
+                  <Button asChild size="sm" variant={row.action.primary ? 'default' : 'outline'} className="col-span-2 sm:col-span-1">
+                    <Link href={row.action.href}>
+                      {row.action.primary ? <Share2 /> : null}
+                      {row.action.label}
+                    </Link>
+                  </Button>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );

@@ -1,26 +1,9 @@
-import { ResultLookupForm } from '@/features/results/lookup-form';
-import { ResultsNav } from '@/features/results/results-nav';
+import { redirect } from 'next/navigation';
 
-export const metadata = { title: 'Results' };
+import { getCurrentUser, isVerified } from '@/lib/session';
 
-/**
- * Result lookup screen. Anyone signed in can fetch any RGPV student's semester
- * result here; verified users additionally get a saved "My Results" dashboard
- * (see /results/me).
- */
-export default function ResultsPage() {
-  return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <header className="space-y-3">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold">Results</h1>
-          <p className="text-sm text-muted-foreground">
-            Look up any RGPV semester result by enrollment number.
-          </p>
-        </div>
-        <ResultsNav />
-      </header>
-      <ResultLookupForm />
-    </div>
-  );
+/** Results opens on your own results once verified, on the lookup before that. */
+export default async function ResultsIndex() {
+  const user = await getCurrentUser();
+  redirect(isVerified(user) ? '/results/me' : '/results/lookup');
 }

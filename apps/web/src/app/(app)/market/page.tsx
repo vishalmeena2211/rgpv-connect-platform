@@ -1,67 +1,46 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Plus } from 'lucide-react';
+import { Plus, ShoppingBag } from 'lucide-react';
 
+import { FeatureClosed } from '@/components/feature-closed';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { getCurrentUser, isVerified } from '@/lib/session';
-import { CategoryFilter } from '@/features/marketplace/category-filter';
+import { Card } from '@/components/ui/card';
+import { ChipLink, ChipRow } from '@/components/ui/chip';
+import { EmptyState } from '@/components/ui/empty-state';
+import { PageHeader } from '@/components/ui/page-header';
 import { ListingCard } from '@/features/marketplace/listing-card';
 import { getListings } from '@/features/marketplace/listing-queries';
+import { isFeatureOpen } from '@/lib/features';
+import { isVerified, requireUser } from '@/lib/session';
 
-export const metadata = { title: 'Market' };
+export const metadata: Metadata = { title: 'Market' };
 
-const CATEGORIES = ['BOOKS', 'ELECTRONICS', 'NOTES', 'HOSTEL', 'OTHER'] as const;
-type Category = (typeof CATEGORIES)[number];
+const CATEGORIES = [['', 'All'], ['BOOKS', 'Books'], ['ELECTRONICS', 'Electronics'], ['HOSTEL', 'Hostel'], ['NOTES', 'Notes'], ['OTHER', 'Other']] as const;
 
-const isCategory = (value: string | undefined): value is Category =>
-  value !== undefined && (CATEGORIES as readonly string[]).includes(value);
-
-/** Campus marketplace: students buy and sell within their college. */
-export default async function MarketPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string }>;
-}) {
-  const [{ category }, user] = await Promise.all([searchParams, getCurrentUser()]);
-  const listings = await getListings(
-    user?.collegeId ?? null,
-    isCategory(category) ? category : undefined,
-  );
+export default async function MarketPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const user = await requireUser('/market');
+  if (!isFeatureOpen('campus', user.role)) return <FeatureClosed feature="campus" />;
+  const { category } = await searchParams;
+  const active = CATEGORIES.find(([v]) => v && v === category)?.[0];
+  const listings = await getListings(user.collegeId, (active || undefined) as 'BOOKS' | undefined);
+  const college = user.college?.shortName ?? 'your college';
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
-      <header className="flex items-start justify-between gap-4">
-        <div className="space-y-3">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-bold">Marketplace</h1>
-            <p className="text-sm text-muted-foreground">
-              Buy and sell books, gadgets, and hostel essentials on campus.
-            </p>
-          </div>
-          <CategoryFilter />
-        </div>
-        {isVerified(user) ? (
-          <Button asChild size="sm">
-            <Link href="/market/new">
-              <Plus />
-              Sell
-            </Link>
-          </Button>
-        ) : null}
-      </header>
-
+    <div className="mx-auto flex max-w-[960px] flex-col gap-4">
+      <PageHeader
+        title="Market"
+        description={`Buy and sell inside ${college}. Everyone here is a verified student.`}
+        actions={isVerified(user) ? <Button asChild><Link href="/market/new"><Plus />Sell something</Link></Button> : null}
+      />
+      <ChipRow>
+        {CATEGORIES.map(([value, label]) => (
+          <ChipLink key={label} href={value ? `/market?category=${value}` : '/market'} on={(active ?? '') === value}>{label}</ChipLink>
+        ))}
+      </ChipRow>
       {listings.length === 0 ? (
-        <Card>
-          <CardContent className="pt-6 text-sm text-muted-foreground">
-            Nothing listed yet. Be the first to sell something.
-          </CardContent>
-        </Card>
+        <Card><EmptyState icon={ShoppingBag} title="Nothing listed yet">Books from last semester sell fastest in the first week of term.</EmptyState></Card>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {listings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
-          ))}
-        </div>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">{listings.map((l) => <ListingCard key={l.id} listing={l} />)}</div>
       )}
     </div>
   );

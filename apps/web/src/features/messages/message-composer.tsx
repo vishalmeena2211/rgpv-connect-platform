@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useTransition } from 'react';
-import { Send } from 'lucide-react';
+import { SendHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -32,16 +32,10 @@ export function MessageComposer({ conversationId }: { conversationId: string }) 
 
   return (
     <form onSubmit={handleSubmit} className="flex items-center gap-2">
-      <Input
-        ref={inputRef}
-        value={body}
-        onChange={(event) => setBody(event.target.value)}
-        placeholder="Write a message…"
-        maxLength={4000}
-        aria-label="Message"
-      />
-      <Button type="submit" size="icon" disabled={isPending || !body.trim()} aria-label="Send">
-        <Send className="size-5" />
+      <Input ref={inputRef} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Write a message…" maxLength={4000} aria-label="Message" className="h-11" />
+      <Button type="submit" disabled={isPending || !body.trim()} aria-label="Send" className="h-11">
+        <SendHorizontal />
+        <span className="hidden sm:inline">Send</span>
       </Button>
     </form>
   );

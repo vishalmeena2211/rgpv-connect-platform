@@ -35,7 +35,7 @@ export function FollowButton({
 
   return (
     <Button
-      variant={following ? 'outline' : 'default'}
+      variant={following ? 'secondary' : 'default'}
       size="sm"
       onClick={handleClick}
       disabled={isPending}

@@ -9,11 +9,7 @@ import { getCurrentUser } from '@/lib/session';
 export async function markAllNotificationsRead(): Promise<void> {
   const user = await getCurrentUser();
   if (!user) return;
-
-  await prisma.notification.updateMany({
-    where: { recipientId: user.id, readAt: null },
-    data: { readAt: new Date() },
-  });
-
+  await prisma.notification.updateMany({ where: { recipientId: user.id, readAt: null }, data: { readAt: new Date() } });
   revalidatePath('/notifications');
+  revalidatePath('/', 'layout');
 }

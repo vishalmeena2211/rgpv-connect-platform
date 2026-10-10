@@ -6,6 +6,8 @@ import { authConfig } from '@/auth.config';
 export const { auth: middleware } = NextAuth(authConfig);
 
 export const config = {
-  // Run on everything except static assets and image optimisation.
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  // Everything except static assets, image optimisation and public files.
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|icons/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|pdf|js|webmanifest|txt)$).*)',
+  ],
 };
