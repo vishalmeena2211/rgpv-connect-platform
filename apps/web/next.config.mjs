@@ -12,7 +12,11 @@ const nextConfig = {
     serverActions: { bodySizeLimit: '2mb' },
   },
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: 'res.cloudinary.com' }],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      // Vercel Blob (STORAGE_DRIVER=blob) serves uploads from the store's public host.
+      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+    ],
   },
 };
 

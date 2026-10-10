@@ -21,7 +21,7 @@ default or switches a feature off cleanly.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `RESEND_API_KEY` | empty | Sends email sign-in links through [Resend](https://resend.com). **Without it, in development the link is printed in the dev server’s terminal**; in production sign-in by email fails with a clear error. |
-| `EMAIL_FROM` | `RGPV Connect <login@rgpvconnect.in>` | Sender address. Must be a domain verified in Resend. |
+| `EMAIL_FROM` | `RGPV Connect <login@rgpvconnect.co.in>` | Sender address. Must be a domain verified in Resend. |
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | empty | Enables “Continue with Google”. Without them the button shows disabled with a reason. Redirect URI: `<APP_URL>/api/auth/callback/google`. |
 | `AUTH_URL` | detected | Public origin for Auth.js callbacks when it cannot be detected (self-hosting behind a proxy). |
 | `ADMIN_EMAILS` | empty | Comma-separated emails made admins when they sign in. Use it once to bootstrap the first admin. |
@@ -46,18 +46,19 @@ default or switches a feature off cleanly.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` | empty | Generate once with `npx web-push generate-vapid-keys`. Without them, notifications still appear in the app; the “Turn on for this device” button explains why it is off. |
-| `VAPID_SUBJECT` | `mailto:hello@rgpvconnect.in` | Contact the push services can reach. |
+| `VAPID_SUBJECT` | `mailto:hello@rgpvconnect.co.in` | Contact the push services can reach. |
 
 ### File storage for notes and papers
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `STORAGE_DRIVER` | `local` | `local` writes to disk and serves through `/api/files` (development, or a single self-hosted server). `s3` uses any S3-compatible bucket, such as Cloudflare R2. **Vercel needs `s3`**: its disk is read-only. |
+| `STORAGE_DRIVER` | `local` | `local` writes to disk and serves through `/api/files` (development, or a single self-hosted server). `s3` uses any S3-compatible bucket, such as Cloudflare R2. `blob` uses Vercel Blob. **Vercel needs `s3` or `blob`**: its disk is read-only. |
 | `LOCAL_UPLOAD_DIR` | `.uploads` | Folder for `local`, relative to `apps/web`. Git-ignored. |
 | `S3_ENDPOINT` | empty | R2: `https://<account-id>.r2.cloudflarestorage.com`. Leave empty for AWS S3. |
 | `S3_REGION` | `auto` | `auto` for R2. |
 | `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | empty | Bucket and an API token with read and write on it. |
 | `S3_PUBLIC_URL` | empty | Public base URL of the bucket (R2 custom domain or `r2.dev` URL). |
+| `BLOB_READ_WRITE_TOKEN` | empty | Needed for `STORAGE_DRIVER=blob`. Vercel adds it when you connect a Blob store to the project (Storage tab, or `vercel blob store add`). Browsers upload with a ten-minute token limited to one path, type and size. |
 
 Uploads go straight from the browser to storage with a signed URL that lasts
 ten minutes, so large PDFs never pass through a serverless function. For R2,

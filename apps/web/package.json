@@ -23,6 +23,7 @@
     "@radix-ui/react-tabs": "^1.1.1",
     "@rgpv/db": "workspace:*",
     "@rgpv/shared": "workspace:*",
+    "@vercel/blob": "^2.8.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.445.0",

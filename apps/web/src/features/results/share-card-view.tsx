@@ -44,7 +44,7 @@ export function ShareCardView({ data, className }: { data: ShareCardData; classN
           <ShieldCheck className="size-3" />
           {data.verified ? 'Verified result' : 'From RGPV’s portal'}
         </span>
-        <span>rgpvconnect.in</span>
+        <span>rgpvconnect.co.in</span>
       </div>
     </div>
   );

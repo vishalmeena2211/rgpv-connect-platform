@@ -56,7 +56,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ toke
             <div style={{ fontSize: 30, opacity: 0.85 }}>{data.line}</div>
             {data.rank ? <div style={{ fontSize: 30, fontWeight: 700 }}>{data.rank}</div> : null}
           </div>
-          <div style={{ fontSize: 28, opacity: 0.85 }}>{data.verified ? 'Verified result · rgpvconnect.in' : 'rgpvconnect.in'}</div>
+          <div style={{ fontSize: 28, opacity: 0.85 }}>{data.verified ? 'Verified result · rgpvconnect.co.in' : 'rgpvconnect.co.in'}</div>
         </div>
       </div>
     ),

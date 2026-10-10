@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Field, Input, Select } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
+import { uploadFile } from '@/lib/upload-client';
 import { formatBytes } from '@/lib/utils';
 
 import { resubmitResource, startUpload, submitResource } from './actions';
@@ -37,19 +38,6 @@ function recentSessions(count = 8): string[] {
     } else month = 'Jun';
   }
   return out;
-}
-
-/** PUT the file to the signed URL with progress, without passing through our servers. */
-function putWithProgress(url: string, file: File, headers: Record<string, string>, onProgress: (pct: number) => void): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', url);
-    Object.entries(headers).forEach(([k, v]) => xhr.setRequestHeader(k, v));
-    xhr.upload.onprogress = (event) => event.lengthComputable && onProgress((event.loaded / event.total) * 100);
-    xhr.onload = () => (xhr.status < 300 ? resolve() : reject(new Error(`Upload failed (${xhr.status})`)));
-    xhr.onerror = () => reject(new Error('Upload failed'));
-    xhr.send(file);
-  });
 }
 
 type Editing = { id: string; title: string; unitName: string | null; session: string | null; subjectId: number; type: 'NOTE' | 'PAPER' };
@@ -108,7 +96,7 @@ export function UploadDialog({
         if (!start.ok) return setError(start.error);
         try {
           setProgress(0);
-          await putWithProgress(start.target.url, file!, start.target.headers, setProgress);
+          await uploadFile(start.target, file!, setProgress);
         } catch {
           setProgress(null);
           return setError('The upload stopped. Check your connection and try again.');

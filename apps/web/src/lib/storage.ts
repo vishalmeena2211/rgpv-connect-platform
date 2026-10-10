@@ -6,6 +6,8 @@ import path from 'node:path';
 
 import { DeleteObjectCommand, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { del as blobDelete, head as blobHead } from '@vercel/blob';
+import { generateClientTokenFromReadWriteToken } from '@vercel/blob/client';
 
 import { env } from '@/lib/env';
 
@@ -20,6 +22,10 @@ import { env } from '@/lib/env';
  *   served by /api/files. The signed URL is our own PUT route.
  * - `s3`: any S3-compatible bucket (Cloudflare R2 in the launch plan). Files
  *   are served from S3_PUBLIC_URL.
+ * - `blob`: Vercel Blob. The browser uploads with a short-lived client token
+ *   limited to one path, type and size; files are served from the store's
+ *   public URL. Needs BLOB_READ_WRITE_TOKEN, which Vercel adds when a Blob
+ *   store is connected to the project.
  */
 
 export const ALLOWED_TYPES = {
@@ -34,6 +40,19 @@ export interface UploadTarget {
   key: string;
   url: string;
   headers: Record<string, string>;
+  /** Set for the `blob` driver: the browser uploads with this token instead of `url`. */
+  blobToken?: string;
+}
+
+function blobToken(): string {
+  if (!env.BLOB_READ_WRITE_TOKEN) throw new Error('STORAGE_DRIVER=blob needs BLOB_READ_WRITE_TOKEN');
+  return env.BLOB_READ_WRITE_TOKEN;
+}
+
+/** Public base URL of the Blob store, from the store id inside the token. */
+function blobBaseUrl(): string {
+  const storeId = blobToken().split('_')[3] ?? '';
+  return `https://${storeId.toLowerCase()}.public.blob.vercel-storage.com`;
 }
 
 let s3: S3Client | null = null;
@@ -79,6 +98,17 @@ export function newKey(userId: string, type: AllowedType): string {
 
 /** A signed URL the browser PUTs the file to. Valid for ten minutes. */
 export async function createUploadTarget(key: string, contentType: AllowedType, size: number): Promise<UploadTarget> {
+  if (env.STORAGE_DRIVER === 'blob') {
+    const token = await generateClientTokenFromReadWriteToken({
+      token: blobToken(),
+      pathname: key,
+      allowedContentTypes: [contentType],
+      maximumSizeInBytes: Math.min(size, MAX_UPLOAD_BYTES),
+      validUntil: Date.now() + 600_000,
+      addRandomSuffix: false,
+    });
+    return { key, url: '', headers: {}, blobToken: token };
+  }
   if (env.STORAGE_DRIVER === 's3') {
     const url = await getSignedUrl(
       client(),
@@ -94,6 +124,7 @@ export async function createUploadTarget(key: string, contentType: AllowedType, 
 
 /** Where a stored file can be opened. */
 export function publicUrl(key: string): string {
+  if (env.STORAGE_DRIVER === 'blob') return `${blobBaseUrl()}/${key}`;
   if (env.STORAGE_DRIVER === 's3') return `${(env.S3_PUBLIC_URL ?? '').replace(/\/$/, '')}/${key}`;
   return `/api/files/${key}`;
 }
@@ -101,6 +132,7 @@ export function publicUrl(key: string): string {
 /** Size in bytes of a stored file, or null if it is not there. */
 export async function storedSize(key: string): Promise<number | null> {
   try {
+    if (env.STORAGE_DRIVER === 'blob') return (await blobHead(key, { token: blobToken() })).size;
     if (env.STORAGE_DRIVER === 's3') {
       const head = await client().send(new HeadObjectCommand({ Bucket: env.S3_BUCKET, Key: key }));
       return head.ContentLength ?? null;
@@ -127,7 +159,8 @@ export async function readLocal(key: string): Promise<Buffer | null> {
 
 export async function deleteStored(key: string): Promise<void> {
   try {
-    if (env.STORAGE_DRIVER === 's3') await client().send(new DeleteObjectCommand({ Bucket: env.S3_BUCKET, Key: key }));
+    if (env.STORAGE_DRIVER === 'blob') await blobDelete(key, { token: blobToken() });
+    else if (env.STORAGE_DRIVER === 's3') await client().send(new DeleteObjectCommand({ Bucket: env.S3_BUCKET, Key: key }));
     else await unlink(localPath(key));
   } catch {
     // Already gone: nothing to do.

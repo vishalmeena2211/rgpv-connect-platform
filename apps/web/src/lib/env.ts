@@ -24,7 +24,7 @@ const envSchema = z.object({
 
   /** Resend API key for sign-in emails. Without it, links are printed to the server log (dev only). */
   RESEND_API_KEY: optional,
-  EMAIL_FROM: z.string().default('RGPV Connect <login@rgpvconnect.in>'),
+  EMAIL_FROM: z.string().default('RGPV Connect <login@rgpvconnect.co.in>'),
   /** Comma-separated emails that become admins when they sign in. */
   ADMIN_EMAILS: optional,
 
@@ -38,16 +38,18 @@ const envSchema = z.object({
 
   VAPID_PUBLIC_KEY: optional,
   VAPID_PRIVATE_KEY: optional,
-  VAPID_SUBJECT: z.string().default('mailto:hello@rgpvconnect.in'),
+  VAPID_SUBJECT: z.string().default('mailto:hello@rgpvconnect.co.in'),
 
-  STORAGE_DRIVER: z.enum(['local', 's3']).default('local'),
+  STORAGE_DRIVER: z.enum(['local', 's3', 'blob']).default('local'),
+  /** Vercel Blob token, added by Vercel when a Blob store is connected (STORAGE_DRIVER=blob). */
+  BLOB_READ_WRITE_TOKEN: optional,
   LOCAL_UPLOAD_DIR: z.string().default('.uploads'),
   S3_ENDPOINT: optional,
   S3_REGION: z.string().default('auto'),
   S3_BUCKET: optional,
   S3_ACCESS_KEY_ID: optional,
   S3_SECRET_ACCESS_KEY: optional,
-  /** Public base URL of the bucket, e.g. https://files.rgpvconnect.in */
+  /** Public base URL of the bucket, e.g. https://files.rgpvconnect.co.in */
   S3_PUBLIC_URL: optional,
 
   /** Shared secret for /api/cron/* (Vercel Cron sends it as a bearer token). */

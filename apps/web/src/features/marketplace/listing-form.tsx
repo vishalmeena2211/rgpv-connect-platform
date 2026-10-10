@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Field, Input, Select, Textarea } from '@/components/ui/input';
 import { startUpload } from '@/features/resources/actions';
+import { uploadFile } from '@/lib/upload-client';
 
 import { createListing } from './listing-actions';
 
@@ -24,8 +25,11 @@ export function ListingForm() {
       if (photo) {
         const start = await startUpload({ contentType: photo.type, size: photo.size });
         if (!start.ok) return setError(start.error);
-        const put = await fetch(start.target.url, { method: 'PUT', headers: start.target.headers, body: photo });
-        if (!put.ok) return setError('The photo did not upload. Try again.');
+        try {
+          await uploadFile(start.target, photo);
+        } catch {
+          return setError('The photo did not upload. Try again.');
+        }
         imageKey = start.target.key;
       }
       const result = await createListing({
