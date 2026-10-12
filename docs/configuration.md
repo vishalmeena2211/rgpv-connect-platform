@@ -25,7 +25,7 @@ default or switches a feature off cleanly.
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | empty | Enables “Continue with Google”. Without them the button shows disabled with a reason. Redirect URI: `<APP_URL>/api/auth/callback/google`. |
 | `AUTH_URL` | detected | Public origin for Auth.js callbacks when it cannot be detected (self-hosting behind a proxy). |
 | `ADMIN_EMAILS` | empty | Comma-separated emails made admins when they sign in. Use it once to bootstrap the first admin. |
-| `APP_URL` | Vercel URL or `http://localhost:3000` | Absolute links in share cards and Open Graph tags. |
+| `APP_URL` | `https://rgpvconnect.co.in` | The site's public address. Canonical links, the sitemap, structured data and Open Graph tags always point here; links in emails and share cards use it too. Set it for a self-hosted copy. |
 
 ### Results
 
@@ -69,6 +69,10 @@ allow `PUT` from your site’s origin in the bucket’s CORS rules.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `CRON_SECRET` | empty | Protects `/api/cron/results-day`, which carries on a results-day run when nobody has the admin page open. Call it every minute with `Authorization: Bearer <CRON_SECRET>`. Vercel’s Hobby plan only allows daily crons, so use a GitHub Actions schedule or any uptime pinger instead; or keep the admin page open during a run. |
+| `NEXT_PUBLIC_MIXPANEL_TOKEN` | empty | Mixpanel project token. Empty means nothing is counted. Counting runs only on production builds (and only the production deployment on Vercel). Public by design. |
+| `NEXT_PUBLIC_MIXPANEL_API_HOST` | `https://api-js.mixpanel.com` | Match the project's data residency: `https://api-eu.mixpanel.com` for an EU project. |
+| `NEXT_PUBLIC_MIXPANEL_RECORD_PERCENT` | `0` | Share of visits recorded with Mixpanel Session Replay. Off by default because result pages show names and marks; result, account, message and admin pages are never recorded. |
+| `NEXT_PUBLIC_MIXPANEL_IN_DEVELOPMENT` | empty | Set to `1` to send events from a local build while testing. |
 
 `GET /api/health` answers `{"status":"ok"}` after a database ping. Point an
 uptime monitor at it every few minutes to keep a free-tier database awake.
