@@ -57,6 +57,7 @@ export async function LookupResult({
   if (outcome.kind === 'unavailable') {
     return (
       <PortalDown
+        cause={outcome.cause}
         enrollment={parsed.raw}
         retryHref={href(semester, '&fresh=1')}
         lastKnown={outcome.lastKnown}

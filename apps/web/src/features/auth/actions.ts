@@ -100,7 +100,13 @@ export async function previewEnrollment(enrollmentInput: string, semester: numbe
   }
   if (outcome.kind === 'rate_limited') return { ok: false, error: 'Too many tries. Wait a few minutes and try again.' };
   if (outcome.kind === 'unavailable') {
-    return { ok: false, error: 'RGPV’s portal is not answering right now. Your number is fine; try again in a few minutes.' };
+    return {
+      ok: false,
+      error:
+        outcome.cause === 'portal'
+          ? 'RGPV’s result portal is not answering right now. Try again in a few minutes.'
+          : 'We can’t check results right now because of a problem on our side, not with your number. Try again in a few minutes.',
+    };
   }
 
   const result = outcome.result;

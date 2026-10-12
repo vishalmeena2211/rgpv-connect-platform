@@ -23,7 +23,7 @@ export interface LastKnown {
 export type LookupOutcome =
   | { kind: 'found'; result: SemesterResult; fetchedAt: string; fromCache: boolean }
   | { kind: 'not_declared' }
-  | { kind: 'unavailable'; lastKnown: LastKnown | null }
+  | { kind: 'unavailable'; cause: 'portal' | 'service'; lastKnown: LastKnown | null }
   | { kind: 'rate_limited'; retryAfterSeconds: number; lastKnown: LastKnown | null };
 
 function parsePayload(payload: Prisma.JsonValue | null): SemesterResult | null {
@@ -104,7 +104,8 @@ export async function lookupResult(
       await remember(enrollment, semester, null);
       return { kind: 'not_declared' };
     }
-    console.error('Result lookup failed', { semester, error: error instanceof Error ? error.message : error });
-    return { kind: 'unavailable', lastKnown: await lastKnown(enrollment) };
+    const cause = error instanceof ResultWorkerError && error.reason === 'portal' ? 'portal' : 'service';
+    console.error('Result lookup failed', { semester, cause, error: error instanceof Error ? error.message : error });
+    return { kind: 'unavailable', cause, lastKnown: await lastKnown(enrollment) };
   }
 }

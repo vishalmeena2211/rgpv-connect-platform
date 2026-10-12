@@ -12,14 +12,27 @@ import { env } from '@/lib/env';
  * schema before being trusted.
  */
 
-/** Thrown when a result cannot be fetched. `notFound` distinguishes "not declared". */
+/**
+ * Why a fetch failed:
+ * - `not_found`: RGPV answered and has no such result (not declared yet).
+ * - `portal`: the worker reached RGPV but the portal kept failing or timed out.
+ * - `service`: our own result worker could not be reached or refused us
+ *   (not deployed, down, wrong URL or key). RGPV was never asked.
+ */
+export type ResultFailure = 'not_found' | 'portal' | 'service';
+
+/** Thrown when a result cannot be fetched. */
 export class ResultWorkerError extends Error {
   constructor(
     message: string,
-    readonly notFound = false,
+    readonly reason: ResultFailure,
   ) {
     super(message);
     this.name = 'ResultWorkerError';
+  }
+
+  get notFound(): boolean {
+    return this.reason === 'not_found';
   }
 }
 
@@ -34,6 +47,10 @@ function headers(): HeadersInit {
 }
 
 async function call(path: string, init: RequestInit = {}, timeoutMs = TIMEOUT_MS): Promise<unknown> {
+  // In production the localhost default means no worker was configured at all.
+  if (process.env.NODE_ENV === 'production' && !process.env.RESULT_WORKER_URL?.trim()) {
+    throw new ResultWorkerError('RESULT_WORKER_URL is not set', 'service');
+  }
   let response: Response;
   try {
     response = await fetch(`${env.RESULT_WORKER_URL}${path}`, {
@@ -42,12 +59,20 @@ async function call(path: string, init: RequestInit = {}, timeoutMs = TIMEOUT_MS
       cache: 'no-store',
       signal: AbortSignal.timeout(timeoutMs),
     });
-  } catch {
-    throw new ResultWorkerError('Result service is unreachable');
+  } catch (error) {
+    // A timeout means the worker took the request and was still retrying RGPV's portal.
+    if (error instanceof Error && error.name === 'TimeoutError') {
+      throw new ResultWorkerError('Result service timed out waiting for RGPV', 'portal');
+    }
+    throw new ResultWorkerError('Result service is unreachable', 'service');
   }
 
-  if (response.status === 404) throw new ResultWorkerError('Result not found', true);
-  if (!response.ok) throw new ResultWorkerError(`Result service error (${response.status})`);
+  if (response.status === 404) throw new ResultWorkerError('Result not found', 'not_found');
+  // The worker answers 502 when RGPV's portal fails after its retries; 504 from a proxy means the same wait.
+  if (response.status === 502 || response.status === 504) {
+    throw new ResultWorkerError(`RGPV portal failed (${response.status})`, 'portal');
+  }
+  if (!response.ok) throw new ResultWorkerError(`Result service error (${response.status})`, 'service');
   return response.json();
 }
 

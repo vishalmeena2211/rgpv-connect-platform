@@ -87,13 +87,26 @@ function ScheduleStep({ label, title, body }: { label: string; title: string; bo
   );
 }
 
-/** The portal did not answer after the worker's retries. Never show worker error text. */
+const UNAVAILABLE_COPY = {
+  portal: {
+    title: 'RGPV’s result portal is not answering right now',
+    body: 'We kept asking it for up to 45 seconds. This usually happens on results day, when everyone loads it at once. Your number looks right; try again in a few minutes.',
+  },
+  service: {
+    title: 'We can’t check results right now',
+    body: 'The problem is on our side, not with RGPV or your number: our result service is not reachable, so RGPV was never asked. Try again in a few minutes, or check on RGPV’s own portal at result.rgpv.ac.in.',
+  },
+} as const;
+
+/** A lookup could not finish. Says whose problem it is; never shows worker error text. */
 export function PortalDown({
+  cause,
   enrollment,
   retryHref,
   lastKnown,
   lastKnownHref,
 }: {
+  cause: 'portal' | 'service';
   enrollment: string;
   retryHref: string;
   lastKnown: LastKnown | null;
@@ -103,7 +116,7 @@ export function PortalDown({
     <div className="flex flex-col gap-4">
       <Callout
         tone="warning"
-        title="RGPV’s result portal is not answering right now"
+        title={UNAVAILABLE_COPY[cause].title}
         action={
           <Button asChild>
             <Link href={retryHref}>
@@ -113,8 +126,7 @@ export function PortalDown({
           </Button>
         }
       >
-        We tried three times over 45 seconds. This happens on results day when everyone loads it at once. Your number is
-        correct; the portal is the problem.
+        {UNAVAILABLE_COPY[cause].body}
       </Callout>
       {lastKnown ? (
         <Card>
