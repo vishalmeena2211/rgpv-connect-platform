@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from 'react';
 import { Copy, Download, Loader2, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { track } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -80,6 +81,7 @@ export function ShareDialog(props: Props) {
         return;
       }
       setLink({ url: result.url, token: result.token });
+      track('Result share link made', { kind });
     });
     return () => {
       cancelled = true;
@@ -90,6 +92,7 @@ export function ShareDialog(props: Props) {
     if (!link) return;
     try {
       await navigator.clipboard.writeText(link.url);
+      track('Result share link copied', { kind });
       toast.success('Link copied');
     } catch {
       toast.message(link.url);

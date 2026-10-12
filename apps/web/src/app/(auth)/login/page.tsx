@@ -6,7 +6,7 @@ import { GraduationCap } from 'lucide-react';
 import { SignInForm } from '@/features/auth/sign-in-form';
 import { getCurrentUser } from '@/lib/session';
 
-export const metadata: Metadata = { title: 'Sign in' };
+export const metadata: Metadata = { title: 'Sign in', robots: { index: false, follow: true } };
 
 const ERRORS: Record<string, string> = {
   Verification: 'That sign-in link has expired or was already used. Ask for a new one.',

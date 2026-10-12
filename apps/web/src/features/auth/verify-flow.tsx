@@ -5,6 +5,7 @@ import { useMemo, useState, useTransition } from 'react';
 import { Building2, Check, CheckCircle2, Loader2, Search, ShieldCheck } from 'lucide-react';
 import { COURSE_SEMESTERS, latestDeclaredSemester, parseEnrollment } from '@rgpv/shared';
 import { toast } from 'sonner';
+import { track } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
@@ -72,6 +73,7 @@ export function VerifyFlow({
     startTransition(async () => {
       const result = await confirmEnrollment(preview.enrollment, preview.semester);
       if (result.ok) {
+        track('Enrollment verified');
         router.push('/welcome');
         router.refresh();
       } else {

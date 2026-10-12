@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react';
 import { Loader2, Mail, Smartphone } from 'lucide-react';
+import { track } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 import { Field, Input } from '@/components/ui/input';
@@ -25,7 +26,7 @@ export function SignInForm({ callbackUrl, googleEnabled, error }: { callbackUrl:
 
   return (
     <div className="flex flex-col gap-3.5">
-      <form action={action} className="flex flex-col gap-3">
+      <form action={action} onSubmit={() => track('Sign-in link requested')} className="flex flex-col gap-3">
         <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <Field label="College or personal email" htmlFor="email" error={state?.error}>
           <div className="relative">
@@ -44,7 +45,7 @@ export function SignInForm({ callbackUrl, googleEnabled, error }: { callbackUrl:
         <span className="h-px flex-1 bg-border" />
       </div>
       {googleEnabled ? (
-        <form action={googleSignIn}>
+        <form action={googleSignIn} onSubmit={() => track('Google sign-in started')}>
           <input type="hidden" name="callbackUrl" value={callbackUrl} />
           <Button type="submit" variant="outline" size="lg" className="w-full">
             <GoogleMark />

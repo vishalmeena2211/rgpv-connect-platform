@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Field, Input, Select } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
+import { track } from '@/lib/analytics';
 import { uploadFile } from '@/lib/upload-client';
 import { formatBytes } from '@/lib/utils';
 
@@ -104,6 +105,7 @@ export function UploadDialog({
         const result = await submitResource({ ...details, type, key: start.target.key });
         setProgress(null);
         if (!result.ok) return setError(result.error);
+        track('Resource uploaded', { type });
         toast.success('Sent for review. Usually under two days.');
       }
       setOpen(false);

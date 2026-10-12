@@ -4,7 +4,12 @@ import { Building2, CheckCircle2, Fingerprint, Search, ShieldCheck } from 'lucid
 
 import { Button } from '@/components/ui/button';
 
-export const metadata: Metadata = { title: 'How verification works' };
+export const metadata: Metadata = {
+  title: 'How verification works',
+  description:
+    'How RGPV Connect checks that every student is real: your enrollment number, one real result from RGPV, and the name on it. Your college, branch and batch come from the number.',
+  alternates: { canonical: '/how-it-works' },
+};
 
 const STEPS = [
   { icon: Search, title: 'You sign in and type your enrollment number', body: 'With an email link or Google. No password to remember.' },

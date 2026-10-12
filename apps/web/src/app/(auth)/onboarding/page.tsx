@@ -7,7 +7,7 @@ import { VerifyFlow } from '@/features/auth/verify-flow';
 import { getCollegeNames } from '@/lib/public-stats';
 import { getCurrentUser } from '@/lib/session';
 
-export const metadata: Metadata = { title: 'Verify your enrollment' };
+export const metadata: Metadata = { title: 'Verify your enrollment', robots: { index: false, follow: true } };
 
 /** Signed-in but unverified users verify here; verified users go straight to My results. */
 export default async function OnboardingPage({

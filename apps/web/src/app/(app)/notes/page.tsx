@@ -7,10 +7,13 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
 import { getAllSubjects, getCatalogueBranches, getResources, getSubjects, resolveScope } from '@/features/resources/queries';
 import { ResourceCard, ScopeBar, SubjectChips } from '@/features/resources/resource-ui';
+import { scopeMetadata } from '@/features/resources/seo';
 import { UploadDialog } from '@/features/resources/upload-dialog';
 import { getCurrentUser, isVerified } from '@/lib/session';
 
-export const metadata: Metadata = { title: 'Notes' };
+export function generateMetadata({ searchParams }: { searchParams: Promise<{ branch?: string; semester?: string }> }): Promise<Metadata> {
+  return searchParams.then((query) => scopeMetadata('notes', query));
+}
 
 /** Notes for one branch + semester, picked from the viewer's enrollment by default. */
 export default async function NotesPage({

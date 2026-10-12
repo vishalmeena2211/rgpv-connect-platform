@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'Terms' };
+export const metadata: Metadata = { title: 'Terms', description: 'The few rules for using RGPV Connect.', alternates: { canonical: '/terms' } };
 
 const RULES = [
   'Use your own enrollment number. Verifying with someone else’s number gets the account removed.',

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import { Building2, CheckCircle2, GraduationCap, Loader2, Search } from 'lucide-react';
 import { COURSE_SEMESTERS, isValidEnrollment, latestDeclaredSemester, parseEnrollment } from '@rgpv/shared';
+import { track } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 import { Field, Input, Select } from '@/components/ui/input';
@@ -73,6 +74,7 @@ export function LookupForm({
     setTouched(true);
     if (!parsed) return;
     remember({ enrollment: parsed.raw, semester: effective });
+    track('Result looked up', { semester: effective, from: mode === 'public' ? 'home' : 'lookup page' });
     startTransition(() => router.push(lookupHref(mode, parsed.raw, effective)));
   }
 

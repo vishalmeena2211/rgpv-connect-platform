@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = { title: 'Privacy' };
+export const metadata: Metadata = { title: 'Privacy', description: 'What RGPV Connect keeps about you, why, and how to have it deleted.', alternates: { canonical: '/privacy' } };
 
 const SECTIONS: { id?: string; title: string; body: React.ReactNode }[] = [
   {

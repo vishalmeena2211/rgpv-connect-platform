@@ -4,7 +4,7 @@ import { MailCheck } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-export const metadata: Metadata = { title: 'Check your email' };
+export const metadata: Metadata = { title: 'Check your email', robots: { index: false, follow: true } };
 
 export default function CheckEmailPage() {
   return (

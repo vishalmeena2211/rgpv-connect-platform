@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FileText, Upload } from 'lucide-react';
+import { scopeMetadata } from '@/features/resources/seo';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,7 +12,9 @@ import { ScopeBar } from '@/features/resources/resource-ui';
 import { UploadDialog } from '@/features/resources/upload-dialog';
 import { getCurrentUser, isVerified } from '@/lib/session';
 
-export const metadata: Metadata = { title: 'Papers' };
+export function generateMetadata({ searchParams }: { searchParams: Promise<{ branch?: string; semester?: string }> }): Promise<Metadata> {
+  return searchParams.then((query) => scopeMetadata('papers', query));
+}
 
 /** End-semester papers as one table per subject, newest exam first. */
 export default async function PapersPage({ searchParams }: { searchParams: Promise<{ branch?: string; semester?: string }> }) {

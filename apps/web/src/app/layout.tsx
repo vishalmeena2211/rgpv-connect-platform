@@ -4,7 +4,8 @@ import { Toaster } from 'sonner';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { RegisterServiceWorker } from '@/features/pwa/register-sw';
-import { appUrl } from '@/lib/app-url';
+import { AnalyticsStart } from '@/components/analytics-start';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 
 import './globals.css';
 
@@ -17,15 +18,40 @@ const display = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(appUrl()),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'RGPV Connect',
+    default: 'RGPV Connect: RGPV results, CGPA, notes and papers',
     template: '%s · RGPV Connect',
   },
-  description:
-    'Check any RGPV semester result in seconds, keep your full history with CGPA trends, and join a network where every student is verified by their enrollment number.',
-  applicationName: 'RGPV Connect',
-  appleWebApp: { capable: true, title: 'RGPV Connect', statusBarStyle: 'default' },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    'RGPV result',
+    'RGPV result 2026',
+    'RGPV semester result',
+    'RGPV CGPA calculator',
+    'RGPV notes',
+    'RGPV previous year papers',
+    'RGPV B.Tech',
+    'UIT RGPV',
+    'Rajiv Gandhi Proudyogiki Vishwavidyalaya',
+  ],
+  category: 'education',
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    locale: 'en_IN',
+    title: 'RGPV Connect: RGPV results, CGPA, notes and papers',
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RGPV Connect: RGPV results, CGPA, notes and papers',
+    description: SITE_DESCRIPTION,
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
+  formatDetection: { telephone: false },
+  appleWebApp: { capable: true, title: SITE_NAME, statusBarStyle: 'default' },
 };
 
 export const viewport: Viewport = {
@@ -43,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
           <RegisterServiceWorker />
+          <AnalyticsStart />
           <Toaster position="top-center" toastOptions={{ className: 'font-sans' }} />
         </ThemeProvider>
       </body>

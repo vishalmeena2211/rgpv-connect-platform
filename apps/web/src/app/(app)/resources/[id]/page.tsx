@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, Download, ExternalLink } from 'lucide-react';
 
+import { JsonLd } from '@/components/json-ld';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
@@ -11,12 +12,23 @@ import { Stars } from '@/components/ui/stars';
 import { getResource } from '@/features/resources/queries';
 import { RateControl } from '@/features/resources/rate-control';
 import { getCurrentUser, isVerified } from '@/lib/session';
+import { openGraph, SITE_URL } from '@/lib/site';
 import { batchTag, formatBytes, formatCount, formatDate } from '@/lib/utils';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const resource = await getResource(id, null);
-  return { title: resource ? `${resource.subject.code ?? ''} ${resource.title}`.trim() : 'Notes' };
+  if (!resource) return { title: 'Notes', robots: { index: false } };
+  const kind = resource.type === 'NOTE' ? 'notes' : 'question paper';
+  const title = `${resource.subject.code ? `${resource.subject.code} ` : ''}${resource.subject.name}: ${resource.title}`;
+  const description = `RGPV ${resource.subject.name}${resource.subject.code ? ` (${resource.subject.code})` : ''} ${kind}: ${resource.title}. Free to view and download, shared by verified RGPV students.`;
+  return {
+    title,
+    description,
+    alternates: { canonical: `/resources/${resource.id}` },
+    openGraph: openGraph(title, description, `/resources/${resource.id}`, 'article'),
+    robots: resource.status === 'APPROVED' ? undefined : { index: false },
+  };
 }
 
 /** One note or paper: the file inline, rating, download, and who shared it. */
@@ -31,6 +43,22 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
 
   return (
     <div className="mx-auto flex max-w-[960px] flex-col gap-4">
+      {resource.status === 'APPROVED' ? (
+        <JsonLd
+          data={{
+            '@context': 'https://schema.org',
+            '@type': 'LearningResource',
+            name: resource.title,
+            url: `${SITE_URL}/resources/${resource.id}`,
+            learningResourceType: resource.type === 'NOTE' ? 'Lecture notes' : 'Exam paper',
+            about: resource.subject.code ? `${resource.subject.code} ${resource.subject.name}` : resource.subject.name,
+            educationalLevel: 'Undergraduate (B.Tech)',
+            inLanguage: 'en-IN',
+            isAccessibleForFree: true,
+            provider: { '@type': 'Organization', name: 'RGPV Connect', url: SITE_URL },
+          }}
+        />
+      ) : null}
       <Link href={back} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground">
         <ChevronLeft className="size-3.5" />
         {resource.type === 'NOTE' ? 'Notes' : 'Papers'}
@@ -64,14 +92,14 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline">
-            <a href={resource.pdfUrl} target="_blank" rel="noopener noreferrer">
+            <a href={resource.pdfUrl} target="_blank" rel="noopener noreferrer" data-track="Resource opened" data-track-props={JSON.stringify({ type: resource.type, how: 'new tab' })}>
               <ExternalLink />
               Open in a new tab
             </a>
           </Button>
           {resource.status === 'APPROVED' ? (
             <Button asChild>
-              <a href={`/api/resources/${resource.id}/download`}>
+              <a href={`/api/resources/${resource.id}/download`} data-track="Resource opened" data-track-props={JSON.stringify({ type: resource.type, how: 'download' })}>
                 <Download />
                 Download
               </a>

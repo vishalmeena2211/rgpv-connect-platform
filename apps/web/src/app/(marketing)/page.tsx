@@ -1,14 +1,22 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Check, Share2, ShieldCheck, TrendingUp } from 'lucide-react';
 
+import { JsonLd } from '@/components/json-ld';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { LookupForm } from '@/features/results/lookup-form';
 import { Sparkline } from '@/features/results/trend-chart';
 import { getCollegeNames, getPublicStats } from '@/lib/public-stats';
+import { openGraph, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import { formatCount } from '@/lib/utils';
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: openGraph('RGPV Connect: RGPV results, CGPA, notes and papers', SITE_DESCRIPTION, '/'),
+};
 
 /** Public landing: the promise on the left, a working lookup on the right. */
 export default async function LandingPage() {
@@ -17,6 +25,26 @@ export default async function LandingPage() {
 
   return (
     <div className="relative overflow-hidden">
+      <JsonLd
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: SITE_NAME,
+            url: `${SITE_URL}/`,
+            description: SITE_DESCRIPTION,
+            inLanguage: 'en-IN',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: SITE_NAME,
+            url: `${SITE_URL}/`,
+            logo: `${SITE_URL}/icons/512`,
+            sameAs: ['https://github.com/vishalmeena2211/rgpv-connect-platform'],
+          },
+        ]}
+      />
       <div className="hero-mesh pointer-events-none absolute inset-0" aria-hidden />
       <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden />
 
