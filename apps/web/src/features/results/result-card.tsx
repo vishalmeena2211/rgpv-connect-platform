@@ -38,6 +38,9 @@ function GradePill({ grade }: { grade?: string }) {
   );
 }
 
+/** A number column: right-aligned, never wrapped, and only as wide as its widest value. */
+const NUM_CELL = 'w-px whitespace-nowrap px-1.5 py-2.5 text-right sm:px-3.5';
+
 /** Subject rows: code + name, credits when the catalogue has them, grade, points. */
 export function SubjectTable({
   result,
@@ -52,14 +55,28 @@ export function SubjectTable({
   // A subject can print as a theory row and a practical row; its credits go on the first one.
   const credited = new Set<string>();
   return (
+    // Fits a phone instead of scrolling sideways: tighter padding, number columns only as wide as their values,
+    // short headers ("Cr", "Pts") under the sm breakpoint. The scroll box stays as a fallback for very long codes.
     <div className="overflow-x-auto rounded-md border">
-      <table className="w-full min-w-[420px] text-[13px]">
+      <table className="w-full text-[13px] sm:min-w-[420px]">
         <thead className="bg-subtle text-left text-[10.5px] font-semibold uppercase tracking-[0.08em] text-faint">
           <tr>
-            <th className="px-3.5 py-2.5">Subject</th>
-            {showCredits ? <th className="px-3.5 py-2.5 text-right">Credits</th> : null}
-            <th className="px-3.5 py-2.5 text-right">Grade</th>
-            <th className="px-3.5 py-2.5 text-right">Points</th>
+            <th className="py-2.5 pl-3 pr-2 sm:px-3.5">Subject</th>
+            {showCredits ? (
+              <th className={NUM_CELL}>
+                <span className="sr-only sm:not-sr-only">Credits</span>
+                <span className="sm:hidden" aria-hidden>
+                  Cr
+                </span>
+              </th>
+            ) : null}
+            <th className={NUM_CELL}>Grade</th>
+            <th className={cn(NUM_CELL, 'pr-3')}>
+              <span className="sr-only sm:not-sr-only">Points</span>
+              <span className="sm:hidden" aria-hidden>
+                Pts
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -70,16 +87,16 @@ export function SubjectTable({
             const name = code ? names?.get(code) : undefined;
             return (
               <tr key={`${subject.name}-${index}`} className="border-t">
-                <td className="px-3.5 py-2.5">
+                <td className="break-words py-2.5 pl-3 pr-2 sm:px-3.5">
                   <span className="font-semibold">{code ?? subject.name}</span>
                   {part ? <span className="text-faint"> · {part === 'T' ? 'Theory' : 'Practical'}</span> : null}
                   {name ? <span className="text-muted-foreground"> · {name}</span> : null}
                 </td>
-                {showCredits ? <td className="px-3.5 py-2.5 text-right tabular">{credit ?? '—'}</td> : null}
-                <td className="px-3.5 py-2.5 text-right">
+                {showCredits ? <td className={cn(NUM_CELL, 'tabular')}>{credit ?? '—'}</td> : null}
+                <td className={NUM_CELL}>
                   <GradePill grade={subject.grade} />
                 </td>
-                <td className="px-3.5 py-2.5 text-right tabular">
+                <td className={cn(NUM_CELL, 'pr-3 tabular')}>
                   {subject.grade && isGrade(subject.grade) ? GRADE_POINTS[subject.grade] : '—'}
                 </td>
               </tr>
