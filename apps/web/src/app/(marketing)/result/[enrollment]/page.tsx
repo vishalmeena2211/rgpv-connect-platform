@@ -38,8 +38,16 @@ export default async function PublicResultPage({
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-faint">Result</p>
-          <h1 className="font-display text-[28px] font-bold tracking-[-0.025em] tabular">
-            {enrollment} · <SemesterLink semester={semester} />
+          {/* On phones the semester gets its own line instead of wrapping as "· Semester 6". */}
+          <h1 className="font-display text-[28px] font-bold leading-9 tracking-[-0.025em] tabular">
+            <span className="whitespace-nowrap">{enrollment}</span>
+            <span className="sr-only sm:hidden">, </span>
+            <span className="hidden sm:inline" aria-hidden>
+              {' · '}
+            </span>
+            <span className="block whitespace-nowrap sm:inline">
+              <SemesterLink semester={semester} />
+            </span>
           </h1>
         </div>
         <Button asChild variant="outline">

@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Check, TrendingUp } from 'lucide-react';
 import { GRADE_POINTS, isGrade, type SemesterResult } from '@rgpv/shared';
 
@@ -124,9 +125,18 @@ export function ResultCard({
               <StatusBadge status={result.status} />
             </div>
             <p className="mt-1 text-[13px] text-muted-foreground tabular">
-              {result.enrollment} · Semester {result.semester}
-              {result.session ? ` · ${result.session}` : ''}
-              {result.branch ? ` · ${result.branch}` : ''}
+              {/* Each part stays whole and the dot ends a line, so a wrap never starts with "·". */}
+              {[result.enrollment, `Semester ${result.semester}`, result.session, result.branch]
+                .filter(Boolean)
+                .map((part, index, parts) => (
+                  <Fragment key={index}>
+                    <span className="whitespace-nowrap">
+                      {part}
+                      {index < parts.length - 1 ? ' ·' : ''}
+                    </span>
+                    {index < parts.length - 1 ? ' ' : null}
+                  </Fragment>
+                ))}
             </p>
           </div>
           {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
