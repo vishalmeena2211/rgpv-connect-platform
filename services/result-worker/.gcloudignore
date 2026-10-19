@@ -1,0 +1,16 @@
+# What `gcloud run deploy --source .` must NOT upload. The Dockerfile only needs
+# requirements.txt and app/; everything below is local-only or secret.
+.gcloudignore
+.env
+.env.*
+!.env.example
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.turbo/
+__pycache__/
+**/__pycache__/
+*.egg-info/
+tests/
+node_modules/
