@@ -29,6 +29,10 @@ logger = get_logger(__name__)
 _BULK_CONCURRENCY = 5
 
 
+# How many times one session is retried after the captcha solver fails on it.
+MAX_SESSION_REUSE = 2
+
+
 def _await_submit_window(rgpv: RGPVSession) -> None:
     """Block until the session is old enough for RGPV to accept a submission.
 
@@ -87,6 +91,13 @@ def fetch_single(
     outcome = Outcome.FAILED
     attempts = 0
 
+    # A session whose captcha the solver failed on (AZCaptcha erroring, a bad
+    # read of the wrong length) was never sent to RGPV, so it is still good and
+    # has already served the submit wait. Reuse it rather than paying the wait
+    # again on a new one; RGPV rejecting a submission still means a new session.
+    carried: RGPVSession | None = None
+    carried_uses = 0
+
     try:
         for attempt in range(1, max_retries + 1):
             attempts = attempt
@@ -97,12 +108,18 @@ def fetch_single(
                 break
             try:
                 with timed("session", timings):
-                    rgpv: RGPVSession = acquire_session()
+                    rgpv: RGPVSession = carried or acquire_session()
+                carried = None
 
-                with timed("captcha", timings):
-                    candidates = solve_captcha_candidates(rgpv.captcha_url)
-                    if not candidates:
-                        candidates = [solve_captcha(rgpv.captcha_url)]
+                try:
+                    with timed("captcha", timings):
+                        candidates = solve_captcha_candidates(rgpv.captcha_url)
+                        if not candidates:
+                            candidates = [solve_captcha(rgpv.captcha_url)]
+                except CaptchaFailed:
+                    carried_uses = carried_uses + 1 if carried_uses < MAX_SESSION_REUSE else 0
+                    carried = rgpv if carried_uses else None
+                    raise
 
                 with timed("submit_delay", timings):
                     _await_submit_window(rgpv)
