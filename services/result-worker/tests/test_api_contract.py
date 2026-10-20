@@ -71,3 +71,14 @@ def test_result_is_camel_case(_fetch: MagicMock, client: TestClient) -> None:
 def test_mask_enrollment_hides_the_serial() -> None:
     assert mask_enrollment("0151CS241042") == "0151CS24••••"
     assert mask_enrollment("0751BT16012") == "0751BT16•••"
+
+
+def test_blocking_fetch_routes_run_in_the_thread_pool() -> None:
+    """An ``async def`` route that calls the blocking fetch stalls every other request."""
+    import inspect
+
+    from app.routers.ops import run_parser_check, stats
+    from app.routers.single import get_result
+
+    for route in (get_result, run_parser_check, stats):
+        assert not inspect.iscoroutinefunction(route), route.__name__

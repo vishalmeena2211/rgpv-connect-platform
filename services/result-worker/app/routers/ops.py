@@ -36,7 +36,7 @@ def _captcha_balance() -> dict[str, Any]:
 
 
 @router.get("/stats")
-async def stats(request: Request) -> dict[str, Any]:
+def stats(request: Request) -> dict[str, Any]:
     """Today's fetch counters and timings, pool size, captcha balance, last parser check."""
     settings = get_settings()
     pool = request.app.state.session_pool
@@ -54,7 +54,7 @@ async def stats(request: Request) -> dict[str, Any]:
 
 
 @router.post("/checks/parser")
-async def run_parser_check() -> dict[str, Any]:
+def run_parser_check() -> dict[str, Any]:
     """Fetch the configured known-good result and check it still parses.
 
     This is the early warning for a change in the portal's page layout. It

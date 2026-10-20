@@ -125,7 +125,9 @@ def fetch_single(
                 raise
             except CaptchaFailed as exc:
                 last_error = exc
-                logger.info("Captcha retry %d/%d for %s", attempt, max_retries, enrollment)
+                logger.info(
+                    "Captcha retry %d/%d for %s: %s", attempt, max_retries, enrollment, exc
+                )
             except RGPVError as exc:
                 last_error = exc
                 logger.warning("Fetch attempt %d failed for %s: %s", attempt, enrollment, exc)
