@@ -1,18 +1,20 @@
 """Tests for result-page error detection and status mapping.
 
-Full result parsing is covered by integration tests against saved HTML
-fixtures; here we verify the error-detection branches and the status mapper,
-which are the most failure-prone parts of the parser.
+The error-detection branches and the status mapper are the most failure-prone
+parts of the parser; full parsing is checked against ``fixtures/result_page.html``,
+a page shaped like RGPV's real grading panel with a made-up student.
 """
 
 from __future__ import annotations
+
+from pathlib import Path
 
 import pytest
 from requests_html import HTML
 
 from app.core.exceptions import CaptchaFailed, ResultNotFound
 from app.core.models import ResultStatus
-from app.core.parser import _status, detect_error
+from app.core.parser import _status, detect_error, parse_result
 
 
 def _alert_page(line_count: int, line_index: int, message: str) -> HTML:
@@ -49,3 +51,28 @@ def test_detect_error_passes_clean_page() -> None:
 )
 def test_status_mapping(raw: str, expected: ResultStatus) -> None:
     assert _status(raw) == expected
+
+
+PAGE = HTML(html=(Path(__file__).parent / "fixtures" / "result_page.html").read_text())
+
+
+def test_pass_comes_from_the_result_description_not_the_header_status() -> None:
+    result = parse_result(PAGE)
+    assert result.status == ResultStatus.PASS
+    assert result.result_description == "PASS"
+    assert result.candidate_status == "Regular"
+
+
+def test_reads_every_subject_and_the_summary() -> None:
+    result = parse_result(PAGE)
+    assert result.name == "ASHA VERMA"
+    assert result.enrollment == "0111AL230001"
+    assert result.semester == 6
+    assert result.session == "June-2026"
+    assert [s.name for s in result.subjects][:2] == ["AL601- [T]", "AL602- [T]"]
+    assert len(result.subjects) == 9
+    assert result.subjects[0].total_marks == 3
+    assert result.subjects[-1].grade == "A+"
+    assert (result.sgpa, result.cgpa) == (8.67, 8.09)
+    assert result.revaluation_date == "05/10/2026"
+    assert result.revaluation_late_fee_date == "07/10/2026"

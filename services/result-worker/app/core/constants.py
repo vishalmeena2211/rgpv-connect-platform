@@ -22,16 +22,3 @@ CAPTCHA_LENGTH = 5
 ERR_NOT_FOUND = "Result for this Enrollment No. not Found"
 ERR_WRONG_CAPTCHA = "you have entered a wrong text"
 
-
-def subject_table_count(semester: int) -> int:
-    """Number of subject rows to read from the grading panel for a semester.
-
-    The RGPV grading panel renders a different number of subject tables per
-    semester band. These bands were reverse-engineered from the live portal;
-    the legacy workers hardcoded the same 8/11/12 values inline.
-    """
-    if semester >= 7:
-        return 8
-    if semester >= 5:
-        return 11
-    return 12

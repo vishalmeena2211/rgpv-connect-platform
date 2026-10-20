@@ -1,18 +1,26 @@
 """Parse an RGPV result HTML page into a :class:`SemesterResult`.
 
 The RGPV grading panel (``#ctl00_ContentPlaceHolder1_pnlGrading``) is a stack
-of ``table.gridtable`` elements rendered as newline-separated text. The header
-table holds the student details at fixed line offsets; the trailing tables hold
-the result summary (description, SGPA, CGPA); the tables in between are one per
-subject. These offsets are brittle by nature — they mirror exactly what the
+of ``table.gridtable`` elements rendered as newline-separated text:
+
+- the first holds the student details at fixed line offsets;
+- the second is the subject column headings;
+- then one table per subject;
+- then the summary (result description, SGPA, CGPA, revaluation dates);
+- and last the data-source and disclaimer note.
+
+The header's "Status" cell is the student's category (Regular, Ex), not the
+result; pass or fail is the summary's "Result Des." cell.
+
+These offsets are brittle by nature — they mirror exactly what the
 legacy workers parsed, centralised here with explanatory comments.
 """
 
 from __future__ import annotations
 
-from requests_html import HTML
+from requests_html import HTML, Element
 
-from app.core.constants import ERR_NOT_FOUND, ERR_WRONG_CAPTCHA, subject_table_count
+from app.core.constants import ERR_NOT_FOUND, ERR_WRONG_CAPTCHA
 from app.core.exceptions import CaptchaFailed, ResultNotFound, ResultParseError
 from app.core.models import ResultStatus, SemesterResult, SubjectResult
 from app.logging_config import get_logger
@@ -59,6 +67,15 @@ def _to_float(value: str) -> float | None:
         return None
 
 
+def _rows(table: Element) -> list[list[str]]:
+    """The text of each cell, row by row, empty cells included."""
+    return [[cell.text.strip() for cell in row.find("th, td")] for row in table.find("tr")]
+
+
+def _cell(row: list[str], index: int) -> str | None:
+    return (row[index] or None) if index < len(row) else None
+
+
 def _status(raw: str) -> ResultStatus:
     upper = raw.strip().upper()
     if "PASS" in upper:
@@ -100,14 +117,18 @@ def parse_result(html: HTML) -> SemesterResult:
     except ValueError as exc:
         raise ResultParseError(f"Unparseable semester {semester_raw!r}") from exc
 
-    # The last-but-one table holds the result summary (description/SGPA/CGPA).
-    summary = tables[-2].text.split("\n")
-    description = summary[3] if len(summary) > 3 else None
-    sgpa = _to_float(summary[4]) if len(summary) > 4 else None
-    cgpa = _to_float(summary[5]) if len(summary) > 5 else None
+    # The last-but-one table holds the result summary, read cell by cell so empty
+    # cells keep their place: [Result Des., SGPA, CGPA] then the revaluation dates.
+    summary = _rows(tables[-2])
+    values = summary[1] if len(summary) > 1 else []
+    dates = summary[3] if len(summary) > 3 else []
+    description = _cell(values, 0)
+    sgpa = _to_float(_cell(values, 1) or "")
+    cgpa = _to_float(_cell(values, 2) or "")
 
+    # Every table between the column headings and the summary is one subject.
     subjects: list[SubjectResult] = []
-    for table in tables[2 : subject_table_count(semester)]:
+    for table in tables[2:-2]:
         cells = table.text.split("\n")
         if len(cells) < 4:
             continue
@@ -127,9 +148,12 @@ def parse_result(html: HTML) -> SemesterResult:
         course=header_at("course"),
         branch=header_at("branch"),
         semester=semester,
-        status=_status(header_at("status")),
+        status=_status(description or ""),
         subjects=subjects,
         result_description=description,
         sgpa=sgpa,
         cgpa=cgpa,
+        candidate_status=header_at("status") or None,
+        revaluation_date=_cell(dates, 0),
+        revaluation_late_fee_date=_cell(dates, 1),
     )

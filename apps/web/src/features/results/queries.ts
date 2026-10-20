@@ -33,14 +33,18 @@ export function parseResultPayload(payload: Prisma.JsonValue | null): SemesterRe
 /** All saved results for a user, oldest semester first. */
 export async function getSavedResults(userId: string): Promise<SavedResult[]> {
   const records = await prisma.resultRecord.findMany({ where: { userId }, orderBy: { semester: 'asc' } });
-  return records.map((record) => ({
-    semester: record.semester,
-    status: record.status,
-    sgpa: record.sgpa,
-    cgpa: record.cgpa,
-    fetchedAt: record.fetchedAt.toISOString(),
-    payload: parseResultPayload(record.payload),
-  }));
+  return records.map((record) => {
+    const payload = parseResultPayload(record.payload);
+    return {
+      semester: record.semester,
+      // Rows saved before the status fix say UNKNOWN; the parsed payload has the repaired status.
+      status: record.status === 'UNKNOWN' && payload ? payload.status : record.status,
+      sgpa: record.sgpa,
+      cgpa: record.cgpa,
+      fetchedAt: record.fetchedAt.toISOString(),
+      payload,
+    };
+  });
 }
 
 /** Which semesters a sync should ask the portal about. */

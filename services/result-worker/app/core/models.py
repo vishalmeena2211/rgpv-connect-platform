@@ -61,6 +61,10 @@ class SemesterResult(CamelModel):
     result_description: str | None = None
     sgpa: float | None = None
     cgpa: float | None = None
+    # RGPV's header "Status" cell: the student's category (Regular, Ex), not pass/fail.
+    candidate_status: str | None = None
+    revaluation_date: str | None = None
+    revaluation_late_fee_date: str | None = None
 
 
 class BulkResultItem(CamelModel):

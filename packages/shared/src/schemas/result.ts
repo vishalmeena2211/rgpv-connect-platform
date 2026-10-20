@@ -41,7 +41,33 @@ export const subjectResultSchema = z.object({
 
 export const resultStatusSchema = z.enum(['PASS', 'FAIL', 'WITHHELD', 'UNKNOWN']);
 
-/** Schema for a parsed semester result. */
+type ResultStatusValue = z.infer<typeof resultStatusSchema>;
+
+/**
+ * The status RGPV declared, recovered when the header cell did not say.
+ *
+ * The worker reads pass/fail from one fixed line of RGPV's header table, and on
+ * some result pages that line holds something else. The summary line
+ * (`resultDescription`) and the grades say the same thing, so fall back to
+ * them: any F grade is a fail, a full set of passing grades is a pass.
+ */
+export function resolveResultStatus(result: {
+  status: ResultStatusValue;
+  resultDescription?: string;
+  subjects: { grade?: string }[];
+}): ResultStatusValue {
+  if (result.status !== 'UNKNOWN') return result.status;
+  const note = (result.resultDescription ?? '').toUpperCase();
+  if (note.includes('WITHHELD')) return 'WITHHELD';
+  if (note.includes('FAIL')) return 'FAIL';
+  if (note.includes('PASS')) return 'PASS';
+  const grades = result.subjects.map((subject) => subject.grade?.trim().toUpperCase() ?? '');
+  if (grades.length === 0 || grades.some((grade) => grade === '')) return 'UNKNOWN';
+  if (grades.some((grade) => grade.startsWith('F'))) return 'FAIL';
+  return grades.every((grade) => /^(A\+|A|B\+|B|C\+|C|D)$/.test(grade)) ? 'PASS' : 'UNKNOWN';
+}
+
+/** Schema for a parsed semester result. Results cached before the status fix are repaired on read. */
 export const semesterResultSchema = z.object({
   name: z.string(),
   enrollment: z.string(),
@@ -54,4 +80,7 @@ export const semesterResultSchema = z.object({
   resultDescription: z.string().optional(),
   sgpa: z.number().optional(),
   cgpa: z.number().optional(),
-});
+  candidateStatus: z.string().optional(),
+  revaluationDate: z.string().optional(),
+  revaluationLateFeeDate: z.string().optional(),
+}).transform((result) => ({ ...result, status: resolveResultStatus(result) }));

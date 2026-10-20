@@ -207,13 +207,25 @@ curl -s -X POST http://localhost:8000/api/v1/result \
   "course": "B.Tech",
   "branch": "CS",
   "semester": 4,
-  "status": "UNKNOWN",
+  "status": "FAIL",
   "sgpa": 4.71,
   "cgpa": 5.23,
   "resultDescription": "Fail in BT401",
+  "candidateStatus": "Regular",
+  "revaluationDate": "05/01/2026",
+  "revaluationLateFeeDate": "07/01/2026",
   "subjects": [ { "name": "BT401- [T]", "grade": "F", ... } ]
 }
 ```
+
+`status` comes from RGPV's "Result Des." cell. The header's "Status" cell is the
+student's category (Regular or Ex) and is returned as `candidateStatus`. Results
+fetched before 21 Oct 2026 read status from that header cell and say `UNKNOWN`;
+the web app repairs them on read (`resolveResultStatus` in `@rgpv/shared`).
+
+The result page's **Print marksheet** button opens `/result/<enrollment>/print?semester=N`,
+which rebuilds RGPV's own "Print Marksheet" window (the grading panel with the
+portal's stylesheet, printing on load) from these fields.
 
 The web app calls the same endpoint via
 [`apps/web/src/lib/result-worker.ts`](../apps/web/src/lib/result-worker.ts)

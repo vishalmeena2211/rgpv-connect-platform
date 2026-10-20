@@ -46,6 +46,12 @@ export interface SemesterResult {
   sgpa?: number;
   /** Cumulative grade point average. */
   cgpa?: number;
+  /** RGPV's header "Status" cell: the student's category, e.g. "Regular" or "Ex". */
+  candidateStatus?: string;
+  /** Last day to apply for revaluation, as RGPV prints it (dd/mm/yyyy). */
+  revaluationDate?: string;
+  /** Last day to apply with the late fee (dd/mm/yyyy). */
+  revaluationLateFeeDate?: string;
 }
 
 /** Maps an enrollment number to its result (used by the bulk endpoint). */

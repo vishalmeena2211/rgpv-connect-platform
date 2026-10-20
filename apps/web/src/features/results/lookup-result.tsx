@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GraduationCap, RefreshCw } from 'lucide-react';
+import { GraduationCap, Printer, RefreshCw } from 'lucide-react';
 import { latestDeclaredSemester, parseEnrollment } from '@rgpv/shared';
 
 import { Button } from '@/components/ui/button';
@@ -103,6 +103,13 @@ export async function LookupResult({
               verified: false,
             }}
           />
+          {/* RGPV's own Print Marksheet, in a new tab that opens the print dialog. */}
+          <Button asChild variant="outline" size="sm">
+            <a href={`/result/${parsed.raw}/print?semester=${semester}`} target="_blank" rel="noopener">
+              <Printer />
+              Print marksheet
+            </a>
+          </Button>
           {isOwn ? (
             <Button asChild variant="secondary" size="sm">
               <Link href="/results/me">

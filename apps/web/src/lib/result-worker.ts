@@ -80,6 +80,9 @@ const SNAKE_KEYS: Record<string, string> = {
   total_marks: 'totalMarks',
   earned_marks: 'earnedMarks',
   result_description: 'resultDescription',
+  candidate_status: 'candidateStatus',
+  revaluation_date: 'revaluationDate',
+  revaluation_late_fee_date: 'revaluationLateFeeDate',
 };
 
 /** Accept snake_case from an older worker as well as the current camelCase. */
