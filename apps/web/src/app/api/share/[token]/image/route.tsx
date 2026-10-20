@@ -1,5 +1,7 @@
 import { ImageResponse } from 'next/og';
 
+import { BrandMarkSvg } from '@/components/brand-mark';
+
 import { getShareCard } from '@/features/results/share';
 
 export const runtime = 'nodejs';
@@ -32,8 +34,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ toke
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 30, opacity: 0.85 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontWeight: 700 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0F8A6F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={{ width: 16, height: 16, borderRadius: 4, background: '#FFFFFF' }} />
+            <div style={{ display: 'flex', borderRadius: 13, border: '1.5px solid rgba(255,255,255,0.25)' }}>
+              <BrandMarkSvg size={44} />
             </div>
             RGPV Connect
           </div>

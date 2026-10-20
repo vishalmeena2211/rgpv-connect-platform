@@ -1,5 +1,7 @@
 import { ImageResponse } from 'next/og';
 
+import { BrandMarkSvg } from '@/components/brand-mark';
+
 export const alt = 'RGPV Connect: your RGPV result in ten seconds, then your whole batch';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -22,8 +24,8 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <div style={{ width: 64, height: 64, borderRadius: 16, background: '#0F8A6F', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid rgba(255,255,255,0.25)' }}>
-            <div style={{ width: 24, height: 24, borderRadius: 7, background: '#FFFFFF' }} />
+          <div style={{ display: 'flex', borderRadius: 18, border: '2px solid rgba(255,255,255,0.25)' }}>
+            <BrandMarkSvg size={64} />
           </div>
           <div style={{ fontSize: 34, fontWeight: 700 }}>RGPV Connect</div>
         </div>
