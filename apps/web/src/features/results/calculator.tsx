@@ -2,12 +2,14 @@
 
 import { useMemo, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
-import { GRADES, type Grade, projectedCgpa, requiredAverageSgpa, sgpaFromGrades } from '@rgpv/shared';
+import { GRADE_POINTS, GRADES, type Grade, projectedCgpa, requiredAverageSgpa, sgpaFromGrades } from '@rgpv/shared';
 
 import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Field, Input, Select } from '@/components/ui/input';
+import { Field, Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
+import { semesterOptions } from '@/components/ui/select-options';
 
 interface Row {
   id: number;
@@ -90,16 +92,11 @@ export function Calculator({
                     <td className="px-3 py-2">
                       <Select
                         aria-label={`Grade for ${row.code || `subject ${index + 1}`}`}
+                        size="sm"
                         value={row.grade}
-                        onChange={(e) => update(row.id, { grade: e.target.value as Grade })}
-                        className="h-8"
-                      >
-                        {GRADES.map((grade) => (
-                          <option key={grade} value={grade}>
-                            {grade}
-                          </option>
-                        ))}
-                      </Select>
+                        onValueChange={(next) => update(row.id, { grade: next as Grade })}
+                        options={GRADES.map((grade) => ({ value: grade, label: grade, hint: `${GRADE_POINTS[grade]} pts` }))}
+                      />
                     </td>
                     <td className="pr-2">
                       <Button
@@ -160,13 +157,12 @@ export function Calculator({
                 <Input id="target-cgpa" inputMode="decimal" value={target} onChange={(e) => setTarget(e.target.value)} className="tabular" />
               </Field>
               <Field label="By the end of" htmlFor="target-until">
-                <Select id="target-until" value={until} onChange={(e) => setUntil(Number(e.target.value))}>
-                  {Array.from({ length: 8 - sgpas.length }, (_, i) => sgpas.length + 1 + i).map((n) => (
-                    <option key={n} value={n}>
-                      Semester {n}
-                    </option>
-                  ))}
-                </Select>
+                <Select
+                  id="target-until"
+                  value={String(until)}
+                  onValueChange={(next) => setUntil(Number(next))}
+                  options={semesterOptions(sgpas.length + 1, 8)}
+                />
               </Field>
             </div>
             {sgpas.length === 0 ? (

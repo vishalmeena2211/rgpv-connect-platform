@@ -12,6 +12,7 @@ const PUBLIC_PREFIXES = [
   '/api/health',
   '/api/cron',
   '/api/resources',
+  '/api/result/warm',
   '/result/',
   '/s/',
   '/how-it-works',

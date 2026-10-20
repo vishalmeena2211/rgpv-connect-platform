@@ -4,7 +4,8 @@ import { ChevronRight, Download, FileText, NotebookText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChipLink, ChipRow } from '@/components/ui/chip';
-import { Select } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
+import { semesterOptions } from '@/components/ui/select-options';
 import { Stars } from '@/components/ui/stars';
 import { batchTag, formatBytes, formatCount, initials } from '@/lib/utils';
 
@@ -33,23 +34,23 @@ export function ScopeBar({
       <form action={basePath} className="mt-3 flex flex-wrap items-end gap-2 rounded-md border bg-card p-3 shadow-card">
         <label className="flex flex-col gap-1 text-xs font-semibold">
           Branch
-          <Select name="branch" defaultValue={scope.branchCode} className="h-9 w-56">
-            {branches.map((b) => (
-              <option key={b.code} value={b.code}>
-                {b.name}
-              </option>
-            ))}
-          </Select>
+          <Select
+            name="branch"
+            defaultValue={scope.branchCode}
+            className="h-9 w-56"
+            aria-label="Branch"
+            options={branches.map((b) => ({ value: b.code, label: b.name }))}
+          />
         </label>
         <label className="flex flex-col gap-1 text-xs font-semibold">
           Semester
-          <Select name="semester" defaultValue={String(scope.semester)} className="h-9 w-36">
-            {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                Semester {n}
-              </option>
-            ))}
-          </Select>
+          <Select
+            name="semester"
+            defaultValue={String(scope.semester)}
+            className="h-9 w-36"
+            aria-label="Semester"
+            options={semesterOptions(1, 8)}
+          />
         </label>
         <Button type="submit" size="sm">
           Show

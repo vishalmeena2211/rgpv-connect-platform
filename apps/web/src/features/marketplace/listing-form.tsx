@@ -6,7 +6,8 @@ import { ImageIcon, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { Field, Input, Select, Textarea } from '@/components/ui/input';
+import { Field, Input, Textarea } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 import { startUpload } from '@/features/resources/actions';
 import { uploadFile } from '@/lib/upload-client';
 
@@ -52,13 +53,18 @@ export function ListingForm() {
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Price (₹)" htmlFor="price"><Input id="price" name="price" inputMode="numeric" required placeholder="400" className="tabular" /></Field>
         <Field label="Category" htmlFor="category">
-          <Select id="category" name="category" defaultValue="BOOKS">
-            <option value="BOOKS">Books</option>
-            <option value="ELECTRONICS">Electronics</option>
-            <option value="HOSTEL">Hostel</option>
-            <option value="NOTES">Notes</option>
-            <option value="OTHER">Other</option>
-          </Select>
+          <Select
+            id="category"
+            name="category"
+            defaultValue="BOOKS"
+            options={[
+              { value: 'BOOKS', label: 'Books' },
+              { value: 'ELECTRONICS', label: 'Electronics' },
+              { value: 'HOSTEL', label: 'Hostel' },
+              { value: 'NOTES', label: 'Notes' },
+              { value: 'OTHER', label: 'Other' },
+            ]}
+          />
         </Field>
         <Field label="Pick up from" htmlFor="pickup"><Input id="pickup" name="pickup" maxLength={60} placeholder="Hostel 4" /></Field>
       </div>

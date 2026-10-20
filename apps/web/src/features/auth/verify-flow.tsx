@@ -9,7 +9,10 @@ import { track } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
-import { Field, Input, Select, Textarea } from '@/components/ui/input';
+import { Field, Input, Textarea } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
+import { semesterTiles } from '@/components/ui/select-options';
+import { useWarmLookup } from '@/features/results/use-warm-lookup';
 import { formatDate } from '@/lib/utils';
 
 import { confirmEnrollment, disputeEnrollment, type EnrollmentPreview, previewEnrollment } from './actions';
@@ -44,6 +47,7 @@ export function VerifyFlow({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [value, setValue] = useState(initialEnrollment);
+  const warm = useWarmLookup();
   const [semester, setSemester] = useState<number | 'auto'>(initialSemester ?? 'auto');
   const [preview, setPreview] = useState<Preview | null>(null);
   const [taken, setTaken] = useState<Taken | null>(null);
@@ -177,6 +181,7 @@ export function VerifyFlow({
           id="verify-enrollment"
           value={value}
           onChange={(e) => setValue(e.target.value.toUpperCase())}
+          onFocus={warm}
           placeholder="0151CS241042"
           autoComplete="off"
           autoCapitalize="characters"
@@ -200,14 +205,15 @@ export function VerifyFlow({
         </div>
       ) : null}
       <Field label="A semester you already have a result for" htmlFor="verify-semester" hint="Picked from your admission year. Any declared semester works.">
-        <Select id="verify-semester" value={String(semester)} onChange={(e) => setSemester(e.target.value === 'auto' ? 'auto' : Number(e.target.value))} className="h-12 text-[15px]">
-          <option value="auto">{latest ? `Semester ${latest} (latest declared)` : 'Latest declared'}</option>
-          {Array.from({ length: COURSE_SEMESTERS }, (_, i) => i + 1).map((n) => (
-            <option key={n} value={n}>
-              Semester {n}
-            </option>
-          ))}
-        </Select>
+        <Select
+          id="verify-semester"
+          size="lg"
+          value={String(semester)}
+          onValueChange={(next) => setSemester(next === 'auto' ? 'auto' : Number(next))}
+          columns={4}
+          contentClassName="w-[min(300px,calc(100vw-24px))]"
+          options={semesterTiles(COURSE_SEMESTERS, latest, 'Latest declared')}
+        />
       </Field>
       <Button size="lg" disabled={pending || !value} onClick={find}>
         {pending ? <Loader2 className="animate-spin" /> : <Search />}

@@ -8,7 +8,8 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Field, Input, Select } from '@/components/ui/input';
+import { Field, Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { track } from '@/lib/analytics';
 import { uploadFile } from '@/lib/upload-client';
@@ -149,29 +150,25 @@ export function UploadDialog({
           </div>
         ) : null}
         <Field label="Subject" htmlFor="upload-subject" hint="Picked from your branch and semester. Change it if this is for another subject.">
-          <Select id="upload-subject" value={subjectId} onChange={(e) => setSubjectId(Number(e.target.value))}>
-            <option value="">Choose a subject</option>
-            {bySemester.map(([group, items]) => (
-              <optgroup key={group} label={group}>
-                {items.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.code ? `${s.code} · ` : ''}
-                    {s.name}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </Select>
+          <Select
+            id="upload-subject"
+            placeholder="Choose a subject"
+            value={subjectId ? String(subjectId) : undefined}
+            onValueChange={(next) => setSubjectId(Number(next))}
+            groups={bySemester.map(([group, items]) => ({
+              label: group,
+              options: items.map((s) => ({ value: String(s.id), label: `${s.code ? `${s.code} · ` : ''}${s.name}` })),
+            }))}
+          />
         </Field>
         {type === 'PAPER' ? (
           <Field label="Exam session" htmlFor="upload-session">
-            <Select id="upload-session" value={session} onChange={(e) => setSession(e.target.value)}>
-              {recentSessions().map((s) => (
-                <option key={s} value={s}>
-                  {s} end semester
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="upload-session"
+              value={session}
+              onValueChange={setSession}
+              options={recentSessions().map((s) => ({ value: s, label: `${s} end semester` }))}
+            />
           </Field>
         ) : null}
         <Field label={type === 'NOTE' ? 'What they cover' : 'Title'} htmlFor="upload-title">

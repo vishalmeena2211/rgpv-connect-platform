@@ -115,6 +115,15 @@ export async function fetchResult(enrollment: string, semester: number): Promise
   return semesterResultSchema.parse(dropNulls(camelise(data)));
 }
 
+/**
+ * Have the worker open an RGPV session ahead of a lookup. RGPV only accepts a
+ * result request a few seconds after its page was opened, so doing that while
+ * someone is still typing takes most of the wait off the lookup.
+ */
+export async function warmWorker(): Promise<unknown> {
+  return call('/api/v1/queue/warm', { method: 'POST' }, 15_000);
+}
+
 /** Worker health, counters and captcha balance for the admin screen. */
 export async function fetchWorkerStats(): Promise<unknown> {
   return call('/api/v1/stats', { method: 'GET' }, 10_000);

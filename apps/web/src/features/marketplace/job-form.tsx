@@ -9,7 +9,8 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChipButton } from '@/components/ui/chip';
-import { Field, Input, Select, Textarea } from '@/components/ui/input';
+import { Field, Input, Textarea } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 
 import { createJob } from './job-actions';
 
@@ -52,11 +53,16 @@ export function JobForm() {
         <Field label="Job title" htmlFor="title"><Input id="title" name="title" required maxLength={120} placeholder="Software engineer intern" /></Field>
         <Field label="Company" htmlFor="company"><Input id="company" name="company" required maxLength={120} /></Field>
         <Field label="Type" htmlFor="type">
-          <Select id="type" name="type" defaultValue="INTERNSHIP">
-            <option value="INTERNSHIP">Internship</option>
-            <option value="FULL_TIME">Full time</option>
-            <option value="PART_TIME">Part time</option>
-          </Select>
+          <Select
+            id="type"
+            name="type"
+            defaultValue="INTERNSHIP"
+            options={[
+              { value: 'INTERNSHIP', label: 'Internship' },
+              { value: 'FULL_TIME', label: 'Full time' },
+              { value: 'PART_TIME', label: 'Part time' },
+            ]}
+          />
         </Field>
         <Field label="Stipend or salary" htmlFor="pay"><Input id="pay" name="pay" maxLength={60} placeholder="₹15,000 a month or ₹4.2 LPA" /></Field>
         <Field label="Location" htmlFor="location"><Input id="location" name="location" maxLength={120} placeholder="Bhopal" /></Field>

@@ -19,23 +19,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttribu
 );
 Textarea.displayName = 'Textarea';
 
-/** Native select styled like the inputs; native keeps it accessible and mobile-friendly. */
-const Select = React.forwardRef<HTMLSelectElement, React.SelectHTMLAttributes<HTMLSelectElement>>(
-  ({ className, children, ...props }, ref) => (
-    <select
-      ref={ref}
-      className={cn(
-        fieldBase,
-        "h-10 appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%238C9792%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22m6 9 6 6 6-6%22/></svg>')] bg-[length:16px] bg-[right_10px_center] bg-no-repeat pl-3 pr-9",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </select>
-  ),
-);
-Select.displayName = 'Select';
+// Dropdowns live in ./select (Radix), which styles the open list too.
 
 /** Label + control + hint/error, stacked. */
 function Field({
@@ -70,4 +54,4 @@ function Field({
   );
 }
 
-export { Input, Textarea, Select, Field };
+export { Input, Textarea, Field };

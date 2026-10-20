@@ -92,3 +92,29 @@ def test_pop_never_raises_when_redis_is_down() -> None:
     redis_mock.rpop.side_effect = ConnectionError("redis unreachable")
 
     assert _pool(redis_mock).pop() is None
+
+
+def test_falls_back_to_memory_when_redis_does_not_answer() -> None:
+    redis_mock = MagicMock()
+    redis_mock.ping.side_effect = ConnectionError("refused")
+    pool = _pool(redis_mock)
+
+    assert pool.size() == 0
+    with patch("app.services.session_pool.establish_session") as establish:
+        establish.return_value = MagicMock(
+            viewstate="vs",
+            eventvalidation="ev",
+            cookie="ASP.NET_SessionId=abc",
+            captcha_url="http://result.rgpv.ac.in/Result/captcha.png",
+            established_at=time.time() - 10,
+        )
+        assert pool.warm(target=2) == 1
+        assert pool.warm(target=2) == 2
+        assert pool.warm(target=2) == 2  # already enough waiting: no third handshake
+        assert establish.call_count == 2
+
+    session = pool.pop()
+    assert session is not None
+    # The handshake time travels with the session, so it can submit straight away.
+    assert time.time() - session.established_at >= 10
+    assert pool.size() == 1

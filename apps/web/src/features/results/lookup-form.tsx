@@ -7,10 +7,13 @@ import { COURSE_SEMESTERS, isValidEnrollment, latestDeclaredSemester, parseEnrol
 import { track } from '@/lib/analytics';
 
 import { Button } from '@/components/ui/button';
-import { Field, Input, Select } from '@/components/ui/input';
+import { Field, Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
+import { semesterTiles } from '@/components/ui/select-options';
 import { cn } from '@/lib/utils';
 
 import { lookupHref } from './links';
+import { useWarmLookup } from './use-warm-lookup';
 
 const RECENT_KEY = 'rgpv:recent-lookups';
 
@@ -63,6 +66,7 @@ export function LookupForm({
   const [value, setValue] = useState(initialEnrollment);
   const [semester, setSemester] = useState<number | 'auto'>(initialSemester ?? 'auto');
   const [touched, setTouched] = useState(false);
+  const warm = useWarmLookup();
 
   const parsed = useMemo(() => parseEnrollment(value), [value]);
   const latest = parsed ? latestDeclaredSemester(parsed.admissionYear) : null;
@@ -92,6 +96,8 @@ export function LookupForm({
               id="lookup-enrollment"
               value={value}
               onChange={(e) => setValue(e.target.value.toUpperCase())}
+              // Start RGPV's few-second session wait while they type, not after they press Check.
+              onFocus={warm}
               onBlur={() => setTouched(true)}
               placeholder="0151CS241042"
               autoComplete="off"
@@ -106,17 +112,13 @@ export function LookupForm({
         <Field label="Semester" htmlFor="lookup-semester">
           <Select
             id="lookup-semester"
+            size="lg"
             value={String(semester)}
-            onChange={(e) => setSemester(e.target.value === 'auto' ? 'auto' : Number(e.target.value))}
-            className="h-12 text-[15px]"
-          >
-            <option value="auto">{latest ? `Latest · semester ${latest}` : 'Latest'}</option>
-            {Array.from({ length: COURSE_SEMESTERS }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                Semester {n}
-              </option>
-            ))}
-          </Select>
+            onValueChange={(next) => setSemester(next === 'auto' ? 'auto' : Number(next))}
+            columns={4}
+            contentClassName="w-[min(300px,calc(100vw-24px))]"
+            options={semesterTiles(COURSE_SEMESTERS, latest)}
+          />
         </Field>
       </div>
 

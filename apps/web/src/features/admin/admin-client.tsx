@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Field, Input, Select, Textarea } from '@/components/ui/input';
+import { Field, Input, Textarea } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
+import { semesterOptions } from '@/components/ui/select-options';
 import { Progress } from '@/components/ui/progress';
 
 import {
@@ -178,14 +180,15 @@ export function DeclareRunner({ batches, running }: { batches: number[]; running
     <div className="flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-2.5">
         <Field label="Semester" htmlFor="declare-semester">
-          <Select id="declare-semester" value={semester} onChange={(e) => { setSemester(Number(e.target.value)); setCheck(null); }}>
-            {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>Semester {n}</option>)}
-          </Select>
+          <Select id="declare-semester" value={String(semester)} onValueChange={(next) => { setSemester(Number(next)); setCheck(null); }} options={semesterOptions(1, 8)} />
         </Field>
         <Field label="Batch" htmlFor="declare-batch">
-          <Select id="declare-batch" value={batch} onChange={(e) => { setBatch(Number(e.target.value)); setCheck(null); }}>
-            {batches.map((year) => <option key={year} value={year}>Admitted {year} (batch {year + 4})</option>)}
-          </Select>
+          <Select
+            id="declare-batch"
+            value={String(batch)}
+            onValueChange={(next) => { setBatch(Number(next)); setCheck(null); }}
+            options={batches.map((year) => ({ value: String(year), label: `Admitted ${year}`, hint: `batch ${year + 4}` }))}
+          />
         </Field>
       </div>
       {check ? (
@@ -360,15 +363,17 @@ export function RoleSelect({ userId, role }: { userId: string; role: string }) {
   return (
     <Select
       aria-label="Role"
+      size="sm"
       value={role}
       disabled={pending}
-      onChange={(e) => run(() => setRole(userId, e.target.value as 'STUDENT'), 'Role changed.')}
-      className="h-8 w-36"
-    >
-      <option value="STUDENT">Student</option>
-      <option value="RECRUITER">Recruiter</option>
-      <option value="MENTOR">Mentor</option>
-      <option value="ADMIN">Admin</option>
-    </Select>
+      onValueChange={(next) => run(() => setRole(userId, next as 'STUDENT'), 'Role changed.')}
+      className="w-36"
+      options={[
+        { value: 'STUDENT', label: 'Student' },
+        { value: 'RECRUITER', label: 'Recruiter' },
+        { value: 'MENTOR', label: 'Mentor' },
+        { value: 'ADMIN', label: 'Admin' },
+      ]}
+    />
   );
 }
