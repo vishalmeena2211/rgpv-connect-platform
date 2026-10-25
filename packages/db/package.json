@@ -16,6 +16,7 @@
     "migrate:deploy": "prisma migrate deploy",
     "studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
+    "catalogue:load": "tsx prisma/load-catalogue.ts",
     "typecheck": "tsc --noEmit"
   },
   "prisma": {

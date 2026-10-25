@@ -1,0 +1,5026 @@
+{
+ "course": "Bachelor of Technology",
+ "source": "RGPV Scheme of Examination as per AICTE Flexible Curricula, B.Tech Grading System (rgpv.ac.in, Uni/frm_ViewScheme.aspx), downloaded 25 Oct 2026. Elective options are listed after their slot with no credits; non-credit courses and internships whose credit is counted in a later semester have no credits.",
+ "branches": {
+  "CS": {
+   "name": "Computer Science & Engineering",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group A",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group A",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "3": {
+     "source": "III Semester Computer Science and Engineering/Computer Engineering/ Computer Science /Computer Science & Technology/Regional Language/Indian Language] For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/CSE%20III%20sem%20Scheme190126050940.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ES301",
+       "name": "Energy & Environmental Engineering",
+       "credits": 4
+      },
+      {
+       "code": "CS302",
+       "name": "Discrete Structure",
+       "credits": 4
+      },
+      {
+       "code": "CS303",
+       "name": "Data Structure",
+       "credits": 4
+      },
+      {
+       "code": "CS304",
+       "name": "Digital Systems",
+       "credits": 4
+      },
+      {
+       "code": "CS305",
+       "name": "Object Oriented Programming & Methodology",
+       "credits": 4
+      },
+      {
+       "code": "CS306",
+       "name": "Computer Workshop",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "90 hrs Internship based on using various softwares –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "IV Semester Bachelor of Technology (B.Tech.) [Computer Science and Engineering/Computer Engineering/ Computer Science /Computer Science & Technology/Regional Language/Indian Language] For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTech%20CSE_IV%20Sem030325035528.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "BT401",
+       "name": "Mathematics- III",
+       "credits": 4
+      },
+      {
+       "code": "CS402",
+       "name": "Analysis Design of Algorithm",
+       "credits": 4
+      },
+      {
+       "code": "CS403",
+       "name": "Software Engineering",
+       "credits": 5
+      },
+      {
+       "code": "CS404",
+       "name": "Computer Org. & Architecture",
+       "credits": 5
+      },
+      {
+       "code": "CS405",
+       "name": "Operating Systems",
+       "credits": 4
+      },
+      {
+       "code": "CS406",
+       "name": "Programming Practices",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "V Semester Bachelor of Technology (B.Tech.) [Computer Science and Engineering/Computer Engineering/ Computer Science /Computer Science & Technology/Regional Language/Indian Language] (w.e.f. July, 2019) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/V%20Sem%20CSE%20scheme030925122654.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CS501",
+       "name": "Theory of Computation",
+       "credits": 4
+      },
+      {
+       "code": "CS502",
+       "name": "Database Management Systems",
+       "credits": 4
+      },
+      {
+       "code": "CS503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CS503(A)",
+       "name": "Data Analytics",
+       "credits": null
+      },
+      {
+       "code": "CS503(B)",
+       "name": "Pattern Recognition",
+       "credits": null
+      },
+      {
+       "code": "CS503(C)",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "CS504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CS504(A)",
+       "name": "Internet and Web Technology",
+       "credits": null
+      },
+      {
+       "code": "CS504(B)",
+       "name": "Object Oriented Programming",
+       "credits": null
+      },
+      {
+       "code": "CS504(C)",
+       "name": "Introduction to Database Management Systems",
+       "credits": null
+      },
+      {
+       "code": "CS505",
+       "name": "Lab (Linux)",
+       "credits": 2
+      },
+      {
+       "code": "CS506",
+       "name": "Lab (Python)",
+       "credits": 2
+      },
+      {
+       "code": "CS507",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "CS508",
+       "name": "Minor Project- I",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "VI Semester Bachelor of Technology (B.Tech.) [Computer Science and Engineering/Computer Engineering/ Computer Science /Computer Science & Technology/Regional Language/Indian Language] (w.e.f. Jan, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/CSE_6_SEM_Scheme030925122755.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CS601",
+       "name": "Machine Learning",
+       "credits": 4
+      },
+      {
+       "code": "CS602",
+       "name": "Computer Networks",
+       "credits": 4
+      },
+      {
+       "code": "CS603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CS603(A)",
+       "name": "Advanced Computer Architecture",
+       "credits": null
+      },
+      {
+       "code": "CS603(B)",
+       "name": "Computer Graphics & Visualization",
+       "credits": null
+      },
+      {
+       "code": "CS603(C)",
+       "name": "Compiler Design",
+       "credits": null
+      },
+      {
+       "code": "CS604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "CS604(A)",
+       "name": "Knowledge Management",
+       "credits": null
+      },
+      {
+       "code": "CS604(B)",
+       "name": "Project Management",
+       "credits": null
+      },
+      {
+       "code": "CS604(C)",
+       "name": "Rural Technology & Community Development",
+       "credits": null
+      },
+      {
+       "code": "CS605",
+       "name": "Data Analytics Lab",
+       "credits": 3
+      },
+      {
+       "code": "CS606",
+       "name": "Skill Development Lab",
+       "credits": 3
+      },
+      {
+       "code": "CS607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "CS608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "VII Semester Bachelor of Technology (B.Tech.) Computer Science and Engineering/ (w.e.f. July, 2020) Computer Engineering/Computer Science & Technology Regional Language/Indian Language] | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VII%20CSE120325054634.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CS701",
+       "name": "Software Architectures",
+       "credits": 4
+      },
+      {
+       "code": "CS702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CS702(A)",
+       "name": "Computational Intelligence",
+       "credits": null
+      },
+      {
+       "code": "CS702(B)",
+       "name": "Deep & Reinforcement Learning",
+       "credits": null
+      },
+      {
+       "code": "CS702(C)",
+       "name": "Wireless & Mobile Computing",
+       "credits": null
+      },
+      {
+       "code": "CS702(D)",
+       "name": "Big Data",
+       "credits": null
+      },
+      {
+       "code": "CS703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CS703(A)",
+       "name": "Cryptography & Information Security",
+       "credits": null
+      },
+      {
+       "code": "CS703(B)",
+       "name": "Data Mining and Warehousing",
+       "credits": null
+      },
+      {
+       "code": "CS703(C)",
+       "name": "Agile Software Development",
+       "credits": null
+      },
+      {
+       "code": "CS703(D)",
+       "name": "Disaster Management",
+       "credits": null
+      },
+      {
+       "code": "CS704",
+       "name": "Departmental Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "CS705",
+       "name": "Open Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "CS706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "CS607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "VIII Semester Bachelor of Technology (B.Tech.) Computer Science and Engineering/ (w.e.f. Jan, 2021) Computer Engineering/Computer Science & Technology/ Regional Language/Indian Language] | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VIII%20CSE120325054719.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "CS801",
+       "name": "Internet of Things",
+       "credits": 4
+      },
+      {
+       "code": "CS802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CS802(A)",
+       "name": "Block Chain Technologies",
+       "credits": null
+      },
+      {
+       "code": "CS802(B)",
+       "name": "Cloud Computing",
+       "credits": null
+      },
+      {
+       "code": "CS802(C)",
+       "name": "High Performance computing",
+       "credits": null
+      },
+      {
+       "code": "CS802(D)",
+       "name": "Object Oriented Software Engineering",
+       "credits": null
+      },
+      {
+       "code": "CS803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CS803(A)",
+       "name": "Image Processing and Computer Vision",
+       "credits": null
+      },
+      {
+       "code": "CS803(B)",
+       "name": "Game Theory with Engineering applications",
+       "credits": null
+      },
+      {
+       "code": "CS803(C)",
+       "name": "Internet of Things",
+       "credits": null
+      },
+      {
+       "code": "CS803(D)",
+       "name": "Managing Innovation and Entrepreneurship",
+       "credits": null
+      },
+      {
+       "code": "CS804",
+       "name": "D/O elective lab",
+       "credits": 3
+      },
+      {
+       "code": "CS805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "IT": {
+   "name": "Information Technology",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group A",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group A",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "3": {
+     "source": "III Semester Bachelor of Technology (B.Tech.) [Information Technology] For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/IT131022123140.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ES301",
+       "name": "Energy & Environmental Engineering",
+       "credits": 4
+      },
+      {
+       "code": "IT302",
+       "name": "Discrete Structure",
+       "credits": 4
+      },
+      {
+       "code": "IT303",
+       "name": "Data Structure",
+       "credits": 4
+      },
+      {
+       "code": "IT304",
+       "name": "Object Oriented Programming &Methodology",
+       "credits": 4
+      },
+      {
+       "code": "IT305",
+       "name": "Digital Circuits & System",
+       "credits": 4
+      },
+      {
+       "code": "IT306",
+       "name": "JAVA Programming Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "IV Semester Bachelor of Technology (B.Tech.) [Information Technology] For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/Revised_IV_IT190522023416.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "BT401",
+       "name": "Mathematics- III",
+       "credits": 4
+      },
+      {
+       "code": "IT402",
+       "name": "Computer Architecture",
+       "credits": 3
+      },
+      {
+       "code": "IT403",
+       "name": "Analysis and Design of Algorithm",
+       "credits": 5
+      },
+      {
+       "code": "IT404",
+       "name": "Analog & Digital Communication",
+       "credits": 5
+      },
+      {
+       "code": "IT405",
+       "name": "Data base Management System",
+       "credits": 4
+      },
+      {
+       "code": "IT406",
+       "name": "Introduction to MATLAB, Scilab/Web Design",
+       "credits": 2
+      },
+      {
+       "code": "IT407",
+       "name": "Open Source Software Lab (Linux and R)",
+       "credits": 1
+      },
+      {
+       "code": "BT408",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT409",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "V Semester Bachelor of Technology (B.Tech.) [Information Technology] (w.e.f. July 2020)Revised | https://www.rgpv.ac.in/CDN/PubContent/Scheme/IT131022010538.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "IT501",
+       "name": "Operating System",
+       "credits": 4
+      },
+      {
+       "code": "IT502",
+       "name": "Computer Network",
+       "credits": 4
+      },
+      {
+       "code": "IT503",
+       "name": "Departmental Elective-I",
+       "credits": 4
+      },
+      {
+       "code": "IT503(A)",
+       "name": "Theory of Computation",
+       "credits": null
+      },
+      {
+       "code": "IT503(B)",
+       "name": "Microprocessor & Interfacing",
+       "credits": null
+      },
+      {
+       "code": "IT503(C)",
+       "name": "Object Oriented Analysis and Design",
+       "credits": null
+      },
+      {
+       "code": "IT504",
+       "name": "Open Elective-I",
+       "credits": 3
+      },
+      {
+       "code": "IT504(A)",
+       "name": "Artificial Intelligence",
+       "credits": null
+      },
+      {
+       "code": "IT504(B)",
+       "name": "E Commerce & Governance",
+       "credits": null
+      },
+      {
+       "code": "IT504(C)",
+       "name": "Java Programming",
+       "credits": null
+      },
+      {
+       "code": "IT505",
+       "name": "Advanced Java Lab",
+       "credits": 2
+      },
+      {
+       "code": "IT506",
+       "name": "Soft Skills and Interpersonal Communication",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "IT508",
+       "name": "Minor Project I/Seminar",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "VI Semester Bachelor of Technology (B.Tech.) Information Technology (w.e.f. Jan, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VI%20Sem%20IT_Scheme271219121616.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "IT601",
+       "name": "Computer Graphics & Multimedia",
+       "credits": 4
+      },
+      {
+       "code": "IT602",
+       "name": "Wireless and Mobile Computing",
+       "credits": 4
+      },
+      {
+       "code": "IT603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "IT603(A)",
+       "name": "Compiler Design",
+       "credits": null
+      },
+      {
+       "code": "IT603(B)",
+       "name": "Data Mining",
+       "credits": null
+      },
+      {
+       "code": "IT603(C)",
+       "name": "Embedded Systems",
+       "credits": null
+      },
+      {
+       "code": "IT604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "IT604(A)",
+       "name": "Intellectual Property Rights",
+       "credits": null
+      },
+      {
+       "code": "IT604(B)",
+       "name": "Software Engineering",
+       "credits": null
+      },
+      {
+       "code": "IT604(C)",
+       "name": "Wireless Sensor Networks",
+       "credits": null
+      },
+      {
+       "code": "IT605",
+       "name": "Programming in Python",
+       "credits": 3
+      },
+      {
+       "code": "IT606",
+       "name": "Android Programming",
+       "credits": 3
+      },
+      {
+       "code": "IT607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "IT608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "VII Semester Bachelor of Technology (B.Tech.) [Information Technology] (w.e.f. July, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VII_IT290121043840.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "IT701",
+       "name": "Soft Computing",
+       "credits": 4
+      },
+      {
+       "code": "IT702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "IT702(A)",
+       "name": "Data Science",
+       "credits": null
+      },
+      {
+       "code": "IT702(B)",
+       "name": "Cloud Computing",
+       "credits": null
+      },
+      {
+       "code": "IT702(C)",
+       "name": "Simulation and Modeling",
+       "credits": null
+      },
+      {
+       "code": "IT702(D)",
+       "name": "Augmented and Virtual Reality",
+       "credits": null
+      },
+      {
+       "code": "IT703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "IT703(A)",
+       "name": "Cyber Laws and Forensics",
+       "credits": null
+      },
+      {
+       "code": "IT703(B)",
+       "name": "Internet of Things",
+       "credits": null
+      },
+      {
+       "code": "IT703(C)",
+       "name": "Social Networks",
+       "credits": null
+      },
+      {
+       "code": "IT703(D)",
+       "name": "Digital Image Processing",
+       "credits": null
+      },
+      {
+       "code": "IT704",
+       "name": "Cloud Computing Lab",
+       "credits": 3
+      },
+      {
+       "code": "IT705",
+       "name": "IoT Lab",
+       "credits": 3
+      },
+      {
+       "code": "IT706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "IT607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "VIII Semester Bachelor of Technology (B.Tech.) Information Technology (w.e.f. Jan, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VIII_IT290121010701.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "IT801",
+       "name": "Information Security",
+       "credits": 4
+      },
+      {
+       "code": "IT802",
+       "name": "Departmental Elective IV",
+       "credits": 4
+      },
+      {
+       "code": "IT802(A)",
+       "name": "Machine Learning",
+       "credits": null
+      },
+      {
+       "code": "IT802(B)",
+       "name": "Natural Language Processing",
+       "credits": null
+      },
+      {
+       "code": "IT802(C)",
+       "name": "Robotics",
+       "credits": null
+      },
+      {
+       "code": "IT802(D)",
+       "name": "Quantum Computing",
+       "credits": null
+      },
+      {
+       "code": "IT803",
+       "name": "Open Elective IV",
+       "credits": 3
+      },
+      {
+       "code": "IT803(A)",
+       "name": "Blockchain Technology",
+       "credits": null
+      },
+      {
+       "code": "IT803(B)",
+       "name": "Human Computer Interaction",
+       "credits": null
+      },
+      {
+       "code": "IT803(C)",
+       "name": "3D Printing and Design",
+       "credits": null
+      },
+      {
+       "code": "IT803(D)",
+       "name": "Parallel Computing",
+       "credits": null
+      },
+      {
+       "code": "IT804",
+       "name": "Machine Learning Lab",
+       "credits": 3
+      },
+      {
+       "code": "IT805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "EX": {
+   "name": "Electrical & Electronics Engineering",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group A",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group A",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "3": {
+     "source": "III Semester Bachelor of Technology (B.Tech.) [Electrical & Electronics Engineering] For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/EXE010223045801.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ES301",
+       "name": "Energy & Environmental Engineering",
+       "credits": 4
+      },
+      {
+       "code": "EX302",
+       "name": "Signals & Systems",
+       "credits": 4
+      },
+      {
+       "code": "EX303",
+       "name": "Electrical Measurement & Measuring Instruments",
+       "credits": 4
+      },
+      {
+       "code": "EX304",
+       "name": "Network Analysis",
+       "credits": 4
+      },
+      {
+       "code": "EX305",
+       "name": "Analog Electronics",
+       "credits": 4
+      },
+      {
+       "code": "EX306",
+       "name": "Computer Programming – I (Java)",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "IV Semester Bachelor of Technology (B.Tech.) [Electrical &Electronics Engineering] For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTech_EX_IV_Sem220422043827.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "BT401",
+       "name": "Mathematics-III",
+       "credits": 4
+      },
+      {
+       "code": "EX402",
+       "name": "Electrical Machine-I",
+       "credits": 4
+      },
+      {
+       "code": "EX403",
+       "name": "Digital Electronics & Logic Design (DELD)",
+       "credits": 5
+      },
+      {
+       "code": "EX404",
+       "name": "Power System-I",
+       "credits": 5
+      },
+      {
+       "code": "EX405",
+       "name": "Control System",
+       "credits": 4
+      },
+      {
+       "code": "EX406",
+       "name": "Computer Programming-II (Python)",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "V Semester Bachelor of Technology (B.Tech.) Electrical & Electronics Engineering (w.e.f. July, 2019) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/EX131022010354.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "EX501",
+       "name": "Electrical Machine-II",
+       "credits": 4
+      },
+      {
+       "code": "EX502",
+       "name": "Power Electronics",
+       "credits": 4
+      },
+      {
+       "code": "EX503",
+       "name": "Departmental Elective -I",
+       "credits": 4
+      },
+      {
+       "code": "EX503(A)",
+       "name": "Electrical Power Generation & Economy",
+       "credits": null
+      },
+      {
+       "code": "EX503(B)",
+       "name": "Wind & Solar Energy",
+       "credits": null
+      },
+      {
+       "code": "EX503(C)",
+       "name": "Renewable Power Generation",
+       "credits": null
+      },
+      {
+       "code": "EX504",
+       "name": "Open Elective -I",
+       "credits": 3
+      },
+      {
+       "code": "EX504(A)",
+       "name": "Industrial Electronics",
+       "credits": null
+      },
+      {
+       "code": "EX504(B)",
+       "name": "Electromagnetic Theory",
+       "credits": null
+      },
+      {
+       "code": "EX504(C)",
+       "name": "Electrical & Electronics Materials",
+       "credits": null
+      },
+      {
+       "code": "EX505",
+       "name": "Departmental Lab",
+       "credits": 2
+      },
+      {
+       "code": "EX506",
+       "name": "Open Elective Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Evaluation of Internship II",
+       "credits": 3
+      },
+      {
+       "code": "EX508",
+       "name": "Minor Project I / Seminar",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "VI Semester Bachelor of Technology (B. Tech.) Electrical & Electronics Engg. (w.e.f. Jan, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VI%20Sem%20EXE161219110743.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "EX601",
+       "name": "Power System-II",
+       "credits": 4
+      },
+      {
+       "code": "EX602",
+       "name": "Microprocessor & Microcontroller",
+       "credits": 4
+      },
+      {
+       "code": "EX603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "EX603(A)",
+       "name": "Utilization of Electrical Engineering",
+       "credits": null
+      },
+      {
+       "code": "EX603(B)",
+       "name": "Energy Conservation & Management",
+       "credits": null
+      },
+      {
+       "code": "EX603(C)",
+       "name": "Electromagnetic Waves",
+       "credits": null
+      },
+      {
+       "code": "EX604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "EX604(A)",
+       "name": "Electronic Instrumentation",
+       "credits": null
+      },
+      {
+       "code": "EX604(B)",
+       "name": "Internet of Things (IoT)",
+       "credits": null
+      },
+      {
+       "code": "EX604(C)",
+       "name": "Analog & Digital communication",
+       "credits": null
+      },
+      {
+       "code": "EX605",
+       "name": "Electronic Instrumentation Lab",
+       "credits": 3
+      },
+      {
+       "code": "EX606",
+       "name": "Simulation Lab",
+       "credits": 3
+      },
+      {
+       "code": "BT607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "EX608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "VII Semester Bachelor of Technology (B.Tech.) [Electrical and Electronics Engineering] (w.e.f. July, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VII_EX290121043715.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "EX701",
+       "name": "Power System Protection",
+       "credits": 4
+      },
+      {
+       "code": "EX702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "EX702(A)",
+       "name": "Power Electronics Application to Power System",
+       "credits": null
+      },
+      {
+       "code": "EX702(B)",
+       "name": "HVDC & FACTS",
+       "credits": null
+      },
+      {
+       "code": "EX702(C)",
+       "name": "High Voltage Engineering",
+       "credits": null
+      },
+      {
+       "code": "EX703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "EX703(A)",
+       "name": "Hybrid & Electrical Vehicles",
+       "credits": null
+      },
+      {
+       "code": "EX703(B)",
+       "name": "Energy Audit & Management",
+       "credits": null
+      },
+      {
+       "code": "EX703(C)",
+       "name": "Digital Signal Processing",
+       "credits": null
+      },
+      {
+       "code": "EX704",
+       "name": "Electrical CAD Lab",
+       "credits": 3
+      },
+      {
+       "code": "EX705",
+       "name": "Energy Audit Lab",
+       "credits": 3
+      },
+      {
+       "code": "EX706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "EX607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "VIII Semester Bachelor of Technology (B.Tech.) [Electrical and Electronics Engineering] (w.e.f. Jan, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VIII_EX_Scheme290121010409.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "EX801",
+       "name": "Electrical Drives",
+       "credits": 4
+      },
+      {
+       "code": "EX802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "EX802(A)",
+       "name": "Power Quality Problems and Mitigation Techniques",
+       "credits": null
+      },
+      {
+       "code": "EX802(B)",
+       "name": "Special Machine",
+       "credits": null
+      },
+      {
+       "code": "EX802(C)",
+       "name": "SCADA Systems & Applications",
+       "credits": null
+      },
+      {
+       "code": "EX802(D)",
+       "name": "Application of AI in Electrical/Electronics Engg.",
+       "credits": null
+      },
+      {
+       "code": "EX803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "EX803(A)",
+       "name": "Power Electronics Converters for Renewable Energy",
+       "credits": null
+      },
+      {
+       "code": "EX803(B)",
+       "name": "Environmental Issues, Policy, Standards & Regulations",
+       "credits": null
+      },
+      {
+       "code": "EX803(C)",
+       "name": "VLSI circuits and systems",
+       "credits": null
+      },
+      {
+       "code": "EX803(D)",
+       "name": "Data Analytics",
+       "credits": null
+      },
+      {
+       "code": "EX804",
+       "name": "Simulation Lab",
+       "credits": 3
+      },
+      {
+       "code": "EX805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "AL": {
+   "name": "CSE (Artificial Intelligence and Machine Learning)",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "3": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | III Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] | For batches admitted in July,2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTechAIML131022123605.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL301",
+       "name": "Technical Communication",
+       "credits": 4
+      },
+      {
+       "code": "AL302",
+       "name": "Introduction to Probability and Statistics",
+       "credits": 4
+      },
+      {
+       "code": "AL303",
+       "name": "Data Structures",
+       "credits": 4
+      },
+      {
+       "code": "AL304",
+       "name": "Artificial Intelligence",
+       "credits": 4
+      },
+      {
+       "code": "AL305",
+       "name": "Object Oriented Programming & Methodology",
+       "credits": 4
+      },
+      {
+       "code": "AL306",
+       "name": "Computer Workshop/ Introduction to python - I",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "Internship-II : 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | IV Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] | For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/AIML_IV_sem220422043332.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL401",
+       "name": "Introduction to Discrete Structure & Linear Algebra",
+       "credits": 4
+      },
+      {
+       "code": "AL402",
+       "name": "Analysis & Design of Algorithms",
+       "credits": 5
+      },
+      {
+       "code": "AL403",
+       "name": "Software Engineering",
+       "credits": 5
+      },
+      {
+       "code": "AL404",
+       "name": "Computer Organization & Architecture",
+       "credits": 4
+      },
+      {
+       "code": "AL405",
+       "name": "Machine Learning",
+       "credits": 4
+      },
+      {
+       "code": "AL406",
+       "name": "Java Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Internship II: 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | V Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (no 'w.e.f.' or batch line is printed on this page) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/B%20Tech%20V%20sem%20CSE-AIML%20scheme020223050944.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL501",
+       "name": "Operating Systems",
+       "credits": 4
+      },
+      {
+       "code": "AL502",
+       "name": "Database Management Systems",
+       "credits": 4
+      },
+      {
+       "code": "AL503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL503(A)",
+       "name": "Information Retrieval",
+       "credits": null
+      },
+      {
+       "code": "AL503(B)",
+       "name": "Deep Learning",
+       "credits": null
+      },
+      {
+       "code": "AL503(C)",
+       "name": "Optimization Techniques in Machine Learning",
+       "credits": null
+      },
+      {
+       "code": "AL504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "AL504(A)",
+       "name": "AI in Health Care",
+       "credits": null
+      },
+      {
+       "code": "AL504(B)",
+       "name": "Natural Language Processing",
+       "credits": null
+      },
+      {
+       "code": "AL504(C)",
+       "name": "Computational Intelligence",
+       "credits": null
+      },
+      {
+       "code": "AL505",
+       "name": "Departmental Elective Lab",
+       "credits": 2
+      },
+      {
+       "code": "AL506",
+       "name": "Open Elective Lab",
+       "credits": 2
+      },
+      {
+       "code": "AL507",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "AL508",
+       "name": "Minor Project-I",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VI Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (w.e.f. Jan, 2023) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/AIML%20VI%20sem%20scheme060123014425.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL601",
+       "name": "Theory of Computation",
+       "credits": 4
+      },
+      {
+       "code": "AL602",
+       "name": "Computer Networks",
+       "credits": 4
+      },
+      {
+       "code": "AL603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL603(A)",
+       "name": "Image and Video Processing",
+       "credits": null
+      },
+      {
+       "code": "AL603(B)",
+       "name": "Data and Visual Analytics",
+       "credits": null
+      },
+      {
+       "code": "AL603(C)",
+       "name": "Pattern Recognition",
+       "credits": null
+      },
+      {
+       "code": "AL604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL604(A)",
+       "name": "Cloud Computing",
+       "credits": null
+      },
+      {
+       "code": "AL604(B)",
+       "name": "Information security & Management",
+       "credits": null
+      },
+      {
+       "code": "AL604(C)",
+       "name": "Intelligent Systems for Robotics",
+       "credits": null
+      },
+      {
+       "code": "AL605",
+       "name": "Departmental Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL606",
+       "name": "Open Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "AL608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VII Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (w.e.f. July, 2023) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTech%20CSE-AIML%20110723020925.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL701",
+       "name": "Computer Vision",
+       "credits": 4
+      },
+      {
+       "code": "AL702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL702(A)",
+       "name": "AI in Gaming",
+       "credits": null
+      },
+      {
+       "code": "AL702(B)",
+       "name": "Advanced Machine Learning",
+       "credits": null
+      },
+      {
+       "code": "AL702(C)",
+       "name": "Predictive Analytics",
+       "credits": null
+      },
+      {
+       "code": "AL702(D)",
+       "name": "Machine Learning for Data Science",
+       "credits": null
+      },
+      {
+       "code": "AL703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "AL703(A)",
+       "name": "Compiler Design",
+       "credits": null
+      },
+      {
+       "code": "AL703(B)",
+       "name": "Augmented and Virtual Reality",
+       "credits": null
+      },
+      {
+       "code": "AL703(C)",
+       "name": "Agile Software Development",
+       "credits": null
+      },
+      {
+       "code": "AL703(D)",
+       "name": "Internet and Web Technology",
+       "credits": null
+      },
+      {
+       "code": "AL704",
+       "name": "Departmental Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL705",
+       "name": "Skill Development Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "AL607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VIII Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (w.e.f. Jan, 2024) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/AIML%20VIII%20sem%20Scheme090124023321.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "AL801",
+       "name": "Business Intelligence",
+       "credits": 4
+      },
+      {
+       "code": "AL802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL802(A)",
+       "name": "Block Chain Technologies",
+       "credits": null
+      },
+      {
+       "code": "AL802(B)",
+       "name": "High Performance computing",
+       "credits": null
+      },
+      {
+       "code": "AL802(C)",
+       "name": "Big Data Analytics",
+       "credits": null
+      },
+      {
+       "code": "AL802(D)",
+       "name": "Quantum Computing",
+       "credits": null
+      },
+      {
+       "code": "AL803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "AL803(A)",
+       "name": "Introduction to IoT",
+       "credits": null
+      },
+      {
+       "code": "AL803(B)",
+       "name": "Bio informatics",
+       "credits": null
+      },
+      {
+       "code": "AL803(C)",
+       "name": "Managing Innovation and Entrepreneurship",
+       "credits": null
+      },
+      {
+       "code": "AL803(D)",
+       "name": "Human Computer Interaction",
+       "credits": null
+      },
+      {
+       "code": "AL804",
+       "name": "D/O elective lab",
+       "credits": 3
+      },
+      {
+       "code": "AL805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "CL": {
+   "name": "Artificial Intelligence and Machine Learning",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "3": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | III Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] | For batches admitted in July,2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTechAIML131022123605.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL301",
+       "name": "Technical Communication",
+       "credits": 4
+      },
+      {
+       "code": "AL302",
+       "name": "Introduction to Probability and Statistics",
+       "credits": 4
+      },
+      {
+       "code": "AL303",
+       "name": "Data Structures",
+       "credits": 4
+      },
+      {
+       "code": "AL304",
+       "name": "Artificial Intelligence",
+       "credits": 4
+      },
+      {
+       "code": "AL305",
+       "name": "Object Oriented Programming & Methodology",
+       "credits": 4
+      },
+      {
+       "code": "AL306",
+       "name": "Computer Workshop/ Introduction to python - I",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "Internship-II : 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | IV Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] | For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/AIML_IV_sem220422043332.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL401",
+       "name": "Introduction to Discrete Structure & Linear Algebra",
+       "credits": 4
+      },
+      {
+       "code": "AL402",
+       "name": "Analysis & Design of Algorithms",
+       "credits": 5
+      },
+      {
+       "code": "AL403",
+       "name": "Software Engineering",
+       "credits": 5
+      },
+      {
+       "code": "AL404",
+       "name": "Computer Organization & Architecture",
+       "credits": 4
+      },
+      {
+       "code": "AL405",
+       "name": "Machine Learning",
+       "credits": 4
+      },
+      {
+       "code": "AL406",
+       "name": "Java Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Internship II: 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | V Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (no 'w.e.f.' or batch line is printed on this page) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/B%20Tech%20V%20sem%20CSE-AIML%20scheme020223050944.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL501",
+       "name": "Operating Systems",
+       "credits": 4
+      },
+      {
+       "code": "AL502",
+       "name": "Database Management Systems",
+       "credits": 4
+      },
+      {
+       "code": "AL503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL503(A)",
+       "name": "Information Retrieval",
+       "credits": null
+      },
+      {
+       "code": "AL503(B)",
+       "name": "Deep Learning",
+       "credits": null
+      },
+      {
+       "code": "AL503(C)",
+       "name": "Optimization Techniques in Machine Learning",
+       "credits": null
+      },
+      {
+       "code": "AL504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "AL504(A)",
+       "name": "AI in Health Care",
+       "credits": null
+      },
+      {
+       "code": "AL504(B)",
+       "name": "Natural Language Processing",
+       "credits": null
+      },
+      {
+       "code": "AL504(C)",
+       "name": "Computational Intelligence",
+       "credits": null
+      },
+      {
+       "code": "AL505",
+       "name": "Departmental Elective Lab",
+       "credits": 2
+      },
+      {
+       "code": "AL506",
+       "name": "Open Elective Lab",
+       "credits": 2
+      },
+      {
+       "code": "AL507",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "AL508",
+       "name": "Minor Project-I",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VI Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (w.e.f. Jan, 2023) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/AIML%20VI%20sem%20scheme060123014425.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL601",
+       "name": "Theory of Computation",
+       "credits": 4
+      },
+      {
+       "code": "AL602",
+       "name": "Computer Networks",
+       "credits": 4
+      },
+      {
+       "code": "AL603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL603(A)",
+       "name": "Image and Video Processing",
+       "credits": null
+      },
+      {
+       "code": "AL603(B)",
+       "name": "Data and Visual Analytics",
+       "credits": null
+      },
+      {
+       "code": "AL603(C)",
+       "name": "Pattern Recognition",
+       "credits": null
+      },
+      {
+       "code": "AL604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL604(A)",
+       "name": "Cloud Computing",
+       "credits": null
+      },
+      {
+       "code": "AL604(B)",
+       "name": "Information security & Management",
+       "credits": null
+      },
+      {
+       "code": "AL604(C)",
+       "name": "Intelligent Systems for Robotics",
+       "credits": null
+      },
+      {
+       "code": "AL605",
+       "name": "Departmental Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL606",
+       "name": "Open Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "AL608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VII Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (w.e.f. July, 2023) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTech%20CSE-AIML%20110723020925.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "AL701",
+       "name": "Computer Vision",
+       "credits": 4
+      },
+      {
+       "code": "AL702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL702(A)",
+       "name": "AI in Gaming",
+       "credits": null
+      },
+      {
+       "code": "AL702(B)",
+       "name": "Advanced Machine Learning",
+       "credits": null
+      },
+      {
+       "code": "AL702(C)",
+       "name": "Predictive Analytics",
+       "credits": null
+      },
+      {
+       "code": "AL702(D)",
+       "name": "Machine Learning for Data Science",
+       "credits": null
+      },
+      {
+       "code": "AL703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "AL703(A)",
+       "name": "Compiler Design",
+       "credits": null
+      },
+      {
+       "code": "AL703(B)",
+       "name": "Augmented and Virtual Reality",
+       "credits": null
+      },
+      {
+       "code": "AL703(C)",
+       "name": "Agile Software Development",
+       "credits": null
+      },
+      {
+       "code": "AL703(D)",
+       "name": "Internet and Web Technology",
+       "credits": null
+      },
+      {
+       "code": "AL704",
+       "name": "Departmental Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL705",
+       "name": "Skill Development Lab",
+       "credits": 3
+      },
+      {
+       "code": "AL706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "AL607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VIII Semester Bachelor of Technology (B.Tech.) [CSE-Artificial Intelligence and Machine Learning/ Artificial Intelligence and Machine Learning] (w.e.f. Jan, 2024) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/AIML%20VIII%20sem%20Scheme090124023321.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "AL801",
+       "name": "Business Intelligence",
+       "credits": 4
+      },
+      {
+       "code": "AL802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "AL802(A)",
+       "name": "Block Chain Technologies",
+       "credits": null
+      },
+      {
+       "code": "AL802(B)",
+       "name": "High Performance computing",
+       "credits": null
+      },
+      {
+       "code": "AL802(C)",
+       "name": "Big Data Analytics",
+       "credits": null
+      },
+      {
+       "code": "AL802(D)",
+       "name": "Quantum Computing",
+       "credits": null
+      },
+      {
+       "code": "AL803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "AL803(A)",
+       "name": "Introduction to IoT",
+       "credits": null
+      },
+      {
+       "code": "AL803(B)",
+       "name": "Bio informatics",
+       "credits": null
+      },
+      {
+       "code": "AL803(C)",
+       "name": "Managing Innovation and Entrepreneurship",
+       "credits": null
+      },
+      {
+       "code": "AL803(D)",
+       "name": "Human Computer Interaction",
+       "credits": null
+      },
+      {
+       "code": "AL804",
+       "name": "D/O elective lab",
+       "credits": 3
+      },
+      {
+       "code": "AL805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "DS": {
+   "name": "Data Science",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "3": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | III Semester Bachelor of Technology (B.Tech.) [CSE- Data Science/Data Science] | For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTechDataScience131022123735.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD301",
+       "name": "Technical Communication",
+       "credits": 4
+      },
+      {
+       "code": "CD302",
+       "name": "Introduction to Probability and Statistics",
+       "credits": 4
+      },
+      {
+       "code": "CD303",
+       "name": "Data Structures",
+       "credits": 4
+      },
+      {
+       "code": "CD304",
+       "name": "Database Management Systems",
+       "credits": 4
+      },
+      {
+       "code": "CD305",
+       "name": "Object Oriented Programming & Methodology",
+       "credits": 4
+      },
+      {
+       "code": "CD306",
+       "name": "Computer Workshop/ Introduction to python - I",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "Internship–II: 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | IV Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] | For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/IV_sem_BTech_Data_Science_Scheme220422044411.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD401",
+       "name": "Introduction to Discrete Structure & Linear Algebra",
+       "credits": 4
+      },
+      {
+       "code": "CD402",
+       "name": "Analysis & Design of Algorithms",
+       "credits": 5
+      },
+      {
+       "code": "CD403",
+       "name": "Software Engineering",
+       "credits": 5
+      },
+      {
+       "code": "CD404",
+       "name": "Introduction to Data Science",
+       "credits": 4
+      },
+      {
+       "code": "CD405",
+       "name": "Operating Systems",
+       "credits": 4
+      },
+      {
+       "code": "CD406",
+       "name": "Python for Data Science",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Internship II: 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | V Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (no 'w.e.f.' or batch line is printed on this page) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTechCSEDS131022010823.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD501",
+       "name": "Theory of Computation",
+       "credits": 4
+      },
+      {
+       "code": "CD502",
+       "name": "Machine Learning",
+       "credits": 4
+      },
+      {
+       "code": "CD503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD503(A)",
+       "name": "Data Mining & Warehousing",
+       "credits": null
+      },
+      {
+       "code": "CD503(B)",
+       "name": "Pattern Recognition",
+       "credits": null
+      },
+      {
+       "code": "CD503(C)",
+       "name": "Introduction to Toolkits for Data Science",
+       "credits": null
+      },
+      {
+       "code": "CD504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CD504(A)",
+       "name": "Computer Graphics & Visualization",
+       "credits": null
+      },
+      {
+       "code": "CD504(B)",
+       "name": "Data Compression",
+       "credits": null
+      },
+      {
+       "code": "CD504(C)",
+       "name": "Computer Organization & Architecture",
+       "credits": null
+      },
+      {
+       "code": "CD505",
+       "name": "Departmental ElectiveLab",
+       "credits": 2
+      },
+      {
+       "code": "CD506",
+       "name": "Open Elective Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "CD508",
+       "name": "Minor Project- I",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VI Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (w.e.f. Jan, 2023) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/Data%20Science%20VI%20sem%20scheme060123015516.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD601",
+       "name": "Deep Learning",
+       "credits": 4
+      },
+      {
+       "code": "CD602",
+       "name": "Computer Networks",
+       "credits": 4
+      },
+      {
+       "code": "CD603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD603(A)",
+       "name": "Big Data Analytics",
+       "credits": null
+      },
+      {
+       "code": "CD603(B)",
+       "name": "Data Acquisition",
+       "credits": null
+      },
+      {
+       "code": "CD603(C)",
+       "name": "Advanced Database Management Systems",
+       "credits": null
+      },
+      {
+       "code": "CD604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD604(A)",
+       "name": "Information Extraction and Retrieval",
+       "credits": null
+      },
+      {
+       "code": "CD604(B)",
+       "name": "Agile Software Development",
+       "credits": null
+      },
+      {
+       "code": "CD604(C)",
+       "name": "Natural Language Processing",
+       "credits": null
+      },
+      {
+       "code": "CD605",
+       "name": "DE Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD606",
+       "name": "OE Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "CD608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | VII Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (w.e.f. July, 2023 | https://www.rgpv.ac.in/CDN/PubContent/Scheme/CSE-Data%20Science110723021159.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD701",
+       "name": "Data Engineering",
+       "credits": 4
+      },
+      {
+       "code": "CD702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD702(A)",
+       "name": "Data Analytics & Visualization",
+       "credits": null
+      },
+      {
+       "code": "CD702(B)",
+       "name": "Wireless and Mobile Computing",
+       "credits": null
+      },
+      {
+       "code": "CD702(C)",
+       "name": "Cloud Computing",
+       "credits": null
+      },
+      {
+       "code": "CD702(D)",
+       "name": "Advanced statistics for DataScience",
+       "credits": null
+      },
+      {
+       "code": "CD703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CD703(A)",
+       "name": "Cryptography & Information Security",
+       "credits": null
+      },
+      {
+       "code": "CD703(B)",
+       "name": "Intelligent Systems for Robotics",
+       "credits": null
+      },
+      {
+       "code": "CD703(C)",
+       "name": "Computer Vision",
+       "credits": null
+      },
+      {
+       "code": "CD703(D)",
+       "name": "Data Mining and Warehousing",
+       "credits": null
+      },
+      {
+       "code": "CD704",
+       "name": "Departmental Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD705",
+       "name": "Open Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "CD607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | VIII Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (w.e.f. Jan, 2024 | https://www.rgpv.ac.in/CDN/PubContent/Scheme/CSE-Data%20Science%20Scheme090124024121.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "CD801",
+       "name": "Compiler Design",
+       "credits": 4
+      },
+      {
+       "code": "CD802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD802(A)",
+       "name": "Reinforcement Learning",
+       "credits": null
+      },
+      {
+       "code": "CD802(B)",
+       "name": "Project Management",
+       "credits": null
+      },
+      {
+       "code": "CD802(C)",
+       "name": "Computational Statistics",
+       "credits": null
+      },
+      {
+       "code": "CD802(D)",
+       "name": "Machine Learning for Data Science",
+       "credits": null
+      },
+      {
+       "code": "CD803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CD803(A)",
+       "name": "Block Chain Technologies",
+       "credits": null
+      },
+      {
+       "code": "CD803(B)",
+       "name": "Time-Series Analysis",
+       "credits": null
+      },
+      {
+       "code": "CD803(C)",
+       "name": "Internet of Things",
+       "credits": null
+      },
+      {
+       "code": "CD803(D)",
+       "name": "Quantum Computing",
+       "credits": null
+      },
+      {
+       "code": "CD804",
+       "name": "Skill Development lab",
+       "credits": 3
+      },
+      {
+       "code": "CD805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "CD": {
+   "name": "CSE (Data Science)",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "3": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | III Semester Bachelor of Technology (B.Tech.) [CSE- Data Science/Data Science] | For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTechDataScience131022123735.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD301",
+       "name": "Technical Communication",
+       "credits": 4
+      },
+      {
+       "code": "CD302",
+       "name": "Introduction to Probability and Statistics",
+       "credits": 4
+      },
+      {
+       "code": "CD303",
+       "name": "Data Structures",
+       "credits": 4
+      },
+      {
+       "code": "CD304",
+       "name": "Database Management Systems",
+       "credits": 4
+      },
+      {
+       "code": "CD305",
+       "name": "Object Oriented Programming & Methodology",
+       "credits": 4
+      },
+      {
+       "code": "CD306",
+       "name": "Computer Workshop/ Introduction to python - I",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "Internship–II: 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | IV Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] | For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/IV_sem_BTech_Data_Science_Scheme220422044411.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD401",
+       "name": "Introduction to Discrete Structure & Linear Algebra",
+       "credits": 4
+      },
+      {
+       "code": "CD402",
+       "name": "Analysis & Design of Algorithms",
+       "credits": 5
+      },
+      {
+       "code": "CD403",
+       "name": "Software Engineering",
+       "credits": 5
+      },
+      {
+       "code": "CD404",
+       "name": "Introduction to Data Science",
+       "credits": 4
+      },
+      {
+       "code": "CD405",
+       "name": "Operating Systems",
+       "credits": 4
+      },
+      {
+       "code": "CD406",
+       "name": "Python for Data Science",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Internship II: 90 hrs Internship based on using various softwares",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | V Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (no 'w.e.f.' or batch line is printed on this page) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTechCSEDS131022010823.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD501",
+       "name": "Theory of Computation",
+       "credits": 4
+      },
+      {
+       "code": "CD502",
+       "name": "Machine Learning",
+       "credits": 4
+      },
+      {
+       "code": "CD503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD503(A)",
+       "name": "Data Mining & Warehousing",
+       "credits": null
+      },
+      {
+       "code": "CD503(B)",
+       "name": "Pattern Recognition",
+       "credits": null
+      },
+      {
+       "code": "CD503(C)",
+       "name": "Introduction to Toolkits for Data Science",
+       "credits": null
+      },
+      {
+       "code": "CD504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CD504(A)",
+       "name": "Computer Graphics & Visualization",
+       "credits": null
+      },
+      {
+       "code": "CD504(B)",
+       "name": "Data Compression",
+       "credits": null
+      },
+      {
+       "code": "CD504(C)",
+       "name": "Computer Organization & Architecture",
+       "credits": null
+      },
+      {
+       "code": "CD505",
+       "name": "Departmental ElectiveLab",
+       "credits": 2
+      },
+      {
+       "code": "CD506",
+       "name": "Open Elective Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "CD508",
+       "name": "Minor Project- I",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "Scheme of Examination as per AICTE Flexible Curricula | VI Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (w.e.f. Jan, 2023) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/Data%20Science%20VI%20sem%20scheme060123015516.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD601",
+       "name": "Deep Learning",
+       "credits": 4
+      },
+      {
+       "code": "CD602",
+       "name": "Computer Networks",
+       "credits": 4
+      },
+      {
+       "code": "CD603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD603(A)",
+       "name": "Big Data Analytics",
+       "credits": null
+      },
+      {
+       "code": "CD603(B)",
+       "name": "Data Acquisition",
+       "credits": null
+      },
+      {
+       "code": "CD603(C)",
+       "name": "Advanced Database Management Systems",
+       "credits": null
+      },
+      {
+       "code": "CD604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD604(A)",
+       "name": "Information Extraction and Retrieval",
+       "credits": null
+      },
+      {
+       "code": "CD604(B)",
+       "name": "Agile Software Development",
+       "credits": null
+      },
+      {
+       "code": "CD604(C)",
+       "name": "Natural Language Processing",
+       "credits": null
+      },
+      {
+       "code": "CD605",
+       "name": "DE Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD606",
+       "name": "OE Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "CD608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | VII Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (w.e.f. July, 2023 | https://www.rgpv.ac.in/CDN/PubContent/Scheme/CSE-Data%20Science110723021159.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CD701",
+       "name": "Data Engineering",
+       "credits": 4
+      },
+      {
+       "code": "CD702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD702(A)",
+       "name": "Data Analytics & Visualization",
+       "credits": null
+      },
+      {
+       "code": "CD702(B)",
+       "name": "Wireless and Mobile Computing",
+       "credits": null
+      },
+      {
+       "code": "CD702(C)",
+       "name": "Cloud Computing",
+       "credits": null
+      },
+      {
+       "code": "CD702(D)",
+       "name": "Advanced statistics for DataScience",
+       "credits": null
+      },
+      {
+       "code": "CD703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CD703(A)",
+       "name": "Cryptography & Information Security",
+       "credits": null
+      },
+      {
+       "code": "CD703(B)",
+       "name": "Intelligent Systems for Robotics",
+       "credits": null
+      },
+      {
+       "code": "CD703(C)",
+       "name": "Computer Vision",
+       "credits": null
+      },
+      {
+       "code": "CD703(D)",
+       "name": "Data Mining and Warehousing",
+       "credits": null
+      },
+      {
+       "code": "CD704",
+       "name": "Departmental Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD705",
+       "name": "Open Elective Lab",
+       "credits": 3
+      },
+      {
+       "code": "CD706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "CD607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "New Scheme of Examination as per AICTE Flexible Curricula | VIII Semester Bachelor of Technology (B.Tech.) [CSE - Data Science/Data Science] (w.e.f. Jan, 2024 | https://www.rgpv.ac.in/CDN/PubContent/Scheme/CSE-Data%20Science%20Scheme090124024121.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "CD801",
+       "name": "Compiler Design",
+       "credits": 4
+      },
+      {
+       "code": "CD802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CD802(A)",
+       "name": "Reinforcement Learning",
+       "credits": null
+      },
+      {
+       "code": "CD802(B)",
+       "name": "Project Management",
+       "credits": null
+      },
+      {
+       "code": "CD802(C)",
+       "name": "Computational Statistics",
+       "credits": null
+      },
+      {
+       "code": "CD802(D)",
+       "name": "Machine Learning for Data Science",
+       "credits": null
+      },
+      {
+       "code": "CD803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CD803(A)",
+       "name": "Block Chain Technologies",
+       "credits": null
+      },
+      {
+       "code": "CD803(B)",
+       "name": "Time-Series Analysis",
+       "credits": null
+      },
+      {
+       "code": "CD803(C)",
+       "name": "Internet of Things",
+       "credits": null
+      },
+      {
+       "code": "CD803(D)",
+       "name": "Quantum Computing",
+       "credits": null
+      },
+      {
+       "code": "CD804",
+       "name": "Skill Development lab",
+       "credits": 3
+      },
+      {
+       "code": "CD805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "EC": {
+   "name": "Electronics & Communication Engineering",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "3": {
+     "source": "III Semester Bachelor of Technology (B.Tech.) [Electronics & Communication Engineering] For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/ECE131022124057.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "BT301",
+       "name": "Mathematics-III",
+       "credits": 4
+      },
+      {
+       "code": "EC302",
+       "name": "Electronic Measurement & Instrumentation",
+       "credits": 4
+      },
+      {
+       "code": "EC303",
+       "name": "Digital System Design",
+       "credits": 4
+      },
+      {
+       "code": "EC304",
+       "name": "Electronic Devices",
+       "credits": 4
+      },
+      {
+       "code": "EC305",
+       "name": "Network Analysis",
+       "credits": 4
+      },
+      {
+       "code": "EC306",
+       "name": "EMI Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "IV Semester Bachelor of Technology (B.Tech.) [Electronics & Communication Engineering] For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTech_EC_IV_Sem220422043723.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ES401",
+       "name": "Energy & Environmental Engineering",
+       "credits": 4
+      },
+      {
+       "code": "EC402",
+       "name": "Signals & Systems",
+       "credits": 4
+      },
+      {
+       "code": "EC403",
+       "name": "Analog Communication",
+       "credits": 5
+      },
+      {
+       "code": "EC404",
+       "name": "Control System",
+       "credits": 5
+      },
+      {
+       "code": "EC405",
+       "name": "Analog Circuits",
+       "credits": 4
+      },
+      {
+       "code": "EC406",
+       "name": "Simulation Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "V Semester Bachelor of Technology (B.Tech.) Electronics & Communication Engg. (w.e.f. July, 2019) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/EC131022010307.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "EC501",
+       "name": "Microprocessor & its Application",
+       "credits": 4
+      },
+      {
+       "code": "EC502",
+       "name": "Digital Communication",
+       "credits": 4
+      },
+      {
+       "code": "EC503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "EC503(A)",
+       "name": "CNTl",
+       "credits": null
+      },
+      {
+       "code": "EC503(B)",
+       "name": "Mobile Communication",
+       "credits": null
+      },
+      {
+       "code": "EC503(C)",
+       "name": "Advanced Control system",
+       "credits": null
+      },
+      {
+       "code": "EC504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "EC504(A)",
+       "name": "EMT (Electro Magnetic (Theory)",
+       "credits": null
+      },
+      {
+       "code": "EC504(B)",
+       "name": "Computer System Organisation",
+       "credits": null
+      },
+      {
+       "code": "EC504(C)",
+       "name": "Process Control Instrumentation",
+       "credits": null
+      },
+      {
+       "code": "EC505",
+       "name": "CNTL Lab",
+       "credits": 2
+      },
+      {
+       "code": "EC506",
+       "name": "Matlab Programming",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "EC508",
+       "name": "Minor Project 1",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "VI Semester Bachelor of Technology (B.Tech.) Electronics & Communication Engg. (w.e.f. Jan, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VI%20Sem%20EC161219110646.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "EC601",
+       "name": "Digital Signal Processing",
+       "credits": 4
+      },
+      {
+       "code": "EC602",
+       "name": "Antenna & Wave propagation",
+       "credits": 4
+      },
+      {
+       "code": "EC603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "EC603(A)",
+       "name": "Data Communication",
+       "credits": null
+      },
+      {
+       "code": "EC603(B)",
+       "name": "CMOS Design",
+       "credits": null
+      },
+      {
+       "code": "EC603(C)",
+       "name": "Satellite Communication",
+       "credits": null
+      },
+      {
+       "code": "EC604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "EC604(A)",
+       "name": "Microcontroller & Embedded system",
+       "credits": null
+      },
+      {
+       "code": "EC604(B)",
+       "name": "Bio-medical Electronics",
+       "credits": null
+      },
+      {
+       "code": "EC604(C)",
+       "name": "Power Electronics",
+       "credits": null
+      },
+      {
+       "code": "EC605",
+       "name": "Data Communication Lab",
+       "credits": 3
+      },
+      {
+       "code": "EC606",
+       "name": "Microcontroller & Embedded system",
+       "credits": 3
+      },
+      {
+       "code": "EC607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "EC608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "VII Semester Bachelor of Technology (B.Tech.) [Electronics & Communication Engg.] (w.e.f. July, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VII_EC290121043500.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "EC701",
+       "name": "VLSI Design",
+       "credits": 4
+      },
+      {
+       "code": "EC702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "EC702(A)",
+       "name": "Microwave Engg.",
+       "credits": null
+      },
+      {
+       "code": "EC702(B)",
+       "name": "Information Theory & Coding",
+       "credits": null
+      },
+      {
+       "code": "EC702(C)",
+       "name": "Nano Electronics",
+       "credits": null
+      },
+      {
+       "code": "EC703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "EC703(A)",
+       "name": "Cellular Mobile Communication",
+       "credits": null
+      },
+      {
+       "code": "EC703(B)",
+       "name": "Internet of Things",
+       "credits": null
+      },
+      {
+       "code": "EC703(C)",
+       "name": "Probability Theory & Stochastic Processor",
+       "credits": null
+      },
+      {
+       "code": "EC704",
+       "name": "Microwave Lab",
+       "credits": 3
+      },
+      {
+       "code": "EC705",
+       "name": "I.O.T. Lab",
+       "credits": 3
+      },
+      {
+       "code": "EC706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "EC607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "VIII Semester Bachelor of Technology (B.Tech.)[Electronics & Communication Engg.] (w.e.f. Jan, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VIII_EC290121010128.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "EC801",
+       "name": "Optical Fibre Communication",
+       "credits": 4
+      },
+      {
+       "code": "EC802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "EC802(A)",
+       "name": "AI & Signal Processing",
+       "credits": null
+      },
+      {
+       "code": "EC802(B)",
+       "name": "Wireless Communication",
+       "credits": null
+      },
+      {
+       "code": "EC802(C)",
+       "name": "5G Technology",
+       "credits": null
+      },
+      {
+       "code": "EC803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "EC803(A)",
+       "name": "Wireless Network",
+       "credits": null
+      },
+      {
+       "code": "EC803(B)",
+       "name": "Digital Image Processing",
+       "credits": null
+      },
+      {
+       "code": "EC803(C)",
+       "name": "Speech Processing",
+       "credits": null
+      },
+      {
+       "code": "EC804",
+       "name": "Advanced Communication Engg. Lab",
+       "credits": 3
+      },
+      {
+       "code": "EC805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "ME": {
+   "name": "Mechanical Engineering",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "3": {
+     "source": "III Semester Bachelor of Technology (B.Tech.) [Mechanical Engineering] For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/ME131022123203.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "BT301",
+       "name": "Mathematics-III",
+       "credits": 4
+      },
+      {
+       "code": "ME302",
+       "name": "Thermodynamics",
+       "credits": 4
+      },
+      {
+       "code": "ME303",
+       "name": "Materials Technology",
+       "credits": 4
+      },
+      {
+       "code": "ME304",
+       "name": "Strength of Material",
+       "credits": 4
+      },
+      {
+       "code": "ME305",
+       "name": "Manufacturing Process",
+       "credits": 4
+      },
+      {
+       "code": "ME306",
+       "name": "Thermal Engg Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I Year Level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "IV Semester Bachelor of Technology (B.Tech.) [Mechanical Engineering] For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTech_ME_IV_Sem220422044101.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ES401",
+       "name": "Energy & Environmental Engineering",
+       "credits": 4
+      },
+      {
+       "code": "ME402",
+       "name": "INSTRUMENTATION & CONTROL",
+       "credits": 4
+      },
+      {
+       "code": "ME403",
+       "name": "THEORY OF MACHINES",
+       "credits": 5
+      },
+      {
+       "code": "ME404",
+       "name": "FLUID MECHANICS",
+       "credits": 5
+      },
+      {
+       "code": "ME405",
+       "name": "MANUFACTURING TECHNOLOGY",
+       "credits": 4
+      },
+      {
+       "code": "ME406",
+       "name": "SOFTWARE LAB",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "V Semester Bachelor of Technology (B.Tech.) Mechanical Engineering (w.e.f. July, 2019) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/ME131022010554.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ME501",
+       "name": "I C Engines",
+       "credits": 4
+      },
+      {
+       "code": "ME502",
+       "name": "Mechanical Vibration",
+       "credits": 4
+      },
+      {
+       "code": "ME503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "ME503(A)",
+       "name": "Mechatronics",
+       "credits": null
+      },
+      {
+       "code": "ME503(B)",
+       "name": "Dynamics of Machine",
+       "credits": null
+      },
+      {
+       "code": "ME503(C)",
+       "name": "Alternate Automotive Fuels & Emissions",
+       "credits": null
+      },
+      {
+       "code": "ME504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "ME504(A)",
+       "name": "Industrial Engineering & Ergonomics",
+       "credits": null
+      },
+      {
+       "code": "ME504(B)",
+       "name": "TQM and SQC",
+       "credits": null
+      },
+      {
+       "code": "ME504(C)",
+       "name": "Finite Element Method",
+       "credits": null
+      },
+      {
+       "code": "ME505",
+       "name": "FEM/CFD Lab",
+       "credits": 2
+      },
+      {
+       "code": "ME506",
+       "name": "Python",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "ME508",
+       "name": "Minor Project 1",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "VI Semester Bachelor of Technology (B.Tech.) Mechanical Engineering (w.e.f. Jan, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VI%20Sem%20ME161219111051.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ME601",
+       "name": "Thermal Engineering and Gas Dynamics",
+       "credits": 4
+      },
+      {
+       "code": "ME602",
+       "name": "Machine Component Design",
+       "credits": 4
+      },
+      {
+       "code": "ME603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "ME603(A)",
+       "name": "Turbo Machinery",
+       "credits": null
+      },
+      {
+       "code": "ME603(B)",
+       "name": "Computer Aided Engineering",
+       "credits": null
+      },
+      {
+       "code": "ME603(C)",
+       "name": "Product Design",
+       "credits": null
+      },
+      {
+       "code": "ME604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "ME604(A)",
+       "name": "Robotics",
+       "credits": null
+      },
+      {
+       "code": "ME604(B)",
+       "name": "Optimization Techniques",
+       "credits": null
+      },
+      {
+       "code": "ME604(C)",
+       "name": "Renewable Energy Technology",
+       "credits": null
+      },
+      {
+       "code": "ME605",
+       "name": "CAD Lab",
+       "credits": 3
+      },
+      {
+       "code": "ME606",
+       "name": "RDBMS",
+       "credits": 3
+      },
+      {
+       "code": "ME607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "ME608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "VII Semester Bachelor of Technology (B.Tech.) [Mechanical Engineering] (w.e.f. July, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VII_ME290121043954.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ME701",
+       "name": "Heat and Mass Transfer",
+       "credits": 4
+      },
+      {
+       "code": "ME702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "ME702(A)",
+       "name": "Advance Machining Processes",
+       "credits": null
+      },
+      {
+       "code": "ME702(B)",
+       "name": "Internet of Things (IOT)",
+       "credits": null
+      },
+      {
+       "code": "ME702(C)",
+       "name": "Power Plant Engineering",
+       "credits": null
+      },
+      {
+       "code": "ME702(D)",
+       "name": "Advance Machine Design",
+       "credits": null
+      },
+      {
+       "code": "ME703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "ME703(A)",
+       "name": "Operation Research and Supply Chain",
+       "credits": null
+      },
+      {
+       "code": "ME703(B)",
+       "name": "Artificial Intelligence Techniques",
+       "credits": null
+      },
+      {
+       "code": "ME703(C)",
+       "name": "Systems Engineering",
+       "credits": null
+      },
+      {
+       "code": "ME703(D)",
+       "name": "Reliability Engineering",
+       "credits": null
+      },
+      {
+       "code": "ME704",
+       "name": "CAD/CAM/CIM",
+       "credits": 3
+      },
+      {
+       "code": "ME705",
+       "name": "MATLAB and R Programming",
+       "credits": 3
+      },
+      {
+       "code": "ME706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "ME607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "VIII Semester Bachelor of Technology (B.Tech.) [Mechanical Engineering] (w.e.f. Jan, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VIII_ME290121010759.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "ME801",
+       "name": "Refrigeration &Air Conditioning",
+       "credits": 4
+      },
+      {
+       "code": "ME802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "ME802(A)",
+       "name": "Automobile Engineering",
+       "credits": null
+      },
+      {
+       "code": "ME802(B)",
+       "name": "Tribology & Maintenance Engineering",
+       "credits": null
+      },
+      {
+       "code": "ME802(C)",
+       "name": "Machine Tool Design",
+       "credits": null
+      },
+      {
+       "code": "ME802(D)",
+       "name": "Production Planning and Control",
+       "credits": null
+      },
+      {
+       "code": "ME803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "ME803(A)",
+       "name": "Data analytics",
+       "credits": null
+      },
+      {
+       "code": "ME803(B)",
+       "name": "Energy Conservation, Management& Audit",
+       "credits": null
+      },
+      {
+       "code": "ME803(C)",
+       "name": "Entrepreneurship and Management Concepts",
+       "credits": null
+      },
+      {
+       "code": "ME803(D)",
+       "name": "Management Information System",
+       "credits": null
+      },
+      {
+       "code": "ME804",
+       "name": "Simulation and Modeling",
+       "credits": 3
+      },
+      {
+       "code": "ME805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  },
+  "CE": {
+   "name": "Civil Engineering",
+   "semesters": {
+    "1": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT201",
+       "name": "Engineering Physics",
+       "credits": 4
+      },
+      {
+       "code": "BT102",
+       "name": "Mathematics-I",
+       "credits": 4
+      },
+      {
+       "code": "BT203",
+       "name": "Basic Mechanical Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT204",
+       "name": "Basic Civil Engineering & Mechanics",
+       "credits": 4
+      },
+      {
+       "code": "BT205",
+       "name": "Basic Computer Engineering",
+       "credits": 4
+      },
+      {
+       "code": "BT206",
+       "name": "Language Lab & Seminars",
+       "credits": 1
+      },
+      {
+       "code": "BT107",
+       "name": "Internship-I (60 Hrs Duration)",
+       "credits": null
+      }
+     ]
+    },
+    "2": {
+     "source": "RGPV New Scheme of Examination as per AICTE Flexible Curricula, B.Tech first year, W.E.F. JULY 2022 (file: Sch BTech Common To all AB Group for 2022 Admitted); Group B",
+     "totalCredits": 21,
+     "subjects": [
+      {
+       "code": "BT101",
+       "name": "Engineering Chemistry",
+       "credits": 4
+      },
+      {
+       "code": "BT202",
+       "name": "Mathematics-II",
+       "credits": 4
+      },
+      {
+       "code": "BT103",
+       "name": "English for Communication",
+       "credits": 4
+      },
+      {
+       "code": "BT104",
+       "name": "Basic Electrical & Electronics Engineering",
+       "credits": 3
+      },
+      {
+       "code": "BT105",
+       "name": "Engineering Graphics",
+       "credits": 3
+      },
+      {
+       "code": "BT106",
+       "name": "Manufacturing Practices",
+       "credits": 1
+      },
+      {
+       "code": "BT108",
+       "name": "Swachh Bharat Summer Internship / Unnat Bharat Abhiyan (100 Hrs) / Rural Outreach",
+       "credits": 2
+      }
+     ]
+    },
+    "3": {
+     "source": "III Semester Bachelor of Technology (B.Tech.) [Civil Engineering] For batches admitted in July, 2020 (w.e.f. July, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/Civil_Engineering131022120419.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "BT301",
+       "name": "Mathematics-III",
+       "credits": 4
+      },
+      {
+       "code": "CE302",
+       "name": "Construction Materials",
+       "credits": 4
+      },
+      {
+       "code": "CE303",
+       "name": "Surveying",
+       "credits": 4
+      },
+      {
+       "code": "CE304",
+       "name": "Building Planning & Architecture",
+       "credits": 4
+      },
+      {
+       "code": "CE305",
+       "name": "Strength of Materials",
+       "credits": 4
+      },
+      {
+       "code": "CE306",
+       "name": "Study of Historical & Ancient Civil Engineering Practices",
+       "credits": 2
+      },
+      {
+       "code": "BT107",
+       "name": "Evaluation of Internship-I completed at I year level",
+       "credits": 2
+      },
+      {
+       "code": "BT307",
+       "name": "90 hrs Internship based on using various softwares –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT308",
+       "name": "Indian Constitution",
+       "credits": null
+      },
+      {
+       "code": "NC301",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "4": {
+     "source": "IV Semester Bachelor of Technology (B.Tech.) [Civil Engineering] For batches admitted in July, 2020 (w.e.f. Jan, 2022) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/BTech_CE_IV_Sem220422043528.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "ES401",
+       "name": "Energy & Environmental Engineering",
+       "credits": 4
+      },
+      {
+       "code": "CE402",
+       "name": "Construction Technology",
+       "credits": 4
+      },
+      {
+       "code": "CE403",
+       "name": "Structural Analysis-I",
+       "credits": 5
+      },
+      {
+       "code": "CE404",
+       "name": "Transportation Engineering-I",
+       "credits": 5
+      },
+      {
+       "code": "CE405",
+       "name": "Engineering Geology & Remote Sensing",
+       "credits": 4
+      },
+      {
+       "code": "CE406",
+       "name": "Software Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "90 hrs Internship based on using various software’s –Internship -II",
+       "credits": null
+      },
+      {
+       "code": "BT408",
+       "name": "Cyber Security",
+       "credits": null
+      },
+      {
+       "code": "BT409I",
+       "name": "Indian Knowledge System",
+       "credits": null
+      },
+      {
+       "code": "NC001",
+       "name": "NSS/NCC",
+       "credits": null
+      }
+     ]
+    },
+    "5": {
+     "source": "V Semester Bachelor of Technology (B.Tech) Civil Engineering (w.e.f. July, 2019) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/CE131022010131.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CE501",
+       "name": "Fluid Mechanics I",
+       "credits": 4
+      },
+      {
+       "code": "CE502",
+       "name": "Transportation Engg II",
+       "credits": 4
+      },
+      {
+       "code": "CE503",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CE503(A)",
+       "name": "Structural Analysis-II",
+       "credits": null
+      },
+      {
+       "code": "CE503(B)",
+       "name": "Construction planning and management",
+       "credits": null
+      },
+      {
+       "code": "CE503(C)",
+       "name": "Quantity surveying & Costing",
+       "credits": null
+      },
+      {
+       "code": "CE503(D)",
+       "name": "Marine Construction",
+       "credits": null
+      },
+      {
+       "code": "CE504",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CE504(A)",
+       "name": "Urban and town planning",
+       "credits": null
+      },
+      {
+       "code": "CE504(B)",
+       "name": "Remote Sensing and GIS",
+       "credits": null
+      },
+      {
+       "code": "CE504(C)",
+       "name": "Renewable energy resources",
+       "credits": null
+      },
+      {
+       "code": "CE504(D)",
+       "name": "Entrepreneurship development and management",
+       "credits": null
+      },
+      {
+       "code": "CE505",
+       "name": "Quantity surveying & Costing",
+       "credits": 2
+      },
+      {
+       "code": "CE506",
+       "name": "Material Testing Lab",
+       "credits": 2
+      },
+      {
+       "code": "BT407",
+       "name": "Evaluation of Internship-II",
+       "credits": 3
+      },
+      {
+       "code": "CE508",
+       "name": "Field Visit, Case Study and Seminar",
+       "credits": 2
+      }
+     ]
+    },
+    "6": {
+     "source": "VI Semester Bachelor of Technology (B.Tech.) Civil Engineering (w.e.f. Jan, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VI%20Sem%20CE161219110600.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CE601",
+       "name": "Structural Design and Drawing (RCC-I)",
+       "credits": 4
+      },
+      {
+       "code": "CE602",
+       "name": "Environmental Engineering I",
+       "credits": 4
+      },
+      {
+       "code": "CE603",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CE603(A)",
+       "name": "Water resources engineering",
+       "credits": null
+      },
+      {
+       "code": "CE603(B)",
+       "name": "Precast and modular construction",
+       "credits": null
+      },
+      {
+       "code": "CE603(C)",
+       "name": "Advance pavement design",
+       "credits": null
+      },
+      {
+       "code": "CE603(D)",
+       "name": "Cost effective and Eco-friendly structures",
+       "credits": null
+      },
+      {
+       "code": "CE604",
+       "name": "Open Elective",
+       "credits": 4
+      },
+      {
+       "code": "CE604(A)",
+       "name": "Fluid Mechanics II",
+       "credits": null
+      },
+      {
+       "code": "CE604(B)",
+       "name": "Intellectual Property rights(IPR)",
+       "credits": null
+      },
+      {
+       "code": "CE604(C)",
+       "name": "Environmental Impact Assessment",
+       "credits": null
+      },
+      {
+       "code": "CE604(D)",
+       "name": "Operation Research",
+       "credits": null
+      },
+      {
+       "code": "CE605",
+       "name": "Advance surveying lab",
+       "credits": 3
+      },
+      {
+       "code": "CE606",
+       "name": "Non Destructive Testing Lab",
+       "credits": 3
+      },
+      {
+       "code": "CE607",
+       "name": "Internship-III",
+       "credits": null
+      },
+      {
+       "code": "CE608",
+       "name": "Minor Project II",
+       "credits": 2
+      }
+     ]
+    },
+    "7": {
+     "source": "VII Semester Bachelor of Technology (B.Tech.) [Civil Engineering] (w.e.f. July, 2020) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VII_CE290121043212.pdf",
+     "totalCredits": 24,
+     "subjects": [
+      {
+       "code": "CE701",
+       "name": "Geotechnical Engg",
+       "credits": 4
+      },
+      {
+       "code": "CE702",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CE702(A)",
+       "name": "Prestressed Concrete Structures",
+       "credits": null
+      },
+      {
+       "code": "CE702(B)",
+       "name": "Environmental Engg-II",
+       "credits": null
+      },
+      {
+       "code": "CE702(C)",
+       "name": "Structural Dynamics",
+       "credits": null
+      },
+      {
+       "code": "CE702(D)",
+       "name": "Structural Design and Drawing (RCC-II)",
+       "credits": null
+      },
+      {
+       "code": "CE703",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CE703(A)",
+       "name": "Internet of Things",
+       "credits": null
+      },
+      {
+       "code": "CE703(B)",
+       "name": "Project Management",
+       "credits": null
+      },
+      {
+       "code": "CE703(C)",
+       "name": "Integrated Waste Management",
+       "credits": null
+      },
+      {
+       "code": "CE703(D)",
+       "name": "Building Services",
+       "credits": null
+      },
+      {
+       "code": "CE704",
+       "name": "Prestressed Concrete Structures Lab",
+       "credits": 3
+      },
+      {
+       "code": "CE705",
+       "name": "IoT Lab",
+       "credits": 3
+      },
+      {
+       "code": "CE706",
+       "name": "Major Project-I",
+       "credits": 4
+      },
+      {
+       "code": "CE607",
+       "name": "Evaluation of Internship -III",
+       "credits": 3
+      }
+     ]
+    },
+    "8": {
+     "source": "VIII Semester Bachelor of Technology (B.Tech.) [Civil Engineering] (w.e.f. Jan, 2021) | https://www.rgpv.ac.in/CDN/PubContent/Scheme/VIII_CE290121125509.pdf",
+     "totalCredits": 18,
+     "subjects": [
+      {
+       "code": "CE801",
+       "name": "Design of Steel Structures",
+       "credits": 4
+      },
+      {
+       "code": "CE802",
+       "name": "Departmental Elective",
+       "credits": 4
+      },
+      {
+       "code": "CE802(A)",
+       "name": "Engineering Hydrology",
+       "credits": null
+      },
+      {
+       "code": "CE802(B)",
+       "name": "Foundation Engineering",
+       "credits": null
+      },
+      {
+       "code": "CE802(C)",
+       "name": "Bridge Engineering",
+       "credits": null
+      },
+      {
+       "code": "CE802(D)",
+       "name": "Earthquake Resistant Design of Structures",
+       "credits": null
+      },
+      {
+       "code": "CE803",
+       "name": "Open Elective",
+       "credits": 3
+      },
+      {
+       "code": "CE803(A)",
+       "name": "Artificial Intelligence",
+       "credits": null
+      },
+      {
+       "code": "CE803(B)",
+       "name": "Data Analytics",
+       "credits": null
+      },
+      {
+       "code": "CE803(C)",
+       "name": "Retrofitting and Rehabilitation of Structures",
+       "credits": null
+      },
+      {
+       "code": "CE803(D)",
+       "name": "Integrated Water Management",
+       "credits": null
+      },
+      {
+       "code": "CE804",
+       "name": "Earthquake Resistant Structures Lab",
+       "credits": 3
+      },
+      {
+       "code": "CE805",
+       "name": "Major Project-II",
+       "credits": 4
+      }
+     ]
+    }
+   }
+  }
+ }
+}

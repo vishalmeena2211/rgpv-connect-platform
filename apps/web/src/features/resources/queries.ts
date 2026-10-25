@@ -137,13 +137,29 @@ export async function getPapersBySubject(scope: Scope): Promise<{ subject: Subje
     const [month, year] = session.split(' ');
     return Number(year) * 12 + (month === 'Dec' ? 12 : month === 'Jun' ? 6 : 0);
   };
-  return subjects.map((subject) => ({
-    subject,
-    papers: papers
-      .filter((p) => p.subject.id === subject.id)
-      .map(toCard)
-      .sort((a, b) => sessionOrder(b.session) - sessionOrder(a.session)),
-  }));
+  return subjects
+    .map((subject) => ({
+      subject,
+      papers: papers
+        .filter((p) => p.subject.id === subject.id)
+        .map(toCard)
+        .sort((a, b) => sessionOrder(b.session) - sessionOrder(a.session)),
+    }))
+    .filter(({ subject, papers: own }) => own.length > 0 || hasWrittenPaper(subject, subjects));
+}
+
+// Rows on RGPV's scheme that never have an end-semester question paper.
+const NO_WRITTEN_PAPER = /\b(lab|internship|project|nss|ncc|seminars?|programming practices|skill development)\b/i;
+
+/**
+ * Whether a catalogue subject sits a written end-semester paper. An elective
+ * slot ("CS603 Departmental Elective") is left out when its options
+ * ("CS603(A) …") are listed, since each option has its own paper.
+ */
+function hasWrittenPaper(subject: SubjectOption, all: SubjectOption[]): boolean {
+  if (NO_WRITTEN_PAPER.test(subject.name)) return false;
+  const code = subject.code;
+  return !(code && !code.includes('(') && all.some((other) => other.code?.startsWith(`${code}(`)));
 }
 
 /** One resource for the viewer page. Pending or rejected ones only for their uploader or an admin. */

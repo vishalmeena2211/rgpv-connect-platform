@@ -38,7 +38,10 @@ export function Calculator({
 }) {
   const [rows, setRows] = useState<Row[]>(() =>
     subjects.length > 0
-      ? subjects.map((s) => ({ id: nextId++, code: s.code ?? '', name: s.name, credits: String(s.credits ?? 3), grade: 'A' }))
+      ? subjects
+          // Elective options and non-credit courses carry no credits; their slot row already counts.
+          .filter((s) => s.credits != null)
+          .map((s) => ({ id: nextId++, code: s.code ?? '', name: s.name, credits: String(s.credits), grade: 'A' }))
       : [0, 1, 2, 3, 4].map(() => ({ id: nextId++, code: '', name: '', credits: '3', grade: 'A' })),
   );
   const [target, setTarget] = useState(() => (sgpas.length ? Math.min(10, Math.ceil((sgpas.reduce((a, b) => a + b, 0) / sgpas.length + 0.3) * 4) / 4) : 8).toFixed(2));

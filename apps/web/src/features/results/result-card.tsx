@@ -41,7 +41,27 @@ function GradePill({ grade }: { grade?: string }) {
 /** A number column: right-aligned, never wrapped, and only as wide as its widest value. */
 const NUM_CELL = 'w-px whitespace-nowrap px-1.5 py-2.5 text-right sm:px-3.5';
 
-/** Subject rows: code + name, credits when the catalogue has them, grade, points. */
+/**
+ * Credits for each printed row. RGPV's marksheet has a "Total Credit" for every
+ * row (the parser keeps it as `totalMarks`), split between a subject's theory
+ * and practical rows exactly as RGPV prints them; use those. Only when a result
+ * lacks them, fall back to the catalogue, which puts a subject's credits on its
+ * first row.
+ */
+function rowCredits(result: SemesterResult, credits?: Map<string, number>): (number | undefined)[] {
+  if (result.subjects.length > 0 && result.subjects.every((s) => typeof s.totalMarks === 'number')) {
+    return result.subjects.map((s) => s.totalMarks);
+  }
+  const credited = new Set<string>();
+  return result.subjects.map((subject) => {
+    const { code } = splitSubject(subject);
+    const credit = code && !credited.has(code) ? credits?.get(code) : undefined;
+    if (code && credit !== undefined) credited.add(code);
+    return credit;
+  });
+}
+
+/** Subject rows: code + name, credits, grade, points. */
 export function SubjectTable({
   result,
   credits,
@@ -51,9 +71,8 @@ export function SubjectTable({
   credits?: Map<string, number>;
   names?: Map<string, string>;
 }) {
-  const showCredits = Boolean(credits && credits.size > 0);
-  // A subject can print as a theory row and a practical row; its credits go on the first one.
-  const credited = new Set<string>();
+  const perRow = rowCredits(result, credits);
+  const showCredits = perRow.some((credit) => credit !== undefined);
   return (
     // Fits a phone instead of scrolling sideways: tighter padding, number columns only as wide as their values,
     // short headers ("Cr", "Pts") under the sm breakpoint. The scroll box stays as a fallback for very long codes.
@@ -82,8 +101,7 @@ export function SubjectTable({
         <tbody>
           {result.subjects.map((subject, index) => {
             const { code, part } = splitSubject(subject);
-            const credit = code && !credited.has(code) ? credits?.get(code) : undefined;
-            if (code && credit !== undefined) credited.add(code);
+            const credit = perRow[index];
             const name = code ? names?.get(code) : undefined;
             return (
               <tr key={`${subject.name}-${index}`} className="border-t">
@@ -128,7 +146,8 @@ export function ResultCard({
   actions?: React.ReactNode;
   footer?: React.ReactNode;
 }) {
-  const totalCredits = credits && credits.size > 0 ? [...credits.values()].reduce((a, b) => a + b, 0) : null;
+  const perRow = rowCredits(result, credits);
+  const totalCredits = perRow.some((credit) => credit !== undefined) ? perRow.reduce<number>((sum, credit) => sum + (credit ?? 0), 0) : null;
   const passedAll = result.subjects.every((s) => s.grade !== 'F');
   const change = result.cgpa != null && previousCgpa != null ? Math.round((result.cgpa - previousCgpa) * 100) / 100 : null;
 

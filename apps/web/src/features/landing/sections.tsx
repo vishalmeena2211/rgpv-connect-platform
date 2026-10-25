@@ -82,7 +82,23 @@ export function HowItWorks() {
   );
 }
 
-/** Example data, drawn with the real result card so the page shows exactly what a student gets. */
+/**
+ * Example data, drawn with the real result card so the page shows exactly what a
+ * student gets. Subjects, credits and the theory/practical split follow RGPV's
+ * official CS semester 4 scheme (24 credits); the grades give an SGPA of 8.42.
+ */
+const EXAMPLE_ROWS: [name: string, credits: number, grade: string][] = [
+  ['BT401- [T]', 4, 'A'],
+  ['CS402- [T]', 3, 'B+'],
+  ['CS402- [P]', 1, 'A+'],
+  ['CS403- [T]', 4, 'B+'],
+  ['CS403- [P]', 1, 'A'],
+  ['CS404- [T]', 4, 'B'],
+  ['CS404- [P]', 1, 'B+'],
+  ['CS405- [T]', 3, 'A'],
+  ['CS405- [P]', 1, 'A+'],
+  ['CS406- [P]', 2, 'A'],
+];
 const EXAMPLE: SemesterResult = {
   name: 'PRIYANSHI RATHORE',
   enrollment: '0151CS241042',
@@ -90,32 +106,17 @@ const EXAMPLE: SemesterResult = {
   branch: 'CS',
   semester: 4,
   status: 'PASS',
-  sgpa: 8.41,
+  sgpa: 8.42,
   cgpa: 7.95,
-  subjects: [
-    { name: 'CS401- [T]', grade: 'A' },
-    { name: 'CS402- [T]', grade: 'B+' },
-    { name: 'CS403- [T]', grade: 'B+' },
-    { name: 'CS404- [T]', grade: 'B' },
-    { name: 'CS405- [T]', grade: 'A+' },
-    { name: 'CS406- [P]', grade: 'A' },
-  ],
+  subjects: EXAMPLE_ROWS.map(([name, credits, grade]) => ({ name, totalMarks: credits, earnedMarks: credits, grade })),
 };
-const EXAMPLE_CREDITS = new Map([
-  ['CS401', 4],
-  ['CS402', 3],
-  ['CS403', 3],
-  ['CS404', 3],
-  ['CS405', 2],
-  ['CS406', 2],
-]);
 const EXAMPLE_NAMES = new Map([
-  ['CS401', 'Analysis & Design of Algorithms'],
-  ['CS402', 'Software Engineering'],
-  ['CS403', 'Computer Organisation & Architecture'],
-  ['CS404', 'Operating Systems'],
-  ['CS405', 'Java Programming'],
-  ['CS406', 'Algorithms Lab'],
+  ['BT401', 'Mathematics-III'],
+  ['CS402', 'Analysis Design of Algorithm'],
+  ['CS403', 'Software Engineering'],
+  ['CS404', 'Computer Org. & Architecture'],
+  ['CS405', 'Operating Systems'],
+  ['CS406', 'Programming Practices'],
 ]);
 
 export function ExampleResult() {
@@ -135,7 +136,7 @@ export function ExampleResult() {
         </ul>
       </div>
       <div className="min-w-0 flex-[1_1_520px]">
-        <ResultCard result={EXAMPLE} credits={EXAMPLE_CREDITS} names={EXAMPLE_NAMES} actions={<Badge variant="warning">Example</Badge>} />
+        <ResultCard result={EXAMPLE} names={EXAMPLE_NAMES} actions={<Badge variant="warning">Example</Badge>} />
       </div>
     </section>
   );
@@ -185,9 +186,9 @@ export function JoinFeatures() {
             </span>
             <h3 className="font-display text-[17px] font-bold">Every semester, one timeline</h3>
             <p className="text-[14.5px] leading-[22px] text-muted-foreground">
-              We fetch your other semesters too and chart your CGPA. Example: SGPA 7.42, 7.85, 8.10, 8.41.
+              We fetch your other semesters too and chart your CGPA. Example: SGPA 7.42, 7.85, 8.10, 8.42.
             </p>
-            <Sparkline values={[7.42, 7.85, 8.1, 8.41]} className="mt-auto h-11 w-full" />
+            <Sparkline values={[7.42, 7.85, 8.1, 8.42]} className="mt-auto h-11 w-full" />
           </article>
           {features.map(({ icon: Icon, title, body }) => (
             <article key={title} className="flex flex-col gap-2.5 rounded-xl bg-background p-6">

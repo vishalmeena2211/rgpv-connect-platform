@@ -50,3 +50,25 @@ real users. Sign in locally as `priyanshi@rgpvconnect.dev`,
 `new.student@rgpvconnect.dev` or `admin@rgpvconnect.dev`.
 
 Keep `DATABASE_URL` on a local database when seeding.
+
+## The subject catalogue
+
+`prisma/catalogue/btech.json` holds RGPV's official B.Tech subject lists for
+10 branches (CS, IT, EX, AL, CL, DS, CD, EC, ME, CE), semesters 1 to 8: code,
+name and credits, read from RGPV's "Scheme of Examination" PDFs
+(rgpv.ac.in → Scheme → B.Tech → Grading System). Each semester records the
+PDF it came from, and its credits add up to that PDF's Total row.
+
+- Elective slots (`CS603 Departmental Elective`, with credits) are followed by
+  their options (`CS603(A) …`, no credits), since each option has its own paper.
+- Non-credit courses, and internships whose credit RGPV counts in a later
+  semester, have no credits.
+- AL and CL share one scheme, as do DS and CD (RGPV prints them in one table).
+
+```bash
+pnpm --filter @rgpv/db catalogue:load            # preview: what would be added or changed
+pnpm --filter @rgpv/db catalogue:load --apply    # write
+```
+
+It only adds and updates. A subject already in the database but missing from
+the file is listed and left alone, so notes and papers attached to it stay.
