@@ -1,0 +1,51 @@
+# Deploys rgpvconnect.co.in to web-1, the Google Cloud VM in Mumbai, once CI passes on main.
+#
+# The VM builds the commit in a new folder and only switches to it once it built cleanly and the site answers;
+# otherwise the site stays on the release before. So a broken build never takes the site down.
+# "Run workflow" on the Actions tab deploys main again by hand.
+#
+# Needs the repository secrets DEPLOY_SSH_KEY and DEPLOY_KNOWN_HOSTS, and the variable DEPLOY_HOST
+# (set by vm-setup/setup-github-deploy.sh in the DIGISTAY folder). The key can only run `deploy` on the VM.
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://rgpvconnect.co.in
+    steps:
+      - name: Deploy on web-1
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          COMMIT: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o BatchMode=yes -o ServerAliveInterval=30 \
+            "deploy@$DEPLOY_HOST" "deploy $COMMIT"
+
+      - name: Check the live site
+        run: curl -fsS -o /dev/null --retry 5 --retry-delay 5 https://rgpvconnect.co.in/robots.txt
