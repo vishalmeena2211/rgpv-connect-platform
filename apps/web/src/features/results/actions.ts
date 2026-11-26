@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { type Prisma, prisma } from '@rgpv/db';
 import { parseEnrollment, semesterSchedule } from '@rgpv/shared';
 
+import { trackOnServer } from '@/lib/analytics-server';
 import { appUrl } from '@/lib/app-url';
 import { getCurrentUser, isVerified } from '@/lib/session';
 import { maskEnrollment } from '@/lib/utils';
@@ -24,6 +25,12 @@ export type SyncOutcome =
  * progress line by line and keep whatever succeeded.
  */
 export async function syncSemester(semester: number): Promise<SyncOutcome> {
+  const outcome = await fetchAndSave(semester);
+  await trackOnServer('My results synced', { outcome: outcome.kind });
+  return outcome;
+}
+
+async function fetchAndSave(semester: number): Promise<SyncOutcome> {
   const user = await getCurrentUser();
   if (!user || !isVerified(user) || !user.enrollmentNumber) {
     return { semester, kind: 'failed', message: 'Verify your enrollment number first.' };

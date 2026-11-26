@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { Star } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { track } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 
 import { rateResource } from './actions';
@@ -30,6 +31,7 @@ export function RateControl({ id, initial, disabledReason }: { id: string; initi
               startTransition(async () => {
                 const result = await rateResource(id, n);
                 if (result.ok) {
+                  track('Resource rated', { stars: n });
                   setStars(n);
                   toast.success('Thanks for rating.');
                 } else toast.error(result.error);

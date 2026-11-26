@@ -4,6 +4,7 @@ import { Search } from 'lucide-react';
 import { prisma } from '@rgpv/db';
 import { isValidEnrollment, normaliseEnrollment } from '@rgpv/shared';
 
+import { TrackView } from '@/components/track-view';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -55,13 +56,20 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-faint" />
         <Input name="q" defaultValue={q} autoFocus placeholder="A subject, a code like CS502, or a name" className="h-12 pl-9 text-[15px]" aria-label="Search" />
       </form>
+      {q.length >= 2 ? (
+        <>
+          {/* How long the search was and how many matched: never the words. */}
+          <TrackView event="Search run" props={{ letters: q.length, results: resources.length + people.length }} />
+          {resources.length + people.length === 0 ? <TrackView event="Search found nothing" props={{ letters: q.length }} /> : null}
+        </>
+      ) : null}
       {enrollment ? (
         <Link href={`/results/lookup?enrollment=${enrollment}`} className="rounded-md border border-accent-strong bg-accent px-4 py-3 text-[13px] font-semibold text-accent-foreground">
           That looks like an enrollment number. Check its result →
         </Link>
       ) : null}
       {q.length < 2 ? null : resources.length === 0 && people.length === 0 ? (
-        <Card><EmptyState icon={Search} title={`Nothing found for “${q}”`}>Try the subject code, or a shorter word.</EmptyState></Card>
+        <Card><EmptyState icon={Search} title="Nothing found">No match for <span data-private>“{q}”</span>. Try the subject code, or a shorter word.</EmptyState></Card>
       ) : (
         <>
           {people.length ? (
@@ -69,7 +77,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
               <h2 className="font-display text-sm font-bold">People at your college</h2>
               {people.map((p) => (
                 <Link key={p.id} href={`/u/${p.id}`} className="flex items-center justify-between rounded-md border bg-card px-4 py-3 text-[13px] shadow-card hover:border-input">
-                  <span className="font-semibold">{p.name}</span>
+                  <span className="font-semibold" data-private>{p.name}</span>
                   <Badge>{batchTag(p.branchCode, p.graduatingBatch)}</Badge>
                 </Link>
               ))}

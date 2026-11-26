@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { prisma } from '@rgpv/db';
 import { z } from 'zod';
 
+import { trackOnServer } from '@/lib/analytics-server';
 import { getCurrentUser } from '@/lib/session';
 import { maskEnrollment } from '@/lib/utils';
 
@@ -47,6 +48,7 @@ export async function requestDeletion(reason: string): Promise<{ ok: boolean }> 
         eligibleAt: new Date(Date.now() + COOLING_DAYS * 86_400_000),
       },
     });
+    await trackOnServer('Account deletion requested');
   }
   revalidatePath('/settings');
   return { ok: true };

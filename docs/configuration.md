@@ -71,7 +71,7 @@ allow `PUT` from your site’s origin in the bucket’s CORS rules.
 | `CRON_SECRET` | empty | Protects `/api/cron/results-day`, which carries on a results-day run when nobody has the admin page open. Call it every minute with `Authorization: Bearer <CRON_SECRET>`. Vercel’s Hobby plan only allows daily crons, so use a GitHub Actions schedule or any uptime pinger instead; or keep the admin page open during a run. |
 | `NEXT_PUBLIC_MIXPANEL_TOKEN` | empty | Mixpanel project token. Empty means nothing is counted. Counting runs only on production builds (and only the production deployment on Vercel). Public by design. |
 | `NEXT_PUBLIC_MIXPANEL_API_HOST` | `https://api-js.mixpanel.com` | Match the project's data residency: `https://api-eu.mixpanel.com` for an EU project. |
-| `NEXT_PUBLIC_MIXPANEL_RECORD_PERCENT` | `0` | Share of visits recorded with Mixpanel Session Replay. Off by default because result pages show names and marks; result, account, message and admin pages are never recorded. |
+| `NEXT_PUBLIC_MIXPANEL_RECORD_PERCENT` | `100` | Share of visits recorded with Mixpanel Session Replay; `0` turns it off. Only the public reading pages are recorded (home, notes, papers, search, the info pages): result, lookup, calculator, sign-in, account, message, settings and admin pages never are. Every typed box is hidden, and a real student's name on a recorded page carries `data-private`. |
 | `NEXT_PUBLIC_MIXPANEL_IN_DEVELOPMENT` | empty | Set to `1` to send events from a local build while testing. |
 
 `GET /api/health` answers `{"status":"ok"}` after a database ping. Point an

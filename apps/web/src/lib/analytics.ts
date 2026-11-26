@@ -2,6 +2,7 @@ import type { Mixpanel } from 'mixpanel-browser';
 
 import { ANALYTICS_ON, MIXPANEL_API_HOST, MIXPANEL_TOKEN, RECORD_PERCENT } from './analytics-config';
 import type { EventName, EventProps } from './analytics-events';
+import { isRobotName } from './robots';
 
 /*
   What RGPV Connect tells Mixpanel, in the browser only. Which project, and
@@ -22,16 +23,10 @@ const SEND = ANALYTICS_ON;
 
 let started: Promise<Mixpanel | null> | null = null;
 
-// Words only programs put in the browser's name. Mixpanel skips the crawlers it knows by name, but not a browser
-// driven by a program: headless Chrome, Google's page inspector, SEO crawlers, link previews, test tools.
-const ROBOT = /bot\b|bot\/|crawl|spider|slurp|headless|lighthouse|inspectiontool|pagespeed|preview|phantom|selenium|puppeteer|playwright/i;
-
-/** A browser run by a program, not a person. Such a visit is neither counted nor recorded. */
+/** A browser run by a program, not a person (robots.ts). Such a visit is neither counted nor recorded. */
 export function looksAutomated(): boolean {
   try {
-    const ua = navigator.userAgent;
-    // A phone named Cubot has "bot" in its name; its owner is a person.
-    return navigator.webdriver === true || (ROBOT.test(ua) && !/cubot/i.test(ua));
+    return navigator.webdriver === true || isRobotName(navigator.userAgent);
   } catch {
     return false;
   }
@@ -101,8 +96,11 @@ export function track(event: EventName, props: EventProps = {}): void {
   void startAnalytics().then((mixpanel) => mixpanel?.track(event, props));
 }
 
-/** Pages never recorded: anything showing a result, an account, messages, signing in, or admin. */
-const NOT_RECORDED = [/^\/result/, /^\/s\//, /^\/me/, /^\/u\//, /^\/messages/, /^\/settings/, /^\/login/, /^\/onboarding/, /^\/welcome/, /^\/admin/, /^\/notifications/, /^\/uploads/];
+/**
+ * Pages never recorded: anything showing a result, an account, messages, signing in, or admin. /api/ covers the
+ * pages Auth.js draws itself, such as "check your email" after a sign-in link is sent.
+ */
+const NOT_RECORDED = [/^\/result/, /^\/s\//, /^\/me/, /^\/u\//, /^\/messages/, /^\/settings/, /^\/login/, /^\/onboarding/, /^\/welcome/, /^\/admin/, /^\/notifications/, /^\/uploads/, /^\/api\//];
 
 export function mayRecord(path: string): boolean {
   return !NOT_RECORDED.some((r) => r.test(path));

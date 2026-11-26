@@ -146,7 +146,13 @@ export function ShareDialog(props: Props) {
             ) : null}
             {link && !pending ? (
               <Button asChild size="lg" className="w-full">
-                <a href={whatsappHref(link.url, preview.sgpa, props.semester)} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={whatsappHref(link.url, preview.sgpa, props.semester)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track="Result shared"
+                  data-track-props={JSON.stringify({ kind, via: 'whatsapp' })}
+                >
                   <Share2 />
                   Share to WhatsApp
                 </a>
@@ -160,7 +166,12 @@ export function ShareDialog(props: Props) {
             <div className="grid grid-cols-2 gap-2">
               {link && !pending ? (
                 <Button asChild variant="outline">
-                  <a href={`/api/share/${link.token}/image?download=1`} download={`rgpv-semester-${props.semester}.png`}>
+                  <a
+                    href={`/api/share/${link.token}/image?download=1`}
+                    download={`rgpv-semester-${props.semester}.png`}
+                    data-track="Result shared"
+                    data-track-props={JSON.stringify({ kind, via: 'image' })}
+                  >
                     <Download />
                     Save image
                   </a>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { GRADE_POINTS, GRADES, type Grade, projectedCgpa, requiredAverageSgpa, sgpaFromGrades } from '@rgpv/shared';
 
@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { semesterOptions } from '@/components/ui/select-options';
+import { track } from '@/lib/analytics';
 
 interface Row {
   id: number;
@@ -53,8 +54,16 @@ export function Calculator({
 
   const update = (id: number, patch: Partial<Row>) => setRows((current) => current.map((r) => (r.id === id ? { ...r, ...patch } : r)));
 
+  // Counted once a visit, on the first change: the numbers themselves are never sent.
+  const counted = useRef(false);
+  const used = () => {
+    if (counted.current) return;
+    counted.current = true;
+    track('Marks calculator used');
+  };
+
   return (
-    <div className="grid items-start gap-4 lg:grid-cols-[1.3fr_1fr]">
+    <div className="grid items-start gap-4 lg:grid-cols-[1.3fr_1fr]" onChangeCapture={used}>
       <Card>
         <CardHeader>
           <CardTitle>Semester {semester} · what-if</CardTitle>

@@ -112,10 +112,10 @@ export function ResourceCard({ resource }: { resource: ResourceCardData }) {
       </div>
       <div className="mt-auto flex items-center justify-between gap-2">
         <span className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
-          <span className="grid size-[26px] shrink-0 place-items-center rounded-full bg-gradient-to-br from-accent to-accent-strong font-display text-[10px] font-bold text-accent-foreground">
+          <span className="grid size-[26px] shrink-0 place-items-center rounded-full bg-gradient-to-br from-accent to-accent-strong font-display text-[10px] font-bold text-accent-foreground" data-private>
             {initials(resource.uploader.name)}
           </span>
-          <span className="truncate">
+          <span className="truncate" data-private>
             {resource.uploader.name}
             {batchTag(resource.uploader.branchCode, resource.uploader.graduatingBatch) ? ` · ${batchTag(resource.uploader.branchCode, resource.uploader.graduatingBatch)}` : ''}
           </span>

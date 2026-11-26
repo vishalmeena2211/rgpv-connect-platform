@@ -120,7 +120,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
       <Card>
         <CardContent className="flex flex-wrap items-center justify-between gap-4">
           <Link href={`/u/${resource.uploader.id}`} className="flex items-center gap-2 text-[13px]">
-            <span className="font-semibold">{resource.uploader.name}</span>
+            <span className="font-semibold" data-private>{resource.uploader.name}</span>
             {batchTag(resource.uploader.branchCode, resource.uploader.graduatingBatch) ? (
               <span className="text-muted-foreground">{batchTag(resource.uploader.branchCode, resource.uploader.graduatingBatch)}</span>
             ) : null}

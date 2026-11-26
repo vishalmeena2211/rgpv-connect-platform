@@ -3,6 +3,7 @@
 import { useOptimistic, useTransition } from 'react';
 
 import { Switch } from '@/components/ui/checkbox';
+import { track } from '@/lib/analytics';
 
 import { setShowOnBoard } from './actions';
 
@@ -17,6 +18,7 @@ export function BoardToggle({ initial }: { initial: boolean }) {
         disabled={pending}
         onChange={(e) => {
           const next = e.target.checked;
+          track('Board listing switched', { on: next });
           startTransition(async () => {
             setOn(next);
             await setShowOnBoard(next);

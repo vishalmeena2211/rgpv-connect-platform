@@ -4,6 +4,7 @@ import { latestDeclaredSemester, parseEnrollment } from '@rgpv/shared';
 
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackOnServer } from '@/lib/analytics-server';
 import type { CurrentUser } from '@/lib/session';
 import { formatWhen, maskEnrollment } from '@/lib/utils';
 
@@ -35,9 +36,17 @@ export async function LookupResult({
   const parsed = parseEnrollment(enrollment);
   if (!parsed) return <InvalidEnrollment value={enrollment} />;
 
+  const started = Date.now();
   const outcome = await lookupResult(parsed.raw, semester, {
     fresh,
     limitKey: viewer ? `lookup:user:${viewer.id}` : undefined,
+  });
+  await trackOnServer('Result lookup answered', {
+    outcome:
+      outcome.kind === 'unavailable' ? (outcome.cause === 'portal' ? 'portal_down' : 'service_down') : outcome.kind,
+    cached: outcome.kind === 'found' ? outcome.fromCache : false,
+    seconds: Math.round((Date.now() - started) / 100) / 10,
+    mode,
   });
   const href = (s: number, extra = '') => `${lookupHref(mode, parsed.raw, s)}${extra}`;
   const latest = latestDeclaredSemester(parsed.admissionYear);
@@ -105,7 +114,13 @@ export async function LookupResult({
           />
           {/* RGPV's own Print Marksheet, in a new tab that opens the print dialog. */}
           <Button asChild variant="outline" size="sm">
-            <a href={`/result/${parsed.raw}/print?semester=${semester}`} target="_blank" rel="noopener">
+            <a
+              href={`/result/${parsed.raw}/print?semester=${semester}`}
+              target="_blank"
+              rel="noopener"
+              data-track="Marksheet print opened"
+              data-track-props={JSON.stringify({ semester })}
+            >
               <Printer />
               Print marksheet
             </a>

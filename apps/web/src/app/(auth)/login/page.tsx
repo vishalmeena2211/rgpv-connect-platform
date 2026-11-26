@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { GraduationCap } from 'lucide-react';
 
+import { TrackView } from '@/components/track-view';
 import { SignInForm } from '@/features/auth/sign-in-form';
 import { getCurrentUser } from '@/lib/session';
 
@@ -41,6 +42,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <span className="h-1 w-7 rounded-full bg-border" />
         <span className="h-1 w-7 rounded-full bg-border" />
       </div>
+      {error ? <TrackView event="Sign-in error shown" props={{ reason: error in ERRORS ? error : 'Other' }} /> : null}
       <SignInForm
         callbackUrl={safePath(callbackUrl)}
         googleEnabled={Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET)}

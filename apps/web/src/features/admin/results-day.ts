@@ -4,6 +4,7 @@ import { type Prisma, prisma } from '@rgpv/db';
 
 import { notify } from '@/features/notifications/notify';
 import { lookupResult } from '@/features/results/service';
+import { trackOnServer } from '@/lib/analytics-server';
 
 /** How many students one step processes; small enough for a serverless call. */
 export const STEP_SIZE = 4;
@@ -59,6 +60,7 @@ export async function advanceDeclaration(id: string): Promise<boolean> {
 
   if (students.length === 0) {
     await prisma.resultsDeclaration.update({ where: { id }, data: { status: 'COMPLETED', finishedAt: new Date() } });
+    await trackOnServer('Results day finished', { students: run.processed, notified: run.notified }, { job: true });
     return false;
   }
 
