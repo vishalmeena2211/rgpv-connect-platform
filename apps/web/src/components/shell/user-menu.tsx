@@ -1,5 +1,6 @@
 'use client';
 
+import { useTransition } from 'react';
 import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { LogOut, Settings, Shield, Upload, User } from 'lucide-react';
@@ -22,6 +23,7 @@ export function UserMenu({
   userId: string;
   isAdmin: boolean;
 }) {
+  const [signingOut, startTransition] = useTransition();
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className="ml-1 rounded-full focus-visible:ring-2 focus-visible:ring-ring" aria-label="Account menu">
@@ -70,14 +72,14 @@ export function UserMenu({
             </DropdownMenu.Item>
           ) : null}
           <DropdownMenu.Separator className="my-1 h-px bg-border" />
-          <form action={signOutAction}>
-            <DropdownMenu.Item asChild className={itemClass}>
-              <button type="submit" className="w-full">
-                <LogOut />
-                Sign out
-              </button>
-            </DropdownMenu.Item>
-          </form>
+          {/*
+            Called from the item itself: a form inside the menu was removed as the menu closed, before the
+            browser could send it, so "Sign out" did nothing.
+          */}
+          <DropdownMenu.Item className={itemClass} disabled={signingOut} onSelect={() => startTransition(() => signOutAction())}>
+            <LogOut />
+            {signingOut ? 'Signing out…' : 'Sign out'}
+          </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
