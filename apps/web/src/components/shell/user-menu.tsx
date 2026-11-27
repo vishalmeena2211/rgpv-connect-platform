@@ -1,5 +1,6 @@
 'use client';
 
+import { useTransition } from 'react';
 import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { LogOut, Settings, Shield, Upload, User } from 'lucide-react';
@@ -22,10 +23,12 @@ export function UserMenu({
   userId: string;
   isAdmin: boolean;
 }) {
+  const [signingOut, startTransition] = useTransition();
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className="ml-1 rounded-full focus-visible:ring-2 focus-visible:ring-ring" aria-label="Account menu">
-        <Avatar>
+        {/* The student's own picture and name are left out of screen recordings. */}
+        <Avatar data-private-block>
           {avatarUrl ? <AvatarImage src={avatarUrl} alt="" /> : null}
           <AvatarFallback>{initials(name)}</AvatarFallback>
         </Avatar>
@@ -37,7 +40,9 @@ export function UserMenu({
           className="z-50 min-w-[200px] rounded-lg border bg-card p-1.5 shadow-raised data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
         >
           <div className="px-2.5 pb-2 pt-1.5">
-            <p className="truncate font-display text-[13px] font-bold">{name}</p>
+            <p className="truncate font-display text-[13px] font-bold" data-private>
+              {name}
+            </p>
           </div>
           <DropdownMenu.Separator className="my-1 h-px bg-border" />
           <DropdownMenu.Item asChild className={itemClass}>
@@ -67,14 +72,14 @@ export function UserMenu({
             </DropdownMenu.Item>
           ) : null}
           <DropdownMenu.Separator className="my-1 h-px bg-border" />
-          <form action={signOutAction}>
-            <DropdownMenu.Item asChild className={itemClass}>
-              <button type="submit" className="w-full">
-                <LogOut />
-                Sign out
-              </button>
-            </DropdownMenu.Item>
-          </form>
+          {/*
+            Called from the item itself: a form inside the menu was removed as the menu closed, before the
+            browser could send it, so "Sign out" did nothing.
+          */}
+          <DropdownMenu.Item className={itemClass} disabled={signingOut} onSelect={() => startTransition(() => signOutAction())}>
+            <LogOut />
+            {signingOut ? 'Signing out…' : 'Sign out'}
+          </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

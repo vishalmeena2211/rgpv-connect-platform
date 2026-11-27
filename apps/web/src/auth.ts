@@ -6,6 +6,7 @@ import { prisma } from '@rgpv/db';
 import type { UserRole, VerificationStatus } from '@rgpv/shared';
 
 import { authConfig } from '@/auth.config';
+import { trackOnServer } from '@/lib/analytics-server';
 import { rgpvAdapter } from '@/lib/auth-adapter';
 import { sendSignInEmail } from '@/lib/email';
 
@@ -50,11 +51,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
   session: { strategy: 'jwt' },
   events: {
-    async signIn({ user }) {
+    async signIn({ user, account, isNewUser }) {
       const email = user.email?.toLowerCase();
       if (email && adminEmails().has(email)) {
         await prisma.user.updateMany({ where: { email, role: { not: 'ADMIN' } }, data: { role: 'ADMIN' } });
       }
+      // How many, never who: only the way they signed in is sent.
+      await trackOnServer(isNewUser ? 'Signed up' : 'Logged in', { method: account?.provider === 'google' ? 'google' : 'email' });
+    },
+    async signOut() {
+      await trackOnServer('Logged out');
     },
   },
   callbacks: {

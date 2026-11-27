@@ -5,6 +5,7 @@ import { BellOff, BellRing, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { track } from '@/lib/analytics';
 
 import { removePushSubscription, savePushSubscription } from './actions';
 
@@ -35,6 +36,7 @@ export function EnablePush({ vapidPublicKey }: { vapidPublicKey: string | null }
     startTransition(async () => {
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
+        track('Push refused', { why: permission === 'denied' ? 'denied' : 'dismissed' });
         setState(permission === 'denied' ? 'denied' : 'off');
         return;
       }
@@ -45,6 +47,7 @@ export function EnablePush({ vapidPublicKey }: { vapidPublicKey: string | null }
       });
       const result = await savePushSubscription(subscription.toJSON());
       if (result.ok) {
+        track('Push turned on');
         setState('on');
         toast.success('Notifications are on for this device.');
       } else {

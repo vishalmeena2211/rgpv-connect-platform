@@ -5,6 +5,7 @@ import { type Prisma, prisma } from '@rgpv/db';
 import { z } from 'zod';
 
 import { notify } from '@/features/notifications/notify';
+import { trackOnServer } from '@/lib/analytics-server';
 import { audit } from '@/lib/audit';
 import { runParserCheck, warmSessionPool } from '@/lib/result-worker';
 import { requireAdmin } from '@/lib/session';
@@ -24,6 +25,7 @@ export async function publishResource(id: string): Promise<Result> {
     select: { uploaderId: true, title: true },
   });
   await audit({ actorId: admin.id, action: 'resource.publish', targetType: 'Resource', targetId: id });
+  await trackOnServer('Resource reviewed', { decision: 'published' });
   await notify({
     recipientId: resource.uploaderId,
     actorId: admin.id,
@@ -46,6 +48,7 @@ export async function rejectResource(id: string, note: string): Promise<Result> 
     select: { uploaderId: true, title: true },
   });
   await audit({ actorId: admin.id, action: 'resource.reject', targetType: 'Resource', targetId: id, data: { note: trimmed } });
+  await trackOnServer('Resource reviewed', { decision: 'rejected' });
   await notify({
     recipientId: resource.uploaderId,
     actorId: admin.id,
@@ -132,6 +135,7 @@ export async function startDeclaration(input: z.input<typeof declareSchema> & { 
     data: { ...parsed.data, totalStudents: total, sampleCheck: input.sample as unknown as Prisma.InputJsonValue, startedById: admin.id },
   });
   await audit({ actorId: admin.id, action: 'results.declare', targetType: 'ResultsDeclaration', targetId: run.id, data: { ...parsed.data, total } });
+  await trackOnServer('Results day started', { semester: parsed.data.semester, students: total });
   await warmSessionPool().catch(() => undefined);
   revalidatePath('/admin/results-day');
   return { ok: true, id: run.id };

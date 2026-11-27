@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
+import { TrackView } from '@/components/track-view';
 import { getAllSubjects, getCatalogueBranches, getResources, getSubjects, resolveScope } from '@/features/resources/queries';
 import { ResourceCard, ScopeBar, SubjectChips } from '@/features/resources/resource-ui';
 import { scopeMetadata } from '@/features/resources/seo';
@@ -43,6 +44,9 @@ export default async function NotesPage({
         actions={upload}
       />
       <ScopeBar scope={scope} branches={branches} basePath="/notes" />
+      {query.branch || query.semester ? (
+        <TrackView event="Resources filtered" props={{ type: 'notes', branch: scope.branchCode, semester: scope.semester }} />
+      ) : null}
       {subjects.length > 0 ? <SubjectChips subjects={subjects} active={subjectId ?? null} hrefFor={href} /> : null}
       {items.length === 0 ? (
         <Card>

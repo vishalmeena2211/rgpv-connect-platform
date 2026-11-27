@@ -9,6 +9,7 @@ import { z } from 'zod';
 
 import { auth, signIn, signOut } from '@/auth';
 import { lookupResult } from '@/features/results/service';
+import { trackOnServer } from '@/lib/analytics-server';
 import { rateLimit } from '@/lib/rate-limit';
 import { maskEnrollment, titleCase } from '@/lib/utils';
 
@@ -237,6 +238,7 @@ export async function disputeEnrollment(enrollmentInput: string, note: string): 
     await prisma.identityDispute.create({
       data: { enrollmentNumber: parsed.raw, claimantId: session.user.id, holderId: holder.id, note: note.trim().slice(0, 1000) || null },
     });
+    await trackOnServer('Identity dispute raised');
   }
   redirect(`/onboarding?claimed=${encodeURIComponent(maskEnrollment(parsed.raw))}`);
 }

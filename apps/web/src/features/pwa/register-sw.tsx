@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 
+import { track } from '@/lib/analytics';
+
 declare global {
   interface Window {
     __rgpvInstallPrompt?: BeforeInstallPromptEvent | null;
@@ -24,11 +26,17 @@ export function RegisterServiceWorker() {
       window.__rgpvInstallPrompt = event as BeforeInstallPromptEvent;
       window.dispatchEvent(new Event('rgpv:installable'));
     };
+    // Counted here, once for the whole page, however many "Add to home screen" buttons it shows.
+    const installed = () => track('App installed');
     window.addEventListener('beforeinstallprompt', keep);
+    window.addEventListener('appinstalled', installed);
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => undefined);
     }
-    return () => window.removeEventListener('beforeinstallprompt', keep);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', keep);
+      window.removeEventListener('appinstalled', installed);
+    };
   }, []);
   return null;
 }

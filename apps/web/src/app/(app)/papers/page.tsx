@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
+import { TrackView } from '@/components/track-view';
 import { getAllSubjects, getCatalogueBranches, getPapersBySubject, resolveScope } from '@/features/resources/queries';
 import { ScopeBar } from '@/features/resources/resource-ui';
 import { UploadDialog } from '@/features/resources/upload-dialog';
@@ -38,6 +39,9 @@ export default async function PapersPage({ searchParams }: { searchParams: Promi
         }
       />
       <ScopeBar scope={scope} branches={branches} basePath="/papers" />
+      {query.branch || query.semester ? (
+        <TrackView event="Resources filtered" props={{ type: 'papers', branch: scope.branchCode, semester: scope.semester }} />
+      ) : null}
       {groups.length === 0 ? (
         <Card>
           <EmptyState icon={FileText} title={`No subjects for ${scope.branchName} semester ${scope.semester} yet`}>

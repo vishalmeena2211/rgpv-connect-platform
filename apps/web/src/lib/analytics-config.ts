@@ -14,12 +14,14 @@ export const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '';
 export const MIXPANEL_API_HOST = process.env.NEXT_PUBLIC_MIXPANEL_API_HOST || 'https://api-js.mixpanel.com';
 
 /**
- * Screen recordings (Mixpanel Session Replay), out of every 100 visits. Off
- * unless NEXT_PUBLIC_MIXPANEL_RECORD_PERCENT says otherwise: result pages show
- * a student's name and marks, so recording is a choice to make on purpose.
- * Pages listed in NOT_RECORDED (lib/analytics.ts) are never recorded either way.
+ * Screen recordings (Mixpanel Session Replay), out of every 100 visits: all of
+ * them unless NEXT_PUBLIC_MIXPANEL_RECORD_PERCENT says otherwise (0 turns them
+ * off), the same as Meel. Only the public reading pages are ever recorded:
+ * anything showing a result, an account, sign-in, messages or admin is on the
+ * NOT_RECORDED list in lib/analytics.ts, every typed box is hidden, and a real
+ * student's name on a recorded page carries data-private.
  */
-export const RECORD_PERCENT = Math.min(100, Math.max(0, Number(process.env.NEXT_PUBLIC_MIXPANEL_RECORD_PERCENT ?? '0') || 0));
+export const RECORD_PERCENT = Math.min(100, Math.max(0, Number(process.env.NEXT_PUBLIC_MIXPANEL_RECORD_PERCENT ?? '100') || 0));
 
 /**
  * Counting happens on the live site only: a production build, and on Vercel
